@@ -90,7 +90,8 @@
 <header class="no-print sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
     <button data-action="home" class="flex items-center gap-3 text-left group">
-      <div class="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-200">
+      <img src="img/Logo_Tu_Heelp_Transparente.png" alt="Tu Heelp" class="h-9 w-auto object-contain" onerror="this.onerror=null; this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+      <div class="hidden w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-200">
         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
         </svg>
@@ -243,8 +244,8 @@ const CASES = [
     "Ausencia total de facilitadores de orientación espacial y temporal (sin reloj ni calendario grande a la vista)."
   ],
   images: [
-    { src: "img/caso1/imagen1.jpg", alt: "Pizarra técnica de clase con desglose de necesidades y riesgos de Teresa", caption: "Evidencia 1: Pizarra de valoración diagnóstica (Práctica UF0123)" },
-    { src: "img/caso1/imagen2.jpg", alt: "Material de soporte y registro del caso", caption: "Evidencia 2: Registro de pautas de intervención" }
+    { src: "img/central_1.webp", alt: "Autonomía en la cocina: elaboración compartida", caption: "Autonomía en el hogar: Preparación activa de alimentos ('hacer con')" },
+    { src: "img/lateral_2.webp", alt: "Prevención de caídas: retirada de alfombras", caption: "Prevención de caídas: Retirada de alfombras sueltas y adaptación del hábitat" }
   ],
   refuerzo: {
     alertas: "Repasa la identificación de barreras físicas y psicosociales: alfombras como causante nº1 de caídas domésticas, e indefensión aprendida provocada por la hiperasistencia familiar.",
@@ -388,8 +389,8 @@ const CASES = [
     "Uso de zapatillas de paño abiertas por detrás y suela resbaladiza."
   ],
   images: [
-    { src: "img/caso2/imagen1.jpg", alt: "Zona de conservación de alimentos y despensa del caso de Manuel", caption: "Evidencia 1: Inspección de frigorífico y cadena de frío" },
-    { src: "img/caso2/imagen2.jpg", alt: "Supervisión de medicación pautada en pastillero", caption: "Evidencia 2: Pastillero dosificador y prescripciones" }
+    { src: "img/lateral_12.webp", alt: "Menú cardiosaludable adaptado a Diabetes", caption: "Nutrición clínica: Menú equilibrado bajo en azúcares rápidos con salmón y verduras" },
+    { src: "img/lateral_1.webp", alt: "Desayuno completo para pauta de insulina", caption: "Control glucémico: Desayuno completo coordinado con la pauta de insulina" }
   ],
   refuerzo: {
     alertas: "Memoriza la clínica cardinal de la hipoglucemia: palidez, sudoración fría profusa, temblor fino distal y confusión mental aguda tras insulina sin carbohidratos.",
@@ -520,8 +521,8 @@ const CASES = [
     "Hedor amoniacal persistente en el dormitorio."
   ],
   images: [
-    { src: "img/caso3/imagen1.jpg", alt: "Dormitorio de Carmen con cama tradicional y entorno de reposo", caption: "Evidencia 1: Inspección biomecánica del entorno de descanso" },
-    { src: "img/caso3/imagen2.jpg", alt: "Materiales y absorbentes empleados en el aseo", caption: "Evidencia 2: Dispositivos de absorción y cuidado dérmico" }
+    { src: "img/central_3.webp", alt: "Acompañamiento familiar y respiro", caption: "Esfera sociofamiliar: Intervención con la familia y respiro para evitar sobrecarga (Zarit)" },
+    { src: "img/lateral_3.webp", alt: "Terapia de reminiscencia con fotos familiares", caption: "Estimulación cognitiva: Terapia de reminiscencia con álbum familiar biográfico" }
   ],
   refuerzo: {
     alertas: "Diferencia con precisión el eritema fisiológico del eritema no blanqueable (UPP Grado I): este último implica isquemia capilar tisular profunda y no admite demora.",
@@ -639,8 +640,8 @@ const CASES = [
     "Silla de ruedas autopropulsable con zapatas de freno desgastadas que no bloquean con solidez la rueda derecha."
   ],
   images: [
-    { src: "img/caso4/imagen1.jpg", alt: "Disposición de la silla de ruedas y ayudas técnicas junto a la cama", caption: "Evidencia 1: Espacio de transferencia biomecánica y frenos" },
-    { src: "img/caso4/imagen2.jpg", alt: "Tablero de comunicación mediante pictogramas para afasia", caption: "Evidencia 2: Tablero de pictogramas SAAC para estimulación" }
+    { src: "img/lateral_5.webp", alt: "Deambulación asistida con bastón en exteriores", caption: "Reeducación motriz: Deambulación asistida con bastón y apoyo biomecánico de la auxiliar" },
+    { src: "img/andador-carbono.png", alt: "Andador técnico de fibra de carbono", caption: "Productos de apoyo: Andador ergonómico ultraligero con freno de seguridad (ISO 12 06 06)" }
   ],
   refuerzo: {
     alertas: "Disfagia de alto riesgo: tos durante o inmediatamente después de la ingesta, carraspeo, atragantamiento silente y alteración del timbre de voz (voz con gorgoteo o húmeda).",
@@ -950,33 +951,30 @@ function renderHome() {
     const lv = h ? levelFor(h.best) : null;
     return `
       <article class="bg-white rounded-2xl border border-slate-200/80 shadow-clean hover:shadow-hover hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden group">
-        <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between gap-2 mb-3">
-              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700">
-                ${esc(c.tag)}
-              </span>
-              <div class="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
-                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                ${c.duration}
-              </div>
-            </div>
-            
-            <div class="flex items-center gap-3 mb-2">
-              <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 text-teal-800 font-extrabold flex items-center justify-center text-sm shadow-subtle group-hover:bg-teal-600 group-hover:text-white transition-colors duration-200">
-                ${c.initials}
-              </div>
-              <div>
-                <h3 class="text-base font-bold text-slate-900 leading-tight">${esc(c.name)}, ${c.age} años</h3>
-                <p class="text-xs text-slate-500 font-medium">${esc(c.difficulty)}</p>
-              </div>
-            </div>
+        <div class="relative h-44 w-full overflow-hidden bg-slate-100">
+          <img src="${esc(c.images[0].src)}" alt="${esc(c.name)}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
+          <div class="absolute top-3 left-3">
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-slate-800 shadow-sm">
+              ${esc(c.tag)}
+            </span>
+          </div>
+          <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white">
+            <span class="text-xs font-bold drop-shadow-sm">${esc(c.name)}, ${c.age} años</span>
+            <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-black/40 backdrop-blur-sm flex items-center gap-1">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              ${c.duration}
+            </span>
+          </div>
+        </div>
 
-            <h4 class="text-xs font-semibold text-teal-800 mb-2 leading-snug">${esc(c.title)}</h4>
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-teal-800 mb-1.5 leading-snug">${esc(c.title)}</h4>
             <p class="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4">${esc(c.summary)}</p>
           </div>
 
-          <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+          <div class="pt-3 border-t border-slate-100 flex flex-col gap-3">
             <div class="flex flex-wrap gap-1">
               ${c.modules.map(m => `<span class="text-[10px] font-semibold px-2 py-0.5 rounded border ${MODULES[m].badge}">${MODULES[m].code}</span>`).join("")}
             </div>
@@ -990,8 +988,8 @@ function renderHome() {
               ` : `
                 <span class="text-[11px] text-slate-400 font-medium">Sin intentos</span>
               `}
-              <button data-action="open-case" data-id="${c.id}" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1">
-                ${h ? "Repetir" : "Evaluar"}
+              <button data-action="open-case" data-id="${c.id}" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                ${h ? "Repetir" : "Abrir Caso"}
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -1005,22 +1003,32 @@ function renderHome() {
       <!-- Banner Hero Minimalista -->
       <section class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean relative overflow-hidden">
         <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-teal-50 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="relative z-10 grid md:grid-cols-3 gap-6 items-center">
-          <div class="md:col-span-2 space-y-3">
+        <div class="relative z-10 grid lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-5 space-y-4">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
               <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
-              Certificado de Profesionalidad SSCS0108 · Nivel 2
+              Certificado SSCS0108 · Nivel 2
             </div>
             <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Entrenamiento Clínico y Toma de Decisiones en Ayuda a Domicilio
+              Simulador Clínico y Toma de Decisiones en Ayuda a Domicilio
             </h1>
-            <p class="text-sm text-slate-600 leading-relaxed max-w-xl">
-              Plataforma interactiva para auxiliares y técnicos sociosanitarios. Evalúa riesgos en el hábitat, protocolos de intervención directa y canales de reporte profesional mediante casos reales ramificados.
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Plataforma de entrenamiento sociosanitario. Evalúa factores de riesgo, protocolos de intervención directa, canales de reporte y ética profesional mediante casos reales.
             </p>
           </div>
 
+          <!-- Hero Image Showcase -->
+          <div class="lg:col-span-3 flex justify-center">
+            <div class="relative w-44 h-44 sm:w-48 sm:h-48 rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 bg-slate-50 group">
+              <img src="img/hero-cuidadora.png" alt="Cuidadora profesional SAD" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute bottom-2 left-2 right-2 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-lg text-center text-[10px] font-bold text-teal-800 shadow-sm">
+                Atención Centrada en la Persona
+              </div>
+            </div>
+          </div>
+
           <!-- Tarjeta del Alumno / Métricas -->
-          <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 space-y-4">
+          <div class="lg:col-span-4 bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 space-y-4">
             <div>
               <label for="student-input" class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1.5">Perfil del Estudiante</label>
               <input id="student-input" type="text" value="${esc(store.student)}" placeholder="Nombre del alumno/a" 
