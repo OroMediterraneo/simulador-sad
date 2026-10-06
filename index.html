@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50 antialiased selection:bg-teal-500 selection:text-white">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Simulador clínico e instruccional para auxiliares de Ayuda a Domicilio (SAD - SSCS0108).">
+<title>Simulador SAD · Plataforma Clínica Domiciliaria</title>
+
+<!-- Tailwind CSS v3 CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+        },
+        colors: {
+          brand: {
+            50: '#f0fdfa',
+            100: '#ccfbf1',
+            500: '#14b8a6',
+            600: '#0d9488',
+            700: '#0f766e',
+            900: '#134e4a',
+          }
+        },
+        boxShadow: {
+          'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+          'clean': '0 4px 20px -2px rgba(15, 23, 42, 0.05)',
+          'hover': '0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04)',
+          'float': '0 20px 35px -5px rgba(15, 23, 42, 0.1), 0 10px 10px -5px rgba(15, 23, 42, 0.04)'
+        }
+      }
+    }
+  };
+</script>
+
+<!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.011em; }
+  
+  /* Animaciones minimalistas y fluidas */
+  .fade-in { animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .scale-in { animation: scaleIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scaleIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+  
+  .ring-progress { transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+  
+  /* Scrollbar estilizada y sutil */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* Accesibilidad y focos limpios */
+  button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 2px solid #0d9488;
+    outline-offset: 2px;
+  }
+  
+  /* Tipografía técnica para la base de conocimientos */
+  .kb-prose h4 { font-weight: 700; color: #0f172a; margin-top: 1.25rem; margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .kb-prose ul { list-style-type: none; padding-left: 0; }
+  .kb-prose li { position: relative; padding-left: 1.25rem; margin-bottom: 0.35rem; font-size: 0.875rem; color: #334155; }
+  .kb-prose li::before { content: "•"; position: absolute; left: 0.35rem; color: #0d9488; font-weight: bold; }
+  .kb-prose table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.8125rem; margin-top: 0.75rem; margin-bottom: 1rem; border-radius: 0.75rem; overflow: hidden; border: 1px solid #e2e8f0; }
+  .kb-prose th { background: #f8fafc; font-weight: 600; color: #475569; text-align: left; padding: 0.625rem 0.875rem; border-bottom: 1px solid #e2e8f0; }
+  .kb-prose td { padding: 0.625rem 0.875rem; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: top; }
+  .kb-prose tr:last-child td { border-bottom: none; }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { background: white !important; }
+    .print-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+  }
+</style>
+</head>
+
+<body class="h-full flex flex-col text-slate-800 bg-[#f8fafc]">
+
+<!-- Barra de navegación minimalista superior -->
+<header class="no-print sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+    <button data-action="home" class="flex items-center gap-3 text-left group">
+      <div class="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-sm group-hover:scale-105 transition-transform duration-200">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-slate-900 text-sm sm:text-base tracking-tight">Tu_Heelp · SAD</span>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60">Simulador v2.0</span>
+        </div>
+        <p class="text-[11px] text-slate-500 font-medium">Formación Sociosanitaria · SSCS0108</p>
+      </div>
+    </button>
+
+    <nav class="flex items-center gap-1 sm:gap-2">
+      <button data-action="home" id="nav-btn-home" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-teal-700 bg-teal-50/80">
+        Casos Clínicos
+      </button>
+      <button data-action="kb" id="nav-btn-kb" class="px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+        Base de Conocimiento
+      </button>
+      <div class="h-4 w-px bg-slate-200 mx-1 hidden sm:block"></div>
+      <div id="student-badge" class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span id="student-name-display" class="truncate max-w-[120px]">Auxiliar</span>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- Contenedor dinámico SPA -->
+<main id="app" class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-8" tabindex="-1"></main>
+
+<!-- Pie de página limpio -->
+<footer class="no-print border-t border-slate-200 bg-white mt-auto py-6">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+    <div class="flex items-center gap-2">
+      <span class="font-semibold text-slate-700">Programa Oficial SSCS0108</span>
+      <span>•</span>
+      <span>MF0249_2 (Higiene y Sanitaria)</span>
+      <span>•</span>
+      <span>MF0250_2 (Psicosocial)</span>
+      <span>•</span>
+      <span>MF0251_2 (Hogar)</span>
+    </div>
+    <div class="text-slate-400">
+      Metodología AICP · Atención Centrada en la Persona
+    </div>
+  </div>
+</footer>
+
+<!-- Lightbox Modal para Fotografías del Caso -->
+<div id="lightbox" class="no-print fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm p-4 sm:p-8 flex items-center justify-center transition-opacity" role="dialog" aria-modal="true">
+  <div class="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-float scale-in flex flex-col max-h-[90vh]">
+    <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span id="lightbox-cap" class="text-xs sm:text-sm font-bold text-slate-800">Visualización de Evidencia</span>
+      </div>
+      <button data-action="close-lightbox" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-4 flex-1 overflow-auto flex items-center justify-center bg-slate-900/5">
+      <img id="lightbox-img" src="" alt="" class="max-h-[72vh] w-auto max-w-full object-contain rounded-lg shadow-sm">
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================================
+   1. DEFINICIÓN DE COMPETENCIAS (EJES) Y MÓDULOS
+   ========================================================================= */
+const AXES = {
+  alertas: {
+    label: "Detección de alertas y riesgos",
+    short: "Alertas y Riesgos",
+    color: "rose",
+    badge: "bg-rose-50 text-rose-700 border-rose-200/80",
+    bar: "bg-rose-500",
+    icon: `<svg class="w-4 h-4 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`
+  },
+  protocolo: {
+    label: "Protocolo e intervención directa",
+    short: "Intervención",
+    color: "sky",
+    badge: "bg-sky-50 text-sky-700 border-sky-200/80",
+    bar: "bg-sky-500",
+    icon: `<svg class="w-4 h-4 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`
+  },
+  comunicacion: {
+    label: "Canales de comunicación y reporte",
+    short: "Comunicación",
+    color: "amber",
+    badge: "bg-amber-50 text-amber-700 border-amber-200/80",
+    bar: "bg-amber-500",
+    icon: `<svg class="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`
+  },
+  etica: {
+    label: "Buenas prácticas y deontología",
+    short: "Ética y Límites",
+    color: "emerald",
+    badge: "bg-emerald-50 text-emerald-700 border-emerald-200/80",
+    bar: "bg-emerald-500",
+    icon: `<svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`
+  }
+};
+const AXIS_ORDER = ["alertas", "protocolo", "comunicacion", "etica"];
+
+const MODULES = {
+  "MF0249_2": { code: "MF0249_2", label: "Higiene y Atención Sanitaria", badge: "bg-blue-50 text-blue-700 border-blue-200" },
+  "MF0250_2": { code: "MF0250_2", label: "Apoyo Psicosocial Domiciliario", badge: "bg-violet-50 text-violet-700 border-violet-200" },
+  "MF0251_2": { code: "MF0251_2", label: "Gestión Doméstica y Cocina", badge: "bg-emerald-50 text-emerald-700 border-emerald-200" }
+};
+
+const STORAGE_KEY = "sadSim.v2";
+
+/* =========================================================================
+   2. CASOS CLÍNICOS COMPLETOS DEL PROGRAMA OFICIAL
+   ========================================================================= */
+const CASES = [
+{
+  id: "teresa",
+  initials: "TE",
+  name: "Teresa",
+  age: 83,
+  tag: "Práctica UF0123",
+  title: "Preservación de Autonomía, Entorno Seguro y Aislamiento",
+  modules: ["MF0250_2", "MF0251_2"],
+  difficulty: "Intermedio",
+  duration: "15 min",
+  summary: "Usuaria de 83 años que vive sola, deambula con bastón y presenta olvidos leves. Su hija asume una actitud sobreprotectora que refuerza su sentimiento de incapacidad.",
+  situation: "Acudes al domicilio asignada por el SAD para una intervención de 1,5 horas tres mañanas por semana. El Plan Individualizado (PIAI) marca como prioridad trabajar la autonomía funcional en ABVD, adecuar riesgos en el hogar y vincularla a recursos comunitarios.",
+  clinical: [
+    "Deterioro físico leve: deambulación lenta con bastón inglés.",
+    "Olvidos benignos o puntuales (sin alteración ejecutiva severa).",
+    "Realiza Actividades Básicas de la Vida Diaria (ABVD) con supervisión.",
+    "Verbalización frecuente de indefensión: «Yo ya no valgo para nada, que me lo hagan»."
+  ],
+  social: [
+    "Unidad de convivencia unipersonal (vive sola).",
+    "Hija única que «se lo hace absolutamente todo» durante las visitas dominicales.",
+    "Plaza adjudicada en Centro de Día municipal a la que rehúsa asistir.",
+    "Conoce a vecinos de su rellano pero evita el contacto y salidas al exterior."
+  ],
+  environment: [
+    "Pasillo distribuidor estrecho con alfombras sueltas y mobiliario auxiliar sobresaliente.",
+    "Iluminación deficiente y bombilla fundida en la zona de paso hacia el baño.",
+    "Ausencia total de facilitadores de orientación espacial y temporal (sin reloj ni calendario grande a la vista)."
+  ],
+  images: [
+    { src: "img/caso1/imagen1.jpg", alt: "Pizarra técnica de clase con desglose de necesidades y riesgos de Teresa", caption: "Evidencia 1: Pizarra de valoración diagnóstica (Práctica UF0123)" },
+    { src: "img/caso1/imagen2.jpg", alt: "Material de soporte y registro del caso", caption: "Evidencia 2: Registro de pautas de intervención" }
+  ],
+  refuerzo: {
+    alertas: "Repasa la identificación de barreras físicas y psicosociales: alfombras como causante nº1 de caídas domésticas, e indefensión aprendida provocada por la hiperasistencia familiar.",
+    protocolo: "Consolida las estrategias de 'hacer con' de la Atención Centrada en la Persona: encadenamiento de tareas, instrucciones cortas paso a paso y refuerzo positivo inmediato.",
+    comunicacion: "Recuerda la cadena de transmisión: la auxiliar documenta hechos observables y deriva la intervención psicoeducativa con la hija a Coordinación y Trabajo Social.",
+    etica: "Profundiza en el principio de autodeterminación: el ritmo de la persona usuaria prevalece sobre la prisa organizativa del técnico."
+  },
+  keyPoints: [
+    "Máxima autonomía posible con la mínima ayuda indispensable.",
+    "Adaptar la tarea a la persona (ritmo y capacidades), nunca sustituirla por rapidez.",
+    "El entorno seguro no debe destruir la identidad de la vivienda.",
+    "El refuerzo social positivo (elogio inmediato) es la herramienta más eficaz para consolidar la conducta."
+  ],
+  questions: [
+    {
+      id: "t1", axis: "alertas", type: "multi",
+      prompt: "Durante la evaluación inicial del entorno y el comportamiento de Teresa, ¿cuáles de estos elementos constituyen factores de riesgo críticos?",
+      options: [
+        { text: "Alfombras no fijadas y muebles auxiliares que invaden el ancho del pasillo.", correct: true, feedback: "Correcto. Representan un obstáculo físico evidente de tropiezo en una usuaria con marcha asistida por bastón." },
+        { text: "Iluminación deficiente en la vía de acceso nocturno hacia el inodoro.", correct: true, feedback: "Correcto. La hipovisión adaptativa propia de la edad incrementa exponencialmente el riesgo de caída en penumbra." },
+        { text: "Carencia de referencias temporales visibles (calendario con fecha marcada, reloj de pared).", correct: true, feedback: "Correcto. Favorece la desorientación en personas con fallos mnemónicos incipientes." },
+        { text: "Sobreprotección de la hija sustituyendo sus funciones y rechazo al Centro de Día.", correct: true, feedback: "Correcto. Son riesgos psicosociales que aceleran la atrofia funcional y el aislamiento." },
+        { text: "Uso habitual de bastón de apoyo durante la marcha interior.", correct: false, feedback: "Incorrecto. El producto de apoyo prescrito aporta estabilidad y no es un riesgo en sí mismo." }
+      ],
+      explanation: "El análisis del entorno domiciliario engloba riesgos arquitectónicos, lumínicos, cognitivos y sociofamiliares. La conjunción de obstáculos con sobreprotección genera indefensión aprendida.",
+      ref: "MF0251_2 (Riesgos en el hábitat) y MF0250_2 (Factores de aislamiento)"
+    },
+    {
+      id: "t2", axis: "alertas", type: "single",
+      prompt: "Teresa suspira y te dice: «Hija, déjalo, hazlo tú todo que yo ya no sirvo para nada». ¿Cuál es la lectura profesional correcta según el modelo cognitivo-conductual?",
+      options: [
+        { text: "Es una creencia distorsionada de autoeficacia que retroalimenta la inactividad y la tristeza, agravada por la sustitución que hace su entorno. Requiere escucha, validación y microtareas de éxito.", correct: true, feedback: "Exacto. Se evidencia el círculo pensamiento-emoción-conducta: pensar que es inútil le produce apatía y la lleva al abandono motor." },
+        { text: "Es una manifestación normal y esperable del envejecimiento que no requiere intervención específica.", correct: false, feedback: "Incorrecto. Normalizar la resignación funcional ('es cosa de la edad') es una mala praxis frecuente." },
+        { text: "Evidencia que su grado de dependencia ha empeorado y debemos asumir todas sus tareas domésticas.", correct: false, feedback: "Incorrecto. Asumir sus tareas refuerza la pérdida de habilidades por desuso." },
+        { text: "Es una llamada de atención caprichosa que debe ser ignorada mediante castigo negativo.", correct: false, feedback: "Incorrecto. No es una conducta caprichosa; refleja desmotivación y sufrimiento emocional genuino." }
+      ],
+      explanation: "El temario MF0250_2 establece que el pensamiento influye en la emoción y en la conducta. Si el entorno valida su supuesta incapacidad haciéndolo todo, la persona consolida su rol de dependiente.",
+      ref: "MF0250_2 (Círculo Pensamiento-Emoción-Conducta)"
+    },
+    {
+      id: "t3", axis: "protocolo", type: "branch",
+      prompt: "Momento del aseo matutino. Teresa se sienta al borde de la cama y te pide que la enjabones y vistas por completo. ¿Cuál es tu decisión inmediata?",
+      options: [
+        { text: "Fracciono la tarea: preparo el material accesible, la estimulo a lavarse la cara y el tórax guiándola con instrucciones sencillas y solo asisto en espalda y pies.", score: 1, feedback: "Excelente decisión. Aplicas el principio de Atención Centrada en la Persona: 'hacer con' y no 'hacer por'.",
+          next: {
+            id: "t3a", axis: "protocolo", type: "single",
+            prompt: "Teresa finaliza el lavado del tronco superior con éxito, aunque con lentitud. ¿Cómo refuerzas esta conducta?",
+            options: [
+              { text: "Le brindo refuerzo social positivo inmediato y concreto: «Mire qué bien lo ha hecho hoy usted misma, Teresa» y anoto el avance en el seguimiento.", correct: true, feedback: "Correcto. El refuerzo social inmediato consolida la percepción de competencia y mantiene el logro en el tiempo." },
+              { text: "No digo nada para que no piense que la trato como a una niña.", correct: false, feedback: "Incorrecto. Validar el esfuerzo de un adulto no es infantilizarlo si se realiza con respeto." },
+              { text: "Le digo que lo ha hecho bien pero que mañana debe tardar la mitad de tiempo.", correct: false, feedback: "Incorrecto. Exigir velocidad genera ansiedad y anula el beneficio del refuerzo." }
+            ],
+            explanation: "Las técnicas de modificación de conducta pautan refuerzo social inmediato y contingente a la conducta meta para fijar hábitos de autonomía.",
+            ref: "Dossier Modificación de Conducta (Pautas de Refuerzo Positivo)"
+          }
+        },
+        { text: "Accedo y le realizo yo todo el aseo rápidamente para no hacerla sufrir ni cansarla.", score: 0, feedback: "Decisión desfavorable. Sustituyes capacidades remanentes y perpetúas la atrofia funcional.",
+          next: {
+            id: "t3b", axis: "protocolo", type: "single",
+            prompt: "Tras una semana asumiendo su aseo completo, Teresa rehúsa incluso sujetar la toalla. ¿Qué principio se vulneró y cómo lo subsanas?",
+            options: [
+              { text: "Se vulneró el principio de ayuda mínima necesaria. Debo replantear la intervención aplicando moldeamiento por aproximaciones sucesivas.", correct: true, feedback: "Correcto. Hay que revertir la dependencia adquirida restableciendo metas graduales de colaboración." },
+              { text: "No se vulneró nada; simplemente la usuaria ha aceptado su condición biológica.", correct: false, feedback: "Incorrecto. El retroceso fue inducido por la hiperasistencia del profesional." },
+              { text: "Se vulneró la higiene; la solución es espaciar los baños a dos veces por semana.", correct: false, feedback: "Incorrecto. La frecuencia del aseo no resuelve el déficit de autonomía." }
+            ],
+            explanation: "La sustitución innecesaria genera indefensión aprendida y atrofia neuromuscular acelerada.",
+            ref: "MF0249_2 (UF0119) y Guía PIAI"
+          }
+        },
+        { text: "Le ordeno con firmeza que se levante y se duche sola mientras yo me voy al salón a limpiar.", score: 0.5, feedback: "Decisión arriesgada. Fomentas independencia pero omites la supervisión de seguridad obligatoria en el baño.",
+          next: {
+            id: "t3c", axis: "protocolo", type: "single",
+            prompt: "Escuchas un golpe en el baño: Teresa ha tropezado al intentar alcanzar el champú. ¿Cómo reconduces tu práctica?",
+            options: [
+              { text: "Compruebo su estado físico, aplico primeros auxilios si procede y comprendo que 'supervisión' implica presencia física y facilitación del entorno sin sustitución.", correct: true, feedback: "Exacto. La autonomía guiada requiere acompañamiento activo para mitigar el riesgo de caída." },
+              { text: "Decido que a partir de ahora la ataré preventivamente a la silla de ducha.", correct: false, feedback: "Incorrecto. La sujeción física no autorizada es una vulneración de derechos." },
+              { text: "Le prohíbo volver a ducharse si no está su hija presente.", correct: false, feedback: "Incorrecto. Desatiendes el servicio del SAD y trasladas la carga a la familia." }
+            ],
+            explanation: "Supervisar significa acompañar con proximidad y preparar los apoyos técnicos, manteniendo la seguridad de la persona.",
+            ref: "MF0249_2 (UF0121 Movilizaciones seguras)"
+          }
+        }
+      ],
+      explanation: "El modelo de Atención Integral Centrada en la Persona (AICP) transforma radicalmente el rol del auxiliar: deja de ser mano de obra sustitutiva y pasa a ser entrenador del desempeño de la vida diaria.",
+      ref: "Marco Director PIAI (Estrategias AICP)"
+    },
+    {
+      id: "t4", axis: "comunicacion", type: "single",
+      prompt: "Coincides un martes con la hija de Teresa, quien te recrimina: «¿Por qué la hace tardar tanto en vestirse? ¡Póngale la ropa usted y no la haga sufrir!». ¿Cómo respondes asertivamente?",
+      options: [
+        { text: "Valido su preocupación con empatía, le explico los beneficios de mantener las capacidades motoras de su madre, comparto sus pequeños logros y propongo tratar el tema con la coordinadora del SAD.", correct: true, feedback: "Respuesta impecable. Utilizas comunicación asertiva, escucha activa y canalizas la orientación familiar a través del equipo interdisciplinar." },
+        { text: "Le contesto con enfado que ella está arruinando la rehabilitación de su madre por ignorancia.", correct: false, feedback: "Incorrecto. Es un estilo agresivo que destruye el vínculo terapéutico con la familia." },
+        { text: "Me callo la boca, le pido disculpas y a partir de ese momento la visto yo siempre.", correct: false, feedback: "Incorrecto. Es un estilo pasivo que sacrifica el bienestar de la usuaria para evitar una confrontación momentánea." },
+        { text: "Le digo que las normas de la empresa prohíben que los familiares opinen sobre el servicio.", correct: false, feedback: "Incorrecto. La familia forma parte del núcleo de atención y tiene derecho a ser escuchada y orientada." }
+      ],
+      explanation: "En situaciones de tensión con familiares sobreprotectores se deben aplicar técnicas de asertividad (banco de niebla, escucha activa) y derivar la intervención psicoeducativa a Coordinación y Trabajo Social.",
+      ref: "MF0250_2 (Bloque 3: Comunicación y Relación con la Familia)"
+    },
+    {
+      id: "t5", axis: "etica", type: "single",
+      prompt: "Teresa tarda 25 minutos en elegir y ponerse su blusa. Vas muy justa de tiempo para tu siguiente servicio domiciliario. ¿Cuál es la conducta ética profesional?",
+      options: [
+        { text: "Respeto su ritmo y autodeterminación sin apresurarla; si el tiempo del servicio es estructuralmente insuficiente, lo registro objetivamente y solicito reajuste de cuadrante a coordinación.", correct: true, feedback: "Correcto. El profesional no traslada la presión de gestión al usuario dependiente; respeta sus tiempos y usa los canales organizativos." },
+        { text: "Elijo yo la ropa rápidamente y se la pongo a la fuerza argumentando que se me hace tarde.", correct: false, feedback: "Incorrecto. Vulnera el derecho a la autodeterminación y deshumaniza los cuidados." },
+        { text: "Le digo a la usuaria que por su culpa me van a sancionar en la empresa.", correct: false, feedback: "Incorrecto. Conducta manipuladora y falta grave de deontología profesional." },
+        { text: "Abandono el domicilio dejándola a medio vestir para no llegar tarde al siguiente usuario.", correct: false, feedback: "Incorrecto. Constituye abandono negligente de la persona asistida." }
+      ],
+      explanation: "La deontología profesional del auxiliar SAD exige respetar la dignidad y la capacidad de elección de la persona usuaria, gestionando las dificultades operativas de agenda mediante comunicación formal con la coordinación.",
+      ref: "MF0250_2 (Deontología y Ética del Cuidado)"
+    }
+  ]
+},
+
+/* ---------------------------------------------------------------- CASO 2 */
+{
+  id: "manuel",
+  initials: "MA",
+  name: "Manuel",
+  age: 79,
+  tag: "UF0120 · Farmacología y Nutrición",
+  title: "Manejo Glucémico, Límites Profesionales y Cadena Alimentaria",
+  modules: ["MF0249_2", "MF0251_2"],
+  difficulty: "Intermedio",
+  duration: "15 min",
+  summary: "Usuario de 79 años con diabetes tratada con insulina. Se presenta con sudoración fría, temblor y desorientación tras haberse administrado la dosis matutina sin haber desayunado.",
+  situation: "Llegas al domicilio a las 11:00 h para tareas de higiene, elaboración de comidas y apoyo doméstico. Su cónyuge Rosa te informa alarmada de que Manuel 'se puso su inyección' a las 09:00 pero se negó a tomar el desayuno. Lo encuentras sentado en el sillón con palidez acusada, sudoroso y lenguaje incoherente.",
+  clinical: [
+    "Diabetes Mellitus Tipo 2 con pauta de insulina subcutánea (autoadministrada).",
+    "Hipertensión arterial con pastillero semanal supervisado por el CAP.",
+    "Neuropatía periférica distal (pérdida acusada de sensibilidad térmica y táctil en miembros inferiores).",
+    "Signos agudos en visita: diaforesis fría, temblores en manos, desorientación y reactividad verbal."
+  ],
+  social: [
+    "Unidad convivencial de pareja: vive con Rosa (82 años), quien presenta gonartrosis severa y movilidad reducida.",
+    "Hijo único no conviviente con visitas quincenales.",
+    "Dispone de terminal fijo y pulsador de teleasistencia, pero lo mantiene en un cajón."
+  ],
+  environment: [
+    "Vivienda en segunda planta sin ascensor.",
+    "Frigorífico con acumulación de productos lácteos caducados y alimentos precocinados mal conservados.",
+    "Uso de zapatillas de paño abiertas por detrás y suela resbaladiza."
+  ],
+  images: [
+    { src: "img/caso2/imagen1.jpg", alt: "Zona de conservación de alimentos y despensa del caso de Manuel", caption: "Evidencia 1: Inspección de frigorífico y cadena de frío" },
+    { src: "img/caso2/imagen2.jpg", alt: "Supervisión de medicación pautada en pastillero", caption: "Evidencia 2: Pastillero dosificador y prescripciones" }
+  ],
+  refuerzo: {
+    alertas: "Memoriza la clínica cardinal de la hipoglucemia: palidez, sudoración fría profusa, temblor fino distal y confusión mental aguda tras insulina sin carbohidratos.",
+    protocolo: "Secuencia de actuación: si está consciente y deglute, aportar hidratos simples (azúcar/zumo); si pierde consciencia, nada por boca, Posición Lateral de Seguridad (PLS) y llamada al 112.",
+    comunicacion: "Establece con nitidez la diferencia entre Nivel 1 (112 en inconsciencia) y Nivel 2 (reporte a Enfermería de Atención Primaria tras estabilización).",
+    etica: "Límite infranqueable de competencias (Nivel 3 prohibido): la administración de insulina subcutánea está vetada al auxiliar SAD; es exclusiva de enfermería o el usuario capacitado."
+  },
+  keyPoints: [
+    "La administración de insulina es una competencia de Nivel 3 (prohibida y reservada a sanidad).",
+    "Hipoglucemia consciente con deglución conservada: regla de carbohidratos de absorción rápida.",
+    "Inconsciente: PLS, jamás introducir nada en la boca y activación del 112.",
+    "En la cocina: sistema FIFO (lo que entra primero, sale primero) y estricto control de fechas de caducidad."
+  ],
+  questions: [
+    {
+      id: "m1", axis: "alertas", type: "single",
+      prompt: "Ante el cuadro de Manuel (insulina administrada sin ingesta posterior, sudor frío, palidez y lenguaje incoherente), ¿cuál es el diagnóstico situacional de urgencia que debe asumir la auxiliar?",
+      options: [
+        { text: "Presunción de hipoglucemia severa: cuadro clínico potencialmente crítico que requiere protocolo de actuación y vigilancia inmediata.", correct: true, feedback: "Correcto. El desequilibrio insulina-glucosa genera un déficit energético neuronal que demanda estabilización urgente." },
+        { text: "Cuadro de insolación pasajera por la calefacción de la casa; basta con abrir la ventana.", correct: false, feedback: "Incorrecto. Ignorar los antecedentes de insulina y los signos autonómicos pone en peligro la vida del usuario." },
+        { text: "Sospecha de ictus isquémico súbito con activación inmediata de código ictus como única medida.", correct: false, feedback: "Incorrecto. Aunque la confusión puede confundir, la clínica autonómica con antecedente directo de ayuno post-insulina apunta inequívocamente a glucopenia." },
+        { text: "Demencia sobrevenida por la edad que requiere una interconsulta a largo plazo.", correct: false, feedback: "Incorrecto. Es un evento metabólico agudo, no un proceso neurodegenerativo crónico." }
+      ],
+      explanation: "El auxiliar observa el contexto clínico: paciente diabético + insulina + ayuno prolongado + diaforesis/temblor = hipoglucemia inminente.",
+      ref: "MF0249_2 (UF0120) y Algoritmos de Alerta Clínica"
+    },
+    {
+      id: "m2", axis: "protocolo", type: "branch",
+      prompt: "Manuel está semi-sentado en el sillón, responde a tu voz y conserva el reflejo deglutorio. ¿Cuál es tu primera intervención terapéutica autorizada?",
+      options: [
+        { text: "Suministro de inmediato un vaso de agua con azúcar disuelta o zumo comercial, manteniéndolo incorporado y vigilando la ingesta trago a trago.", score: 1, feedback: "Actuación clínica óptima. Persona consciente que traga: aporte de monosacáridos/disacáridos para elevar la glucemia.",
+          next: {
+            id: "m2a", axis: "comunicacion", type: "single",
+            prompt: "A los 15 minutos Manuel recupera la coloración y el lenguaje coherente. ¿Cómo gestionas el reporte?",
+            options: [
+              { text: "Aseguro que coma carbohidratos complejos (pan/galletas), registro detalladamente el episodio con constantes y llamo a la enfermera de enlace del CAP y a coordinación del SAD.", correct: true, feedback: "Correcto. Es una alerta clínica subaguda (Nivel 2) que requiere reevaluación médica de la pauta insulínica." },
+              { text: "No informo a nadie para no alarmar a su hijo, ya que Manuel se siente bien.", correct: false, feedback: "Incorrecto. El encubrimiento de eventos metabólicos graves es una negligencia que impide reajustar dosis." },
+              { text: "Llamo al 112 con ambulancia medicalizada con sirenas.", correct: false, feedback: "Incorrecto. Una vez resuelto el episodio de forma estable, la derivación se realiza por circuito ordinario de Atención Primaria." }
+            ],
+            explanation: "Tras revertir el pico hipoglucémico, es imperativo consolidar con hidratos lentos y notificar al equipo sanitario para revisión del tratamiento.",
+            ref: "MF0249_2 (UF0120) y Guía PIAI (Alertas Nivel 2)"
+          }
+        },
+        { text: "Le administro otra dosis de insulina creyendo que tiene una subida de azúcar.", score: 0, feedback: "Error crítico con riesgo vital. Duplicar la insulina en glucopenia induce coma hipoglucémico irreversible.",
+          next: {
+            id: "m2b", axis: "protocolo", type: "single",
+            prompt: "Manuel pierde el conocimiento por completo y queda flácido. ¿Qué maniobra de soporte vital ejecutas de inmediato?",
+            options: [
+              { text: "Activo de inmediato el 112, coloco a Manuel en Posición Lateral de Seguridad (PLS), no introduzco nada en su boca y controlo pulso y ventilación.", correct: true, feedback: "Imprescindible. Ante inconsciencia: permeabilizar vía aérea, prevenir aspiración con PLS y alerta máxima." },
+              { text: "Le meto terrones de azúcar secos en la lengua e intento que beba agua tumbado.", correct: false, feedback: "Incorrecto y letal. En coma existe pérdida de reflejos protectores; causaría broncoaspiración y asfixia." },
+              { text: "Le doy bofetadas suaves y espero 20 minutos a que despierte.", correct: false, feedback: "Incorrecto. La hipoxia cerebral requiere intervención médica urgente." }
+            ],
+            explanation: "Nunca se administran alimentos ni líquidos por vía oral a una persona con nivel de conciencia abolido.",
+            ref: "MF0249_2 (UF0121 Primeros Auxilios)"
+          }
+        },
+        { text: "Lo acuesto en la cama, bajo la persiana para que duerma y me marcho a la cocina a fregar.", score: 0, feedback: "Negligencia grave por omisión de socorro. Dejas sin monitorización a un usuario en riesgo de coma.",
+          next: {
+            id: "m2c", axis: "alertas", type: "single",
+            prompt: "Vuelves a los 30 minutos y Rosa te grita que Manuel no responde ni abre los ojos. ¿Qué principio formativo has infringido?",
+            options: [
+              { text: "El principio de observación continuada y detección de signos de alarma. El empeoramiento debió ser atajado y comunicado en el minuto uno.", correct: true, feedback: "Exacto. La auxiliar debe monitorizar en directo la evolución de cualquier descompensación clínica." },
+              { text: "El principio de limpieza de la cocina; debí terminar antes las tareas domésticas.", correct: false, feedback: "Incorrecto. La salud y la vida del usuario tienen prioridad absoluta sobre el orden doméstico." },
+              { text: "Ninguno; el usuario ya estaba mayor y era previsible que se durmiera.", correct: false, feedback: "Incorrecto. Es un comentario negligente e inadmisible." }
+            ],
+            explanation: "La observación centinela del auxiliar SAD es la primera línea de defensa para prevenir ingresos hospitalarios evitables.",
+            ref: "MF0249_2 (Observación en el Domicilio)"
+          }
+        }
+      ],
+      explanation: "Ante sospecha fundamentada de hipoglucemia con reflejo de deglución íntegro, el protocolo dicta ingesta inmediata de hidratos de absorción rápida.",
+      ref: "MF0249_2 (Administración de alimentos y primeros auxilios)"
+    },
+    {
+      id: "m3", axis: "etica", type: "single",
+      prompt: "Rosa te pide con angustia: «Niña, ponle tú la inyección de insulina en la tripa a Manuel, que a mí me tiemblan los dedos y él hoy no acierta». ¿Cuál es tu respuesta profesional?",
+      options: [
+        { text: "Me niego con empatía y serenidad, aclarándole que la administración de inyectables es un acto sanitario que el auxiliar tiene prohibido por ley, y llamo de inmediato a Coordinación o al CAP para que acuda Enfermería.", correct: true, feedback: "Perfecto. Identificas una tarea de Nivel 3 (restringida y reservada a profesionales colegiados), garantizando la seguridad jurídica y clínica." },
+        { text: "Se la aplico yo con cuidado porque he visto en vídeos cómo se pellizca la piel y se pincha.", correct: false, feedback: "Incorrecto. Constituye un presunto delito de intrusismo profesional y una negligencia gravísima." },
+        { text: "Le digo a Rosa que no se preocupe y que se salte la dosis de insulina de hoy y de mañana.", correct: false, feedback: "Incorrecto. Un auxiliar jamás modifica ni suspende prescripciones terapéuticas pautadas." },
+        { text: "Le obligo a Manuel sujetándole la mano con fuerza para que se pinche él aunque tiemble.", correct: false, feedback: "Incorrecto. Práctica violenta que puede causar desgarros tisulares o dosificación errónea." }
+      ],
+      explanation: "El Real Decreto 1379/2008 y el convenio marco delimitan taxativamente que las vías inyectables (subcutánea, intramuscular, intravenosa) son exclusivas de enfermería o del propio usuario capacitado.",
+      ref: "Marco Director PIAI (Delimitación Competencial: Tareas Nivel 3)"
+    },
+    {
+      id: "m4", axis: "protocolo", type: "single",
+      prompt: "Al revisar la cocina de Manuel encuentras yogures vencidos hace 20 días, un caldo sin tapar con moho y botes de lejía guardados junto al aceite de oliva. ¿Qué medidas aplicas según la UF0125/UF0126?",
+      options: [
+        { text: "Consiento con la familia la retirada y desecho de los productos en mal estado, separo físicamente los químicos de los víveres en armarios distintos e implanto el criterio FIFO (lo primero que caduca, delante).", correct: true, feedback: "Excelente. Cumples la normativa de higiene alimentaria, previenes contaminaciones cruzadas y aseguras la gestión de riesgos domésticos." },
+        { text: "Huelo el caldo y si no huele agrio lo hiervo para la comida de Manuel de hoy.", correct: false, feedback: "Incorrecto. El aspecto y el olor no garantizan inocuidad microbiológica en caldos colonizados por toxinas." },
+        { text: "Tiro toda la comida de la casa a la basura sin dar explicaciones ni pedir consentimiento.", correct: false, feedback: "Incorrecto. Vulnera el respeto al patrimonio de la unidad familiar; se debe acordar y explicar la causa." },
+        { text: "Dejo la lejía junto a los alimentos porque están cerrados y no pasa nada.", correct: false, feedback: "Incorrecto. Riesgo grave de intoxicación química por confusión visual o vertido accidental." }
+      ],
+      explanation: "La higiene alimentaria en personas vulnerables previene toxiinfecciones graves. Los productos de limpieza deben estar estrictamente segregados de los alimentos.",
+      ref: "MF0251_2 (UF0125 y UF0126 Higiene alimentaria y orden del hábitat)"
+    }
+  ]
+},
+
+/* ---------------------------------------------------------------- CASO 3 */
+{
+  id: "carmen",
+  initials: "CA",
+  name: "Carmen",
+  age: 86,
+  tag: "UF0119 · UF0122 · Humanitude",
+  title: "Deterioro Cognitivo Severo, Integridad Cutánea y Claudicación Familiar",
+  modules: ["MF0249_2", "MF0250_2"],
+  difficulty: "Avanzado",
+  duration: "18 min",
+  summary: "Usuaria de 86 años con enfermedad de Alzheimer en fase moderada-avanzada e inmovilismo. Durante la higiene detectas un eritema no blanqueable en el sacro, hematomas simétricos en extremidades y un cuidador al borde del colapso.",
+  situation: "Prestas 1 hora de servicio matutino para higiene completa en cama y movilización. Al desvestir a Carmen, observas en el sacro una placa eritematosa bien delimitada que no blanquea al presionar con el dedo. En los antebrazos presenta equimosis en forma de presiones digitales. Su hijo Javier se muestra hostil, desaseado, sin dormir y gritando ante cualquier requerimiento de su madre.",
+  clinical: [
+    "Demencia tipo Alzheimer en estadio GDS 6 (pérdida de lenguaje propositivo y apraxia).",
+    "Incontinencia doble (urinaria y fecal); uso de absorbente anatómico de alta capacidad.",
+    "Braden: 11 puntos (Alto riesgo de Úlceras por Presión).",
+    "Piel sacra con eritema no blanqueable (UPP Categoría I). Hematomas violáceos en cara interna de ambos brazos."
+  ],
+  social: [
+    "Cuidador principal único: hijo Javier (58 años), en paro de larga duración y aislamiento social.",
+    "Zarit estimado en Javier: >60 puntos (Sobrecarga intensa / riesgo de claudicación).",
+    "Carmen presenta conductas reactivas de defensa (hipertonía, llanto, apartar las manos) durante el aseo."
+  ],
+  environment: [
+    "Cama de matrimonio convencional de baja altura sin articulación ni barandillas homologadas.",
+    "Falta de colchón dinámico de aire alternante (SEMP); colchón tradicional de muelles con zonas vencidas.",
+    "Hedor amoniacal persistente en el dormitorio."
+  ],
+  images: [
+    { src: "img/caso3/imagen1.jpg", alt: "Dormitorio de Carmen con cama tradicional y entorno de reposo", caption: "Evidencia 1: Inspección biomecánica del entorno de descanso" },
+    { src: "img/caso3/imagen2.jpg", alt: "Materiales y absorbentes empleados en el aseo", caption: "Evidencia 2: Dispositivos de absorción y cuidado dérmico" }
+  ],
+  refuerzo: {
+    alertas: "Diferencia con precisión el eritema fisiológico del eritema no blanqueable (UPP Grado I): este último implica isquemia capilar tisular profunda y no admite demora.",
+    protocolo: "Aplica los 4 pilares de la metodología Humanitude: mirada de frente y a la altura de los ojos, palabra suave continua previa al tacto, contacto firme pero tierno (abrazo/fijación amplia) y verticalidad asistida.",
+    comunicacion: "El abordaje del cuidador claudicante requiere escucha activa y ventilación sin juicio de valor. La sospecha de maltrato pasivo por negligencia se canaliza con urgencia a Trabajo Social.",
+    etica: "Regla de oro ante lesiones cutáneas: NUNCA masajear con alcoholes ni frotar prominencias óseas enrojecidas; destruye la microcirculación restante."
+  },
+  keyPoints: [
+    "Eritema que no palidece = daño tisular Grado I: descompresión inmediata, SEMP y aviso a enfermería.",
+    "Nunca friccionar con alcoholes ni realizar masajes vigorosos en prominencias óseas.",
+    "Ante agitación en demencia: desescalada ambiental y Humanitude; la contención física es el último recurso.",
+    "El agotamiento del cuidador (Zarit elevado) es una emergencia social que precede al maltrato institucional o doméstico."
+  ],
+  questions: [
+    {
+      id: "c1", axis: "alertas", type: "single",
+      prompt: "Al inspeccionar la zona sacra de Carmen observas un enrojecimiento persistente. Presionas con el dedo durante tres segundos y la piel permanece roja al retirar la presión. ¿Cuál es el significado clínico exacto?",
+      options: [
+        { text: "Es una Úlcera por Presión (UPP) en Categoría/Estadio I. Existe isquemia tisular y daño microvascular que requiere descarga inmediata de presión y aviso a Enfermería.", correct: true, feedback: "Correcto. El signo del eritema no blanqueable define el primer estadio de lesión celular por presión mantenida." },
+        { text: "Es un simple roce higiénico sin trascendencia; aplicando colonia o alcohol se solucionará.", correct: false, feedback: "Incorrecto y peligroso. El alcohol reseca, destruye lípidos epidérmicos y precipita la apertura de la herida." },
+        { text: "Es una quemadura química por la orina que únicamente requiere poner dos pañales juntos.", correct: false, feedback: "Incorrecto. El uso de pañales superpuestos genera bultos de presión adicionales y empeora la maceración." },
+        { text: "Indica que la usuaria debe permanecer bocabajo todo el día sin moverse.", correct: false, feedback: "Incorrecto. El posicionamiento debe ser protocolizado y rotatorio cada 2-3 horas." }
+      ],
+      explanation: "Según la taxonomía internacional (GNEAUPP / CEAPAT), el eritema no blanqueable en prominencias óseas es el marcador temprano de una UPP Grado I.",
+      ref: "MF0249_2 (UF0119 Cuidados de la piel y prevención de UPP)"
+    },
+    {
+      id: "c2", axis: "protocolo", type: "single",
+      prompt: "Ante el eritema sacro Grado I y la puntuación de Braden de 11, ¿cuál es el plan de intervención física que la auxiliar debe ejecutar y proponer?",
+      options: [
+        { text: "Higiene con agua tibia y jabón neutro, secado meticuloso por contacto (toques sin frotar), hidratación con ácidos grasos hiperoxigenados si están pautados, cambios posturales pautados cada 2-3 h y tramitación urgente de SEMP (colchón de aire alternante).", correct: true, feedback: "Plan excelente y de máxima evidencia técnica. Aborda la presión capilar, el control de la humedad y la protección de la barrera cutánea." },
+        { text: "Masajear enérgicamente el sacro con alcohol de romero dos veces al día para reactivar la sangre.", correct: false, feedback: "Incorrecto. Mala praxis que produce cizallamiento y necrosis acelerada de la dermis." },
+        { text: "Colocar un flotador o rodete de goma bajo el sacro para que quede 'en el aire'.", correct: false, feedback: "Incorrecto. Los flotadores concentran una presión arterial masiva en los bordes y están contraindicados." },
+        { text: "Dejar a Carmen sentada en el sillón 12 horas seguidas para que la cama no la roce.", correct: false, feedback: "Incorrecto. La sedestación sin descarga transmite toda la masa corporal a las tuberosidades isquiáticas, acelerando las UPP." }
+      ],
+      explanation: "El estándar preventivo prohíbe el masaje en prominencias y exige superficies de redistribución de presión (SEMP ISO 04 33 06) y descompresión tisular programada.",
+      ref: "Catálogo CEAPAT e ISO 9999 (Código 04 33 06)"
+    },
+    {
+      id: "c3", axis: "protocolo", type: "branch",
+      prompt: "Al iniciar la higiene Carmen entra en pánico, te aparta violentamente las manos y comienza a chillar con angustia. Javier entra al cuarto gritando: «¡Cállate ya, vieja pesada!». ¿Cómo abordas esta crisis conductual?",
+      options: [
+        { text: "Pido a Javier con serenidad que me permita un momento a solas, detengo el aseo, aplico la técnica Humanitude (contacto visual dulce, tono pausado, caricia en hombro) y espero a que su nivel de alerta disminuya antes de reanudar.", score: 1, feedback: "Intervención modélica de desescalada no farmacológica. Disminuyes la estimulación agresiva y restableces la seguridad básica.",
+          next: {
+            id: "c3a", axis: "comunicacion", type: "single",
+            prompt: "Carmen se tranquiliza y permite que la asees. Al salir, Javier llora desconsoladamente en el pasillo diciendo: «No puedo más, me voy a volver loco». ¿Cuál es tu respuesta?",
+            options: [
+              { text: "Escucho su desahogo sin juzgar, reconozco la dureza extrema de su labor de cuidado e informo de inmediato a la Coordinadora y a Trabajo Social para activar recursos de respiro o estancia diurna.", correct: true, feedback: "Conducta profesional impecable. Detectas claudicación inminente y canalizas la solución por las vías del sistema de dependencia." },
+              { text: "Le recrimino que un buen hijo nunca le grita a su madre enferma.", correct: false, feedback: "Incorrecto. Destruye al cuidador al límite y puede desencadenar un estallido de violencia." },
+              { text: "Le recomiendo pastillas tranquilizantes que a mí me van bien para los nervios.", correct: false, feedback: "Incorrecto. Intrusismo farmacológico y falta muy grave." }
+            ],
+            explanation: "El síndrome del cuidador quemado (Burnout/Zarit elevado) requiere intervención psicosocial y derivación comunitaria urgente.",
+            ref: "MF0250_2 (Cuidar al Cuidador y Escala de Zarit)"
+          }
+        },
+        { text: "Inmovilizo a Carmen sujetándole fuertemente las muñecas contra la cama y termino el aseo a toda prisa.", score: 0, feedback: "Práctica inaceptable. La contención mecánica agresiva y no prescrita genera trauma psicológico y riesgo de fracturas.",
+          next: {
+            id: "c3b", axis: "etica", type: "single",
+            prompt: "Tras forzarla, observas una nueva equimosis en su muñeca izquierda. ¿Qué implicaciones legales tiene tu acción?",
+            options: [
+              { text: "Constituye un presunto trato negligente y uso indebido de sujeción física, susceptible de sanción disciplinaria y responsabilidad legal.", correct: true, feedback: "Exacto. La contención jamás se aplica por comodidad del profesional ni sin indicación clínica expresa." },
+              { text: "Ninguna, porque el aseo es una tarea obligatoria y el fin justifica los medios.", correct: false, feedback: "Incorrecto. Los derechos fundamentales y la integridad física prevalecen siempre sobre la rutina de higiene." },
+              { text: "La culpa es de la usuaria por mostrar resistencia activa.", correct: false, feedback: "Incorrecto. Una persona con Alzheimer carece de voluntariedad agresiva; reacciona por miedo y confusión." }
+            ],
+            explanation: "La normativa reguladora de centros y servicios sociosanitarios prohíbe las restricciones físicas arbitrarias.",
+            ref: "MF0250_2 (Manejo de Conductas Desadaptativas y Marco Legal)"
+          }
+        }
+      ],
+      explanation: "El modelo Humanitude y las técnicas de desescalada de crisis priorizan la seguridad afectiva, la reducción de ruidos y el respeto sensorial en demencias avanzadas.",
+      ref: "MF0250_2 (Técnicas de Humanización de la Ayuda y Crisis)"
+    },
+    {
+      id: "c4", axis: "comunicacion", type: "single",
+      prompt: "Al observar los hematomas en ambos brazos de Carmen, sospechas que pueden proceder de agarres violentos por parte de Javier durante situaciones de agotamiento. ¿Cuál es el cauce de comunicación legalmente obligatorio?",
+      options: [
+        { text: "Describo los hallazgos en la hoja de incidencias con datos estrictamente objetivos (coloración, tamaño en centímetros, localización anatómica, fecha y hora) y emito comunicación prioritaria a la Coordinadora del SAD y Trabajadora Social.", correct: true, feedback: "Correcto. El auxiliar es el radar de detección: documenta objetivamente sin juzgar y activa el protocolo de protección a la persona vulnerable." },
+        { text: "Encaro a Javier y le amenazo con denunciarlo a la policía si no trata bien a su madre.", correct: false, feedback: "Incorrecto. Pones en riesgo inmediato la integridad de la usuaria y dinamitas el seguimiento del caso." },
+        { text: "No anoto nada porque no tengo fotos ni he presenciado los golpes directamente.", correct: false, feedback: "Incorrecto. La omisión del registro de lesiones sospechosas vulnera el deber de tutela y custodia profesional." },
+        { text: "Lo publico en un foro de redes sociales pidiendo consejo vecinal.", correct: false, feedback: "Incorrecto. Violación flagrante de la Ley de Protección de Datos (RGPD) y del secreto profesional." }
+      ],
+      explanation: "El registro del auxiliar debe basarse en hechos empíricos y derivarse formalmente al equipo social para que valore la activación del protocolo de sospecha de maltrato doméstico.",
+      ref: "MF0250_2 (Observación objetiva vs. subjetiva y Registro formal)"
+    }
+  ]
+},
+
+/* ---------------------------------------------------------------- CASO 4 */
+{
+  id: "josep",
+  initials: "JO",
+  name: "Josep",
+  age: 74,
+  tag: "UF0121 · Disfagia · Biomecánica",
+  title: "Secuelas de ACV: Transferencias Seguras, Disfagia y SAAC",
+  modules: ["MF0249_2", "MF0250_2"],
+  difficulty: "Avanzado",
+  duration: "18 min",
+  summary: "Usuario de 74 años con hemiparesia derecha y afasia motora secundaria a ictus isquémico. Presenta disfagia a líquidos con pauta de espesante y riesgo severo de aspiración.",
+  situation: "Prestas apoyo en levantamiento, transferencias, desayuno y estimulación cognitiva. Su esposa Montse está agotada. Durante el desayuno Josep tose con fuerza al beber agua, presenta carraspeo persistente y voz húmeda. Además, los frenos de su silla de ruedas tienen holgura.",
+  clinical: [
+    "Ictus isquémico capsular en hemisferio izquierdo (hemiparesia facio-braquio-crural derecha).",
+    "Afasia de Broca (afasia motora con preservación relativa de la comprensión verbal).",
+    "Disfagia orofaríngea a líquidos claros; prescripción médica de espesante comercial (textura néctar).",
+    "Capacidad motora del hemicuerpo izquierdo conservada y con buena fuerza prensil."
+  ],
+  social: [
+    "Unidad familiar de 2 miembros: Josep y su cónyuge Montse (70 años), quien asume toda la gestión burocrática y cuidado diario.",
+    "Josep muestra frustración y golpes en la mesa al no poder articular palabras con fluidez.",
+    "Pendiente de resolución del grado del SAAD y prescripción de productos ortoprotésicos."
+  ],
+  environment: [
+    "Cuarto de baño con bañera convencional de reborde alto y suelo de gres sin tratamiento antideslizante.",
+    "Alfombra colocada junto a la cama entre el somier y la silla de ruedas.",
+    "Silla de ruedas autopropulsable con zapatas de freno desgastadas que no bloquean con solidez la rueda derecha."
+  ],
+  images: [
+    { src: "img/caso4/imagen1.jpg", alt: "Disposición de la silla de ruedas y ayudas técnicas junto a la cama", caption: "Evidencia 1: Espacio de transferencia biomecánica y frenos" },
+    { src: "img/caso4/imagen2.jpg", alt: "Tablero de comunicación mediante pictogramas para afasia", caption: "Evidencia 2: Tablero de pictogramas SAAC para estimulación" }
+  ],
+  refuerzo: {
+    alertas: "Disfagia de alto riesgo: tos durante o inmediatamente después de la ingesta, carraspeo, atragantamiento silente y alteración del timbre de voz (voz con gorgoteo o húmeda).",
+    protocolo: "Biomecánica de transferencia en hemiparesia: situar la superficie receptora orientada hacia el lado sano (izquierdo), pies firmes en suelo, rodillas flexionadas, espalda neutra del auxiliar y bloqueo absoluto de ruedas.",
+    comunicacion: "Afasia expresiva: utilizar Sistemas Aumentativos y Alternativos de Comunicación (SAAC) de baja tecnología (tableros de pictogramas), preguntas cerradas de sí/no y tiempo de latencia sin interrumpir.",
+    etica: "Frontera en gestiones: apoyar a Montse organizando carpetas y explicando formularios sin suplantar firmas ni gestionar números de cuenta o tarjetas bancarias."
+  },
+  keyPoints: [
+    "Transferencia en hemiparesia: siempre se facilita el avance y apoyo sobre el lado sano.",
+    "Disfagia: respetar la textura pautada por logopedia/médico; jamás saltarse el espesante.",
+    "Signos FAST (cara caída, brazo sin fuerza, habla alterada) ante sospecha de nuevo ictus = 112 inmediato.",
+    "El SAAC devuelve la voz y el poder de decisión al usuario con afasia."
+  ],
+  questions: [
+    {
+      id: "j1", axis: "protocolo", type: "single",
+      prompt: "Vas a realizar la transferencia de Josep de la cama a la silla de ruedas. La cama está en plano, tiene una alfombra al pie y la silla presenta el freno derecho destensado. ¿Cuál es el procedimiento técnico riguroso?",
+      options: [
+        { text: "Retiro la alfombra, oriento la silla a 45º hacia su lado no afecto (izquierdo), bloqueo los frenos asegurando la rueda contra una pared firme si es preciso, calzo a Josep con zapatillas cerradas y le permito impulsarse con su extremidad sana mientras guío su tronco.", correct: true, feedback: "Ejecución técnica perfecta. Eliminas riesgos de resbalón, utilizas el lado con tono motor y proteges la ergonomía de ambos." },
+        { text: "Tiro fuertemente de su brazo derecho paralizado para levantarlo en un solo tirón rápido.", correct: false, feedback: "Error gravísimo. La tracción del miembro pléjico causa subluxación de la articulación escapulohumeral y dolor crónico incapacitante." },
+        { text: "Realizo la maniobra sobre la alfombra para que el suelo esté más blando en caso de que caigamos.", correct: false, feedback: "Incorrecto. La alfombra arrugada es un fulcro de inestabilidad y tropiezo." },
+        { text: "Le digo a su esposa Montse que cargue ella con la espalda de Josep mientras yo empujo.", correct: false, feedback: "Incorrecto. Trasladas sobreesfuerzo lesivo a una cuidadora mayor con sobrecarga osteomuscular." }
+      ],
+      explanation: "Las normas de movilización en hemiparesia exigen traccionar siempre desde la cintura pélvica o escapular, nunca de los miembros paréticos, aprovechando el apoyo del lado no afecto.",
+      ref: "MF0249_2 (UF0121 Movilización y transferencias)"
+    },
+    {
+      id: "j2", axis: "alertas", type: "single",
+      prompt: "Durante el desayuno, Josep bebe un sorbo de café con leche sin espesar que le preparó su mujer y presenta accesos repetidos de tos espástica, ojos llorosos y voz apagada y húmeda. ¿Qué complicación médica se está desencadenando?",
+      options: [
+        { text: "Episodio de disfagia orofaríngea con penetración o aspiración a vía aérea, con riesgo inminente de neumonía aspirativa.", correct: true, feedback: "Exacto. La penetración del bolo líquido en la tráquea provoca tos reactiva y alteración fonatoria por presencia de secreciones sobre cuerdas vocales." },
+        { text: "Una alergia alimentaria repentina al café soluble que requiere antihistamínicos.", correct: false, feedback: "Incorrecto. La clínica mecánica tras deglución de líquido fino en ACV responde al fallo neuromuscular de cierre de la epiglotis." },
+        { text: "Un catarro común propio de la época que no guarda relación con la comida.", correct: false, feedback: "Incorrecto. Ignorar la disfagia post-ictus es la causa principal de ingresos por sepsis respiratoria en ancianos." },
+        { text: "Una rabieta psicológica por no querer desayunar.", correct: false, feedback: "Incorrecto. La voz húmeda y la tos refleja son signos clínicos neurofisiológicos, no voluntarios." }
+      ],
+      explanation: "La disfagia en patología neurológica compromete la seguridad y la eficacia de la deglución. La tos y la voz húmeda post-ingesta son signos centinela de aspiración traqueobronquial.",
+      ref: "MF0249_2 (UF0120 Alimentación adaptada y disfagia)"
+    },
+    {
+      id: "j3", axis: "protocolo", type: "single",
+      prompt: "¿Cuál es la medida correctiva y adaptativa para garantizar la hidratación y nutrición seguras de Josep?",
+      options: [
+        { text: "Suspender de inmediato los líquidos libres, incorporar el espesante comercial a la textura néctar prescrita, mantener a Josep con el tronco a 90º durante y 30 min tras la comida, y utilizar vaso con escotadura nasal (ISO 15 09 16).", correct: true, feedback: "Actuación clínica y técnica excelente. Garantizas la viscosidad adaptada, la flexión cervical de seguridad y evitas el decúbito precoz." },
+        { text: "Darle los líquidos con pajita para que beban acostado en la cama.", correct: false, feedback: "Incorrecto y letal. La pajita proyecta el líquido con gran velocidad hacia la faringe, multiplicando el riesgo de asfixia en disfagia." },
+        { text: "Retirar todos los líquidos de su dieta y no darle nada de beber nunca más.", correct: false, feedback: "Incorrecto. Provocaría deshidratación severa y fallo renal; la disfagia se trata modificando viscosidades, no privando de agua." },
+        { text: "Darle trozos de carne duros para que entrene la mandíbula.", correct: false, feedback: "Incorrecto. Los sólidos secos o desmenuzables agravan la dispersión faríngea." }
+      ],
+      explanation: "El Catálogo CEAPAT recoge los productos de apoyo para alimentación (vasos adaptados ISO 15 09 16) que evitan la hiperextensión del cuello al deglutir.",
+      ref: "CEAPAT (UNE-EN ISO 9999 Código 15 09 16) y MF0249_2"
+    },
+    {
+      id: "j4", axis: "etica", type: "single",
+      prompt: "Josep quiere elegir qué ropa ponerse pero se bloquea vocalmente y golpea la mesa angustiado. ¿Cómo intervienes desde el marco de la UF0124 (Comunicación)?",
+      options: [
+        { text: "Valido su malestar, le transmito calma, le presento el tablero de pictogramas (SAAC) para que señale las prendas deseadas con su mano izquierda, y formulo preguntas con respuestas binarias (sí/no).", correct: true, feedback: "Intervención comunicativa impecable. Respetas su cognición conservada, reduces la ansiedad y devuelves la autodeterminación mediante apoyos alternativos." },
+        { text: "Le alzo la voz hablándole como a un bebé de guardería y elijo yo la ropa sin consultarle.", correct: false, feedback: "Incorrecto. La afasia de Broca afecta la expresión motora, no la inteligencia de un adulto que merece un trato digno." },
+        { text: "Le digo que hasta que no hable bien y pida las cosas por favor no le saco de la habitación.", correct: false, feedback: "Incorrecto. Actitud punitiva y desprecio inadmisible hacia una secuela neurológica involuntaria." },
+        { text: "Finjo que le entiendo diciéndole que sí a todo aunque no sepa qué pide.", correct: false, feedback: "Incorrecto. Genera frustración y desconexión en el usuario." }
+      ],
+      explanation: "Los Sistemas Aumentativos y Alternativos de Comunicación (SAAC) permiten a personas con trastornos del lenguaje oral expresar necesidades y deseos sin perder su condición adulta.",
+      ref: "MF0250_2 (UF0124 Sistemas Alternativos de Comunicación)"
+    }
+  ]
+}
+];
+
+/* =========================================================================
+   3. BASE DE CONOCIMIENTO TÉCNICA DEL TEMARIO
+   ========================================================================= */
+const KB = [
+  {
+    id: "principios",
+    icon: "🧭",
+    title: "Principios de Atención Centrada en la Persona (AICP)",
+    html: `
+      <h4>Filosofía del Cuidado en el Hogar</h4>
+      <ul>
+        <li><b>Hacer CON la persona, no POR la persona:</b> La suplencia pasiva acelera el desuso muscular y la pérdida de praxias motoras. El rol del auxiliar es el de un entrenador y facilitador del entorno.</li>
+        <li><b>Máxima autonomía con la mínima ayuda indispensable:</b> Toda capacidad residual es un capital funcional y biológico que debe preservarse.</li>
+        <li><b>Ciclo continuo del servicio:</b> Observar rigurosamente → Detectar variaciones clínicas o psicosociales → Adaptar microtareas cotidianas → Registrar con objetividad → Coordinar con el equipo multidisciplinar.</li>
+        <li><b>Preservación de la identidad:</b> Un domicilio adaptado y seguro debe seguir pareciendo el hogar de la persona, respetando su historia vital y objetos significativos.</li>
+      </ul>
+      <h4>Modelos Teóricos Comparados</h4>
+      <table>
+        <thead><tr><th>Modelo</th><th>Enfoque Central</th><th>Papel del Usuario</th></tr></thead>
+        <tbody>
+          <tr><td><b>Biomédico</b></td><td>Tratamiento exclusivo de la patología y el síntoma.</td><td>Receptor pasivo del tratamiento.</td></tr>
+          <tr><td><b>Biopsicosocial</b></td><td>Integración de factores biológicos, emocionales y comunitarios.</td><td>Persona en su entorno social.</td></tr>
+          <tr><td><b>AICP</b></td><td>La biografía, preferencias y valores guían cada plan.</td><td>Sujeto activo con capacidad de decisión.</td></tr>
+          <tr><td><b>Humanitude</b></td><td>Cuidado basado en 4 pilares: Mirada, Palabra, Tacto y Verticalidad.</td><td>Ser humano reconocido en su dignidad.</td></tr>
+        </tbody>
+      </table>`
+  },
+  {
+    id: "competencias",
+    icon: "🛡️",
+    title: "Delimitación Profesional y Marco Legal del Auxiliar",
+    html: `
+      <h4>Niveles de Intervención (RD 1379/2008 · Convenio Marco)</h4>
+      <table>
+        <thead><tr><th>Nivel</th><th>Carácter</th><th>Tareas Incluidas</th><th>Límites Estrictos</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Nivel 1</b></td>
+            <td>Autónomo</td>
+            <td>Higiene y aseo personal, hidratación cutánea preventiva, cambios posturales, movilización biomecánica, transferencias con grúa, apoyo en ingesta oral, cocina, compras y acompañamiento.</td>
+            <td>No requiere supervisión facultativa directa.</td>
+          </tr>
+          <tr>
+            <td><b>Nivel 2</b></td>
+            <td>Delegado con Protocolo</td>
+            <td>Toma no diagnóstica de constantes, supervisión de deglución con espesantes prescritos, vaciado de bolsas recolectoras de orina en circuito cerrado, facilitación del pastillero semanal dosificado por enfermería.</td>
+            <td>Exige prescripción o pauta escrita previa del equipo de salud.</td>
+          </tr>
+          <tr>
+            <td><b>Nivel 3</b></td>
+            <td><b>Restringido / Prohibido</b></td>
+            <td>Administración de inyectables (insulina, heparina), dosificación primaria desde blísteres, curas de UPP Grado II-IV, sondajes vesicales/nasogástricos, tracciones articulares lesionales.</td>
+            <td><b>Prohibido por ley al auxiliar SAD.</b> Reservado a profesionales de medicina o enfermería.</td>
+          </tr>
+        </tbody>
+      </table>`
+  },
+  {
+    id: "alertas",
+    icon: "🚨",
+    title: "Algoritmos de Alerta Clínica y Escalado Interprofesional",
+    html: `
+      <h4>Matriz de Criticidad Domiciliaria</h4>
+      <table>
+        <thead><tr><th>Criticidad</th><th>Signos Centinela Observados</th><th>Acción del Auxiliar</th><th>Destinatario</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Nivel 1 · Emergencia Vital</b></td>
+            <td>Pérdida súbita de conciencia, signos FAST de ictus (asimetría facial, pérdida de fuerza en brazo, lenguaje incoherente), dolor torácico opresivo, parada cardiorrespiratoria, asfixia por atragantamiento.</td>
+            <td>Interrupción inmediata de tareas, comprobación de vía aérea/pulso y activación prioritaria del canal 112 y teleasistencia.</td>
+            <td><b>112 + Teleasistencia</b> (y posterior aviso a Coordinación).</td>
+          </tr>
+          <tr>
+            <td><b>Nivel 2 · Clínico Subagudo (<24-48 h)</b></td>
+            <td>Eritema sacro no blanqueable (UPP I), episodios de disfagia aguda con tos persistente, sospecha de infección del tracto urinario, retención fecal >4 días, hipoglucemia resuelta.</td>
+            <td>Medidas de soporte preventivo en domicilio, registro exhaustivo de parámetros y emisión de volante/reporte clínico.</td>
+            <td><b>Enfermería y Medicina del CAP</b> + Coordinación SAD.</td>
+          </tr>
+          <tr>
+            <td><b>Nivel 3 · Social y PIAI (5-10 días)</b></td>
+            <td>Pérdida progresiva en Índice de Barthel, caídas reiteradas sin fractura (Tinetti <19), agotamiento del cuidador familiar (Zarit >55), necesidad de adaptación de baño.</td>
+            <td>Elaboración de informe de seguimiento funcional y propuesta técnica de revisión de grado o productos de apoyo.</td>
+            <td><b>Trabajadora Social</b> + Coordinador SAD.</td>
+          </tr>
+        </tbody>
+      </table>`
+  },
+  {
+    id: "escalas",
+    icon: "📊",
+    title: "Escalas Clínicas Estandarizadas de Valoración",
+    html: `
+      <h4>Instrumentos Clave del PIAI</h4>
+      <table>
+        <thead><tr><th>Escala</th><th>Dominio Evaluado</th><th>Puntuación</th><th>Puntos de Corte Operativos</th></tr></thead>
+        <tbody>
+          <tr><td><b>Índice de Barthel</b></td><td>Actividades Básicas (ABVD)</td><td>0 - 100</td><td>&lt;20: Total · 20-55: Severa · 60-95: Moderada/Leve · 100: Independiente</td></tr>
+          <tr><td><b>Lawton y Brody</b></td><td>Actividades Instrumentales (AIVD)</td><td>0 - 8</td><td>0-1: Total · 2-3: Severa · 4-7: Moderada · 8: Independiente</td></tr>
+          <tr><td><b>Tinetti</b></td><td>Marcha y Equilibrio Estático/Dinámico</td><td>0 - 28</td><td>&lt;19: <b>Alto riesgo de caídas</b> · 19-23: Riesgo moderado · 24-28: Bajo</td></tr>
+          <tr><td><b>Braden</b></td><td>Vulnerabilidad ante Úlceras (UPP)</td><td>6 - 23</td><td>&le;12: <b>Alto riesgo</b> · 13-14: Moderado · 15-18: Bajo riesgo</td></tr>
+          <tr><td><b>Test de Pfeiffer</b></td><td>Estado cognitivo (errores cometidos)</td><td>0 - 10</td><td>0-2: Normal · 3-4: Leve · 5-7: Moderado · 8-10: Severo</td></tr>
+          <tr><td><b>Escala de Zarit</b></td><td>Sobrecarga del Cuidador Informal</td><td>22 - 110</td><td>&le;46: Sin sobrecarga · 47-55: Sobrecarga leve · &ge;56: <b>Claudicación</b></td></tr>
+        </tbody>
+      </table>`
+  },
+  {
+    id: "ayudas",
+    icon: "🦽",
+    title: "Catálogo CEAPAT y Productos de Apoyo (ISO 9999)",
+    html: `
+      <h4>Prescripción Técnica de Productos de Apoyo</h4>
+      <table>
+        <thead><tr><th>Código ISO</th><th>Denominación CEAPAT</th><th>Indicación Clínica</th><th>Función Adaptativa</th></tr></thead>
+        <tbody>
+          <tr><td><b>04 33 06</b></td><td>Superficies especiales (SEMP)</td><td>Braden &le; 14 / Encamamiento</td><td>Colchones de aire alternante para redistribuir presiones y prevenir isquemia.</td></tr>
+          <tr><td><b>09 12 03</b></td><td>Alzas elevadoras de inodoro</td><td>Debilidad de cuádriceps / Barthel baño &le; 5</td><td>Eleva la taza 10-15 cm facilitando incorporarse sin sobrecargar rodillas ni cadera.</td></tr>
+          <tr><td><b>09 33 03</b></td><td>Sillas de ducha / tablas de bañera</td><td>Tinetti equilibrio &le; 10</td><td>Permite el aseo corporal completo en sedestación estable eliminando resbalones.</td></tr>
+          <tr><td><b>12 06 06</b></td><td>Andadores con sistema de frenos</td><td>Marcha vacilante / Tinetti &lt; 19</td><td>Ensancha la base de sustentación corporal y aporta descanso en paradas.</td></tr>
+          <tr><td><b>15 09 16</b></td><td>Vasos con escotadura nasal</td><td>Disfagia leve / Rigidez cervical</td><td>Permite beber sin extender la cabeza hacia atrás, protegiendo la laringe.</td></tr>
+          <tr><td><b>22 27 06</b></td><td>Colgantes de teleasistencia fija/móvil</td><td>Vivienda unipersonal / Aislamiento</td><td>Canal manos libres bidireccional 24h con sensores opcionales de caída y humo.</td></tr>
+        </tbody>
+      </table>`
+  }
+];
+
+/* =========================================================================
+   4. ESTADO GLOBAL DE LA APLICACIÓN
+   ========================================================================= */
+const state = {
+  view: "home",
+  filter: "all",
+  caseId: null,
+  kbOpen: "principios",
+  quiz: null,
+  lastResult: null
+};
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { student: "Auxiliar SAD", history: {} }; }
+  catch (e) { return { student: "Auxiliar SAD", history: {} }; }
+}
+function saveStore(storeData) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(storeData)); } catch (e) {}
+}
+let store = loadStore();
+
+/* =========================================================================
+   5. HELPERS Y UTILIDADES DE RENDERIZADO
+   ========================================================================= */
+const app = document.getElementById("app");
+const LETTERS = ["A", "B", "C", "D", "E", "F"];
+
+function esc(str) {
+  return String(str).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function getCase(id) { return CASES.find(c => c.id === id); }
+function pct(n) { return Math.round(n * 100); }
+
+function levelFor(p) {
+  if (p >= 85) return { label: "Nivel Competente", badge: "bg-emerald-50 text-emerald-700 border-emerald-200", color: "#10b981" };
+  if (p >= 60) return { label: "En Desarrollo", badge: "bg-amber-50 text-amber-700 border-amber-200", color: "#f59e0b" };
+  return { label: "Necesita Refuerzo", badge: "bg-rose-50 text-rose-700 border-rose-200", color: "#f43f5e" };
+}
+
+function setView(view) {
+  state.view = view;
+  renderNav();
+  render();
+  window.scrollTo({ top: 0 });
+  app.focus({ preventScroll: true });
+}
+
+function renderNav() {
+  const btnHome = document.getElementById("nav-btn-home");
+  const btnKb = document.getElementById("nav-btn-kb");
+  const studentBadge = document.getElementById("student-badge");
+  const studentNameDisplay = document.getElementById("student-name-display");
+
+  if (state.view === "home") {
+    btnHome.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-teal-700 bg-teal-50 border border-teal-200/60";
+    btnKb.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+  } else if (state.view === "kb") {
+    btnHome.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+    btnKb.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-teal-700 bg-teal-50 border border-teal-200/60";
+  } else {
+    btnHome.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+    btnKb.className = "px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+  }
+
+  if (store.student) {
+    studentBadge.classList.remove("hidden");
+    studentNameDisplay.textContent = store.student;
+  }
+}
+
+function renderImageSlot(img, idx) {
+  return `
+    <div class="group relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 aspect-[4/3] flex flex-col justify-end transition hover:shadow-clean">
+      <img src="${esc(img.src)}" alt="${esc(img.alt)}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+      <div class="hidden absolute inset-0 bg-slate-50 flex flex-col items-center justify-center p-4 text-center">
+        <svg class="w-8 h-8 text-slate-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <span class="text-xs font-semibold text-slate-500">${esc(img.caption)}</span>
+        <span class="text-[10px] text-slate-400 mt-0.5 font-mono">(${esc(img.src)})</span>
+      </div>
+      <div class="relative z-10 p-2.5 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent flex items-center justify-between text-white">
+        <span class="text-xs font-medium truncate max-w-[80%]">${esc(img.caption)}</span>
+        <button type="button" data-action="zoom" data-src="${esc(img.src)}" data-cap="${esc(img.caption)}" class="p-1 rounded-md bg-white/20 hover:bg-white/30 backdrop-blur-sm transition" title="Ampliar imagen">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+        </button>
+      </div>
+    </div>`;
+}
+
+/* =========================================================================
+   6. VISTAS: HOME / PORTAL DE CASOS
+   ========================================================================= */
+function renderHome() {
+  const hist = store.history;
+  const doneCases = CASES.filter(c => hist[c.id]);
+  const avg = doneCases.length ? Math.round(doneCases.reduce((s, c) => s + hist[c.id].best, 0) / doneCases.length) : null;
+  const filtered = CASES.filter(c => state.filter === "all" || c.modules.includes(state.filter));
+
+  const filterButtons = [
+    ["all", "Todos los Casos"],
+    ["MF0249_2", "MF0249_2 · Sanitaria"],
+    ["MF0250_2", "MF0250_2 · Psicosocial"],
+    ["MF0251_2", "MF0251_2 · Hogar y Cocina"]
+  ].map(([k, lbl]) => `
+    <button data-action="filter" data-filter="${k}" class="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition ${state.filter === k ? "bg-slate-900 text-white border-slate-900 shadow-sm" : "bg-white text-slate-600 border-slate-200/90 hover:bg-slate-50"}">
+      ${esc(lbl)}
+    </button>
+  `).join("");
+
+  const caseCards = filtered.map(c => {
+    const h = hist[c.id];
+    const lv = h ? levelFor(h.best) : null;
+    return `
+      <article class="bg-white rounded-2xl border border-slate-200/80 shadow-clean hover:shadow-hover hover:border-slate-300 transition-all duration-200 flex flex-col overflow-hidden group">
+        <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700">
+                ${esc(c.tag)}
+              </span>
+              <div class="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                ${c.duration}
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 text-teal-800 font-extrabold flex items-center justify-center text-sm shadow-subtle group-hover:bg-teal-600 group-hover:text-white transition-colors duration-200">
+                ${c.initials}
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-900 leading-tight">${esc(c.name)}, ${c.age} años</h3>
+                <p class="text-xs text-slate-500 font-medium">${esc(c.difficulty)}</p>
+              </div>
+            </div>
+
+            <h4 class="text-xs font-semibold text-teal-800 mb-2 leading-snug">${esc(c.title)}</h4>
+            <p class="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-4">${esc(c.summary)}</p>
+          </div>
+
+          <div class="pt-4 border-t border-slate-100 flex flex-col gap-3">
+            <div class="flex flex-wrap gap-1">
+              ${c.modules.map(m => `<span class="text-[10px] font-semibold px-2 py-0.5 rounded border ${MODULES[m].badge}">${MODULES[m].code}</span>`).join("")}
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              ${h ? `
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-extrabold text-slate-900">${h.best}%</span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${lv.badge}">${lv.label}</span>
+                </div>
+              ` : `
+                <span class="text-[11px] text-slate-400 font-medium">Sin intentos</span>
+              `}
+              <button data-action="open-case" data-id="${c.id}" class="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-teal-700 text-white text-xs font-bold transition flex items-center gap-1">
+                ${h ? "Repetir" : "Evaluar"}
+                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>`;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="fade-in space-y-8">
+      <!-- Banner Hero Minimalista -->
+      <section class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean relative overflow-hidden">
+        <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-teal-50 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 grid md:grid-cols-3 gap-6 items-center">
+          <div class="md:col-span-2 space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+              Certificado de Profesionalidad SSCS0108 · Nivel 2
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              Entrenamiento Clínico y Toma de Decisiones en Ayuda a Domicilio
+            </h1>
+            <p class="text-sm text-slate-600 leading-relaxed max-w-xl">
+              Plataforma interactiva para auxiliares y técnicos sociosanitarios. Evalúa riesgos en el hábitat, protocolos de intervención directa y canales de reporte profesional mediante casos reales ramificados.
+            </p>
+          </div>
+
+          <!-- Tarjeta del Alumno / Métricas -->
+          <div class="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-5 space-y-4">
+            <div>
+              <label for="student-input" class="text-xs font-bold text-slate-600 uppercase tracking-wider block mb-1.5">Perfil del Estudiante</label>
+              <input id="student-input" type="text" value="${esc(store.student)}" placeholder="Nombre del alumno/a" 
+                class="w-full text-xs sm:text-sm font-semibold bg-white border border-slate-200 rounded-xl px-3 py-2 text-slate-800 placeholder-slate-400 focus:bg-white transition">
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-center pt-1">
+              <div class="bg-white p-2.5 rounded-xl border border-slate-200/60 shadow-subtle">
+                <span class="block text-lg font-extrabold text-slate-900">${doneCases.length}/${CASES.length}</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase">Casos listos</span>
+              </div>
+              <div class="bg-white p-2.5 rounded-xl border border-slate-200/60 shadow-subtle">
+                <span class="block text-lg font-extrabold text-teal-700">${avg !== null ? avg + "%" : "—"}</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase">Media global</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Selector y Listado de Casos -->
+      <section class="space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-extrabold text-slate-900 tracking-tight">Expedientes de Casos Domiciliarios</h2>
+            <p class="text-xs text-slate-500">Selecciona una situación de práctica profesional para iniciar la simulación.</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-1.5">
+            ${filterButtons}
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          ${caseCards}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+/* =========================================================================
+   7. VISTAS: EXPEDIENTE CLÍNICO DEL CASO (FICHA TÉCNICA)
+   ========================================================================= */
+function renderCase() {
+  const c = getCase(state.caseId);
+  const h = store.history[c.id];
+
+  app.innerHTML = `
+    <div class="fade-in max-w-4xl mx-auto space-y-6">
+      <!-- Breadcrumb y navegación -->
+      <div class="flex items-center justify-between text-xs">
+        <button data-action="home" class="font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Volver a expedientes
+        </button>
+        <span class="font-mono text-slate-400">ID: SAD-${c.id.toUpperCase()}-2026</span>
+      </div>
+
+      <!-- Cabecera del Caso -->
+      <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-teal-600 text-white font-black text-xl flex items-center justify-center shadow-subtle">
+              ${c.initials}
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">${esc(c.name)}</h1>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">${c.age} años</span>
+              </div>
+              <p class="text-xs text-slate-500 font-medium mt-0.5">${esc(c.title)} · <span class="text-teal-700 font-semibold">${esc(c.tag)}</span></p>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <button data-action="start" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center justify-center gap-2">
+              Iniciar Cuestionario
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Síntesis de Situación del PIAI -->
+        <div class="py-5">
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Prescripción y Contexto Inicial (PIAI)</h2>
+          <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/60 font-medium">
+            ${esc(c.situation)}
+          </p>
+        </div>
+
+        <!-- Triada de Dimensiones: Clínica, Social, Hábitat -->
+        <div class="grid md:grid-cols-3 gap-4 pt-2">
+          <div class="p-4 rounded-xl border border-blue-100 bg-blue-50/40">
+            <div class="flex items-center gap-2 mb-2 text-blue-900 font-bold text-xs uppercase tracking-wider">
+              <svg class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              Dimensión Clínica
+            </div>
+            <ul class="text-xs text-slate-700 space-y-1.5">
+              ${c.clinical.map(i => `<li class="flex items-start gap-1.5"><span class="text-blue-500 font-bold">•</span><span>${esc(i)}</span></li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-xl border border-violet-100 bg-violet-50/40">
+            <div class="flex items-center gap-2 mb-2 text-violet-900 font-bold text-xs uppercase tracking-wider">
+              <svg class="w-4 h-4 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              Esfera Sociofamiliar
+            </div>
+            <ul class="text-xs text-slate-700 space-y-1.5">
+              ${c.social.map(i => `<li class="flex items-start gap-1.5"><span class="text-violet-500 font-bold">•</span><span>${esc(i)}</span></li>`).join("")}
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/40">
+            <div class="flex items-center gap-2 mb-2 text-emerald-900 font-bold text-xs uppercase tracking-wider">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+              Hábitat y Vivienda
+            </div>
+            <ul class="text-xs text-slate-700 space-y-1.5">
+              ${c.environment.map(i => `<li class="flex items-start gap-1.5"><span class="text-emerald-500 font-bold">•</span><span>${esc(i)}</span></li>`).join("")}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Evidencias Visuales Adjuntas -->
+        <div class="pt-6 border-t border-slate-100 mt-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-teal-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Evidencias Documentales y Fotográficas del Domicilio
+            </h3>
+            <span class="text-[11px] text-slate-400 font-medium">Click en la lupa para ampliar</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            ${c.images.map((img, idx) => renderImageSlot(img, idx)).join("")}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================================
+   8. VISTAS: MOTOR DEL CUESTIONARIO Y DECISIONES RAMIFICADAS
+   ========================================================================= */
+function startQuiz() {
+  const c = getCase(state.caseId);
+  state.quiz = {
+    caseId: c.id,
+    queue: c.questions.map(q => Object.assign({}, q)),
+    idx: 0,
+    results: [],
+    selected: [],
+    answered: false,
+    order: null
+  };
+  prepareQuestion();
+  setView("quiz");
+}
+
+function prepareQuestion() {
+  const qz = state.quiz;
+  const q = qz.queue[qz.idx];
+  qz.order = shuffle(q.options.map((_, i) => i));
+  qz.selected = [];
+  qz.answered = false;
+}
+
+function currentQ() { return state.quiz.queue[state.quiz.idx]; }
+
+function renderQuiz() {
+  const qz = state.quiz;
+  const c = getCase(qz.caseId);
+  const q = currentQ();
+  const total = qz.queue.length;
+  const progress = Math.round((qz.idx / total) * 100);
+  const res = qz.answered ? qz.results[qz.results.length - 1] : null;
+  const axis = AXES[q.axis];
+
+  const optionsHtml = qz.order.map((optIdx, pos) => {
+    const o = q.options[optIdx];
+    const isSel = qz.selected.includes(optIdx);
+    const letter = LETTERS[pos];
+
+    if (!qz.answered) {
+      return `
+        <button type="button" data-action="select-opt" data-i="${optIdx}"
+          class="w-full text-left p-4 rounded-xl border transition-all duration-150 flex items-start gap-3.5 group ${
+            isSel ? "bg-teal-50/80 border-teal-600 shadow-subtle ring-1 ring-teal-600" : "bg-white border-slate-200/90 hover:border-slate-300 hover:bg-slate-50/50"
+          }">
+          <span class="w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
+            isSel ? "bg-teal-600 text-white" : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"
+          }">
+            ${letter}
+          </span>
+          <span class="text-xs sm:text-sm font-medium text-slate-800 leading-relaxed pt-0.5">${esc(o.text)}</span>
+        </button>`;
+    }
+
+    // Estado corregido
+    let badgeBorder = "border-slate-200 bg-white opacity-60";
+    let statusBadge = "";
+    
+    if (q.type === "branch") {
+      if (o.score === 1) {
+        badgeBorder = "border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Decisión Óptima (1.0 pt)</span>`;
+      } else if (o.score > 0) {
+        badgeBorder = "border-amber-500 bg-amber-50/60 ring-1 ring-amber-500";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Parcial / Mejorable (0.5 pt)</span>`;
+      } else {
+        badgeBorder = "border-rose-400 bg-rose-50/50";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">Inadecuada (0.0 pt)</span>`;
+      }
+    } else {
+      if (o.correct && isSel) {
+        badgeBorder = "border-emerald-500 bg-emerald-50/60 ring-1 ring-emerald-500";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Acierto</span>`;
+      } else if (o.correct && !isSel) {
+        badgeBorder = "border-emerald-400 border-dashed bg-emerald-50/30";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">Opción correcta no marcada</span>`;
+      } else if (!o.correct && isSel) {
+        badgeBorder = "border-rose-500 bg-rose-50/60 ring-1 ring-rose-500";
+        statusBadge = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">Respuesta Incorrecta</span>`;
+      }
+    }
+
+    return `
+      <div class="p-4 rounded-xl border ${badgeBorder} transition-all space-y-2">
+        <div class="flex items-start gap-3">
+          <span class="w-6 h-6 rounded-lg text-xs font-bold flex items-center justify-center shrink-0 bg-white border border-slate-300 text-slate-700">
+            ${letter}
+          </span>
+          <div class="flex-1 space-y-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <span class="text-xs sm:text-sm font-semibold text-slate-900 leading-snug">${esc(o.text)}</span>
+              ${statusBadge}
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed pt-1">${esc(o.feedback)}</p>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+
+  const isLast = qz.idx === qz.queue.length - 1;
+
+  app.innerHTML = `
+    <div class="fade-in max-w-3xl mx-auto space-y-6">
+      <!-- Barra superior de estado -->
+      <div class="flex items-center justify-between text-xs text-slate-500">
+        <button data-action="quit" class="hover:text-slate-800 font-semibold flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          Abandonar
+        </button>
+        <span class="font-bold text-slate-700">Caso ${esc(c.name)} · Pregunta ${qz.idx + 1} de ${total}</span>
+        <span class="font-mono">${progress}% completado</span>
+      </div>
+
+      <!-- Barra de progreso lineal sutil -->
+      <div class="h-1.5 w-full bg-slate-200/80 rounded-full overflow-hidden">
+        <div class="h-full bg-teal-600 transition-all duration-300 ease-out" style="width: ${progress}%;"></div>
+      </div>
+
+      <!-- Tarjeta Principal de la Pregunta -->
+      <article class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean space-y-5">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-bold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${axis.badge}">
+            ${axis.icon}
+            ${axis.short}
+          </span>
+          ${q.type === "branch" ? `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-violet-50 text-violet-700 border border-violet-200">🔀 Decisión Ramificada</span>` : ""}
+          ${q.type === "multi" ? `<span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-200">☑ Selección Múltiple</span>` : ""}
+        </div>
+
+        <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-snug">
+          ${esc(q.prompt)}
+        </h2>
+
+        <div class="space-y-2.5 pt-1">
+          ${optionsHtml}
+        </div>
+
+        <!-- Feedback Pedagógico Expandido tras Respuesta -->
+        ${qz.answered ? `
+          <div class="scale-in pt-4 border-t border-slate-100 space-y-3">
+            <div class="p-4 rounded-xl bg-teal-50/70 border border-teal-200/80 space-y-1.5">
+              <span class="text-[11px] font-extrabold uppercase tracking-wider text-teal-800 block">Justificación Formativa Oficial</span>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${esc(q.explanation)}</p>
+              ${q.ref ? `<p class="text-[11px] text-teal-700 font-medium font-mono pt-1">Referencia Temario: ${esc(q.ref)}</p>` : ""}
+            </div>
+          </div>
+        ` : ""}
+
+        <!-- Controles de Envío y Avance -->
+        <div class="pt-4 flex items-center justify-between border-t border-slate-100">
+          <span class="text-[11px] text-slate-400 hidden sm:inline">Usa los números del teclado o click</span>
+          <div>
+            ${!qz.answered ? `
+              <button data-action="confirm" ${qz.selected.length ? "" : "disabled"} 
+                class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white transition ${
+                  qz.selected.length ? "bg-teal-600 hover:bg-teal-700 shadow-sm" : "bg-slate-300 cursor-not-allowed"
+                }">
+                Confirmar Elección
+              </button>
+            ` : `
+              <button data-action="next" id="btn-next" class="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-teal-700 shadow-sm transition flex items-center gap-1.5">
+                ${isLast ? "Ver Informe Final" : "Continuar"}
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+            `}
+          </div>
+        </div>
+      </article>
+    </div>
+  `;
+
+  if (qz.answered) {
+    const nextBtn = document.getElementById("btn-next");
+    if (nextBtn) nextBtn.focus({ preventScroll: true });
+  }
+}
+
+function selectOption(i) {
+  const qz = state.quiz;
+  if (qz.answered) return;
+  const q = currentQ();
+  if (q.type === "multi") {
+    qz.selected = qz.selected.includes(i) ? qz.selected.filter(x => x !== i) : qz.selected.concat(i);
+  } else {
+    qz.selected = [i];
+  }
+  renderQuiz();
+}
+
+function confirmAnswer() {
+  const qz = state.quiz;
+  if (qz.answered || !qz.selected.length) return;
+  const q = currentQ();
+  let score = 0;
+
+  if (q.type === "multi") {
+    const totalCorrect = q.options.filter(o => o.correct).length;
+    let hits = 0, wrong = 0;
+    qz.selected.forEach(i => { if (q.options[i].correct) hits++; else wrong++; });
+    score = Math.max(0, (hits - wrong) / totalCorrect);
+  } else if (q.type === "branch") {
+    const chosen = q.options[qz.selected[0]];
+    score = chosen.score;
+    if (chosen.next) {
+      qz.queue.splice(qz.idx + 1, 0, Object.assign({}, chosen.next, { isFollowUp: true, axis: chosen.next.axis || q.axis }));
+    }
+  } else {
+    score = q.options[qz.selected[0]].correct ? 1 : 0;
+  }
+
+  qz.results.push({ q, score, selected: qz.selected.slice() });
+  qz.answered = true;
+  renderQuiz();
+}
+
+function nextQuestion() {
+  const qz = state.quiz;
+  if (qz.idx < qz.queue.length - 1) {
+    qz.idx++;
+    prepareQuestion();
+    renderQuiz();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    finishQuiz();
+  }
+}
+
+/* =========================================================================
+   9. VISTAS: INFORME DE DESEMPEÑO Y ANÁLISIS DE COMPETENCIAS
+   ========================================================================= */
+function finishQuiz() {
+  const qz = state.quiz;
+  const axes = {};
+  AXIS_ORDER.forEach(a => axes[a] = { earned: 0, possible: 0 });
+  qz.results.forEach(r => { axes[r.q.axis].earned += r.score; axes[r.q.axis].possible += 1; });
+
+  const earned = qz.results.reduce((s, r) => s + r.score, 0);
+  const total = qz.results.length;
+  const scorePct = Math.round((earned / total) * 100);
+
+  const axisPct = {};
+  AXIS_ORDER.forEach(a => axisPct[a] = axes[a].possible ? Math.round((axes[a].earned / axes[a].possible) * 100) : null);
+
+  const finalResult = {
+    caseId: qz.caseId,
+    score: scorePct,
+    earned,
+    total,
+    axes,
+    axisPct,
+    results: qz.results,
+    date: new Date()
+  };
+
+  state.lastResult = finalResult;
+
+  const prev = store.history[finalResult.caseId];
+  store.history[finalResult.caseId] = {
+    best: prev ? Math.max(prev.best, scorePct) : scorePct,
+    last: scorePct,
+    attempts: prev ? prev.attempts + 1 : 1,
+    date: finalResult.date.toISOString(),
+    axisPct
+  };
+  saveStore(store);
+
+  setView("results");
+}
+
+function renderResults() {
+  const r = state.lastResult;
+  const c = getCase(r.caseId);
+  const lv = levelFor(r.score);
+  const R = 44, C = 2 * Math.PI * R;
+  const strokeOffset = C * (1 - r.score / 100);
+
+  const axisBreakdown = AXIS_ORDER.map(a => {
+    const p = r.axisPct[a];
+    if (p === null) return "";
+    const ax = AXES[a];
+    const alv = levelFor(p);
+    return `
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-xs font-semibold">
+          <span class="flex items-center gap-1.5 text-slate-800">
+            ${ax.icon}
+            ${ax.label}
+          </span>
+          <span class="text-slate-900 font-bold">${p}%</span>
+        </div>
+        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <div class="h-full ${ax.bar} rounded-full transition-all duration-700" style="width: ${p}%;"></div>
+        </div>
+        <div class="flex justify-between text-[10px] text-slate-400 font-medium">
+          <span>${r.axes[a].earned.toFixed(1).replace(".0", "")} / ${r.axes[a].possible} pts</span>
+          <span class="${p >= 85 ? "text-emerald-700 font-bold" : p >= 60 ? "text-amber-700 font-bold" : "text-rose-700 font-bold"}">${alv.label}</span>
+        </div>
+      </div>`;
+  }).join("");
+
+  const weakAxes = AXIS_ORDER.filter(a => r.axisPct[a] !== null && r.axisPct[a] < 85);
+
+  app.innerHTML = `
+    <div class="fade-in max-w-4xl mx-auto space-y-6">
+      <div class="no-print flex items-center justify-between text-xs">
+        <button data-action="home" class="font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Volver al catálogo
+        </button>
+        <div class="flex items-center gap-2">
+          <button data-action="print" class="px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition">
+            🖨 Imprimir Informe
+          </button>
+          <button data-action="retry" class="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-semibold transition">
+            ↻ Reintentar Caso
+          </button>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Puntuación Principal -->
+      <section class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean print-card">
+        <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-slate-100">
+          <div class="relative w-28 h-28 shrink-0">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="${R}" stroke="#f1f5f9" stroke-width="8" fill="none"/>
+              <circle cx="50" cy="50" r="${R}" stroke="${lv.color}" stroke-width="8" stroke-linecap="round" fill="none"
+                stroke-dasharray="${C}" stroke-dashoffset="${strokeOffset}" class="ring-progress"/>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+              <span class="text-2xl font-black text-slate-900">${r.score}%</span>
+              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Global</span>
+            </div>
+          </div>
+
+          <div class="flex-1 text-center sm:text-left space-y-1">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-full border ${lv.badge}">
+              ${lv.label}
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Informe de Aptitud: Caso ${esc(c.name)}
+            </h1>
+            <p class="text-xs text-slate-500">
+              Estudiante: <span class="font-bold text-slate-800">${esc(store.student || "Auxiliar")}</span> • Fecha: ${r.date.toLocaleDateString("es-ES")}
+            </p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 pt-6">
+          <div class="space-y-4">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Desglose Competencial (4 Ejes)</h2>
+            <div class="space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+              ${axisBreakdown}
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Refuerzo Formativo Personalizado</h2>
+            ${weakAxes.length ? `
+              <div class="space-y-2.5">
+                ${weakAxes.map(a => `
+                  <div class="p-3.5 rounded-xl border border-slate-200 bg-white space-y-1 shadow-subtle">
+                    <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                      ${AXES[a].icon}
+                      ${AXES[a].short} (${r.axisPct[a]}%)
+                    </span>
+                    <p class="text-xs text-slate-600 leading-relaxed">${esc(c.refuerzo[a])}</p>
+                  </div>
+                `).join("")}
+              </div>
+            ` : `
+              <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 text-xs leading-relaxed font-medium">
+                ¡Enhorabuena! Has alcanzado el rango de competencia en todos los ejes del caso. Tu criterio cumple los estándares del Real Decreto 1379/2008.
+              </div>
+            `}
+
+            <div class="p-4 rounded-xl bg-slate-900 text-white space-y-2">
+              <span class="text-xs font-bold text-teal-400 block uppercase tracking-wider">Puntos Clave del Caso</span>
+              <ul class="text-xs text-slate-300 space-y-1 list-disc pl-4">
+                ${c.keyPoints.map(kp => `<li>${esc(kp)}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+/* =========================================================================
+   10. VISTAS: BASE DE CONOCIMIENTO TÉCNICA
+   ========================================================================= */
+function renderKB() {
+  const current = KB.find(k => k.id === state.kbOpen) || KB[0];
+
+  const sidebarNav = KB.map(k => `
+    <button data-action="kb-open" data-id="${k.id}"
+      class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2.5 ${
+        k.id === current.id ? "bg-teal-600 text-white shadow-sm" : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/70"
+      }">
+      <span>${k.icon}</span>
+      <span class="truncate">${esc(k.title)}</span>
+    </button>
+  `).join("");
+
+  app.innerHTML = `
+    <div class="fade-in max-w-5xl mx-auto space-y-6">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Manual de Referencia Rápida SAD</h1>
+        <p class="text-xs sm:text-sm text-slate-500">Fundamentos teóricos y protocolos oficiales del certificado de profesionalidad SSCS0108.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-4 gap-6 items-start">
+        <aside class="space-y-2 lg:sticky lg:top-24">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 block">Capítulos del Manual</span>
+          ${sidebarNav}
+        </aside>
+
+        <article class="lg:col-span-3 bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-clean kb-prose">
+          <div class="flex items-center gap-2.5 pb-4 border-b border-slate-100 mb-4">
+            <span class="text-2xl">${current.icon}</span>
+            <h2 class="text-lg font-black text-slate-900 tracking-tight">${esc(current.title)}</h2>
+          </div>
+          ${current.html}
+        </article>
+      </div>
+    </div>
+  `;
+}
+
+/* =========================================================================
+   11. RENDER PRINCIPAL Y CONTROLADOR DE EVENTOS
+   ========================================================================= */
+function render() {
+  switch (state.view) {
+    case "case": renderCase(); break;
+    case "quiz": renderQuiz(); break;
+    case "results": renderResults(); break;
+    case "kb": renderKB(); break;
+    default: renderHome();
+  }
+}
+
+// Lightbox
+function openLightbox(src, cap) {
+  const lb = document.getElementById("lightbox");
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox-cap").textContent = cap;
+  lb.classList.remove("hidden");
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.add("hidden");
+}
+
+// Event Delegator
+document.addEventListener("click", e => {
+  const lb = document.getElementById("lightbox");
+  if (e.target === lb) { closeLightbox(); return; }
+
+  const btn = e.target.closest("[data-action]");
+  if (!btn) return;
+  const a = btn.dataset.action;
+
+  switch (a) {
+    case "home": state.quiz = null; setView("home"); break;
+    case "kb": setView("kb"); break;
+    case "kb-open": state.kbOpen = btn.dataset.id; renderKB(); break;
+    case "filter": state.filter = btn.dataset.filter; renderHome(); break;
+    case "open-case": state.caseId = btn.dataset.id; setView("case"); break;
+    case "start": startQuiz(); break;
+    case "select-opt": selectOption(Number(btn.dataset.i)); break;
+    case "confirm": confirmAnswer(); break;
+    case "next": nextQuestion(); break;
+    case "quit":
+      if (confirm("¿Deseas salir del cuestionario en curso? Tu progreso se reiniciará.")) { state.quiz = null; setView("case"); }
+      break;
+    case "retry": startQuiz(); break;
+    case "print": window.print(); break;
+    case "zoom": openLightbox(btn.dataset.src, btn.dataset.cap); break;
+    case "close-lightbox": closeLightbox(); break;
+  }
+});
+
+// Input de Nombre de Estudiante
+document.addEventListener("input", e => {
+  if (e.target.id === "student-input") {
+    store.student = e.target.value.trim() || "Auxiliar SAD";
+    saveStore(store);
+    renderNav();
+  }
+});
+
+// Atajos de Teclado
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { closeLightbox(); return; }
+  if (state.view !== "quiz" || !state.quiz) return;
+  if (e.target.tagName === "INPUT") return;
+
+  const qz = state.quiz;
+  if (!qz.answered && /^[1-6]$/.test(e.key)) {
+    const pos = Number(e.key) - 1;
+    if (pos < qz.order.length) {
+      e.preventDefault();
+      selectOption(qz.order[pos]);
+    }
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (!qz.answered) confirmAnswer(); else nextQuestion();
+  }
+});
+
+// Inicialización
+renderNav();
+render();
+</script>
+</body>
+</html>
