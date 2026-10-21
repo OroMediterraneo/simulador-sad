@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https:; frame-ancestors 'none';">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <script>
+    // Capa 1: Escut Anti-Clickjacking (Framebusting)
+    if (window.top !== window.self) {
+      try {
+        window.top.location = window.self.location;
+      } catch (e) {
+        document.documentElement.innerHTML = '<div style="padding:40px;text-align:center;font-family:sans-serif;"><h3>⚠️ Bloqueig de Seguretat</h3><p>El Simulador SAD no es pot executar incrustat en marcs o iframes externs.</p></div>';
+      }
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quadern de Casos Pràctics · Atenció Sociosanitària Humana (UF0122 & UF0123)</title>
@@ -940,6 +953,10 @@
       <div id="auth-error-msg" class="sec-error"></div>
 
       <form class="security-form" onsubmit="handleStudentLogin(event)">
+        <!-- Capa 2: Trampa Honeypot per a bots -->
+        <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+          <input type="text" id="sec_hp_website" name="sec_hp_website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="sec-input-group">
           <label class="sec-label" for="student-pin-input">Codi PIN d'Accés</label>
           <div class="sec-input-wrap">
@@ -1137,38 +1154,6 @@
       "Recorda el principi d'ajuda mínima: fer les coses amb ella, no pas per ella.",
       "Com pactar amb la filla que la mare necessita col·laborar per no perdre capacitats?",
       "Com introduir el Centre de Dia de manera gradual sense forçar?"
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats psicosocials:",
-        "text": "Necessitat d'orientació témporo-espacial; necessitat d'entorn accessible i segur; necessitat de participació i interacció en la comunitat; necessitat de motivació i recuperació de l'autonomia en les AVD."
-      },
-      {
-        "num": "2",
-        "title": "Mapa de riscos:",
-        "text": "* *Físic/caigudes:* Catifes soltes, mobles barrant el pas, poca il·luminació al passadís, ús de bastó amb marxa inestable.\n  * *Psicològic:* Desesperança apresa (*\"ja no puc fer res\"*), pèrdua d'autoestima, dependència induïda per sobreprotecció familiar.\n  * *Ambiental/relacional:* Aïllament social, desorientació per manca de referències (rellotge/calendari), rebuig al Centre de Dia."
-      },
-      {
-        "num": "3",
-        "title": "Estratègies d'autonomia en ABVD/AIVD:",
-        "text": "* Aplicar supervisió activa però sense fer les tasques per ella (ajuda mínima).\n  * Desglossar les activitats en passos curts i donar instruccions senzilles de pas en pas.\n  * Donar-li temps suficient respectant el seu ritme motriu; reforç positiu immediat verbal (*\"Molt bé, Teresa, ho ha fet vostè sola\"*)."
-      },
-      {
-        "num": "4",
-        "title": "Adaptació de l'entorn i referències cognitives:",
-        "text": "* Retirar o fixar amb cinta de doble cara les catifes del domicili; buidar el passadís de mobles auxiliars sobrants.\n  * Augmentar la potència de les bombetes del passadís (instal·lar llums LED càlids de 800-1000 lúmens o llum de pas amb sensor).\n  * Col·locar un calendari de paret amb lletres molt grans a la cuina/menjador i ratllar cada matí el dia vigent; col·locar un rellotge de paret ben visible."
-      },
-      {
-        "num": "5",
-        "title": "Intervenció emocional i suport familiar:",
-        "text": "* Entrevista empàtica amb la filla: explicar-li que fer-li tot inhabilita la seva mare i accelera el deteriorament; establir tasques que la mare pugui fer conjuntament quan la filla vingui (*\"preparar la taula juntes, pelar les patates\"*).\n  * Escolta activa i validació: dedicar 10 minuts a parlar dels seus records i vivències per restablir el vincle."
-      },
-      {
-        "num": "6",
-        "title": "Relació social i vinculació comunitària:",
-        "text": "* Acompanyar-la a fer petits encàrrecs pel barri (pa, fruita) promovent el contacte amb els veïns coneguts.\n  * Plantejar visites graduals al Centre de Dia (començar per anar-hi una sola hora a un taller de música o labors, acompanyada pel SAD, sense pressió d'estada completa).\n  * Fixar una rutina de trucada telefònica amb la família per mantenir el contacte actiu.\n\n---"
-      }
     ]
   },
   {
@@ -1205,33 +1190,6 @@
       "Seqüència segura de marxa amb caminador (caminador -> cama operada -> cama sana).",
       "Retirar cera i sabatilles destalonades (calçat tancat amb velcro).",
       "Acompanyar-lo una tarda a veure els amics de la petanca a mirar el joc."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats psicosocials:",
-        "text": "Superació de la por post-caiguda; acompanyament en el dol de la seva esposa; reactivació de la xarxa social d'oci."
-      },
-      {
-        "num": "2",
-        "title": "Riscos detectats:",
-        "text": "Risc de caiguda greu a la banyera; risc d'ensopegada pel parquet encerat i calçat destalonat; risc de depressió major per solitud no atesa."
-      },
-      {
-        "num": "3",
-        "title": "Estratègies d'autonomia:",
-        "text": "Reeducació de la marxa amb el caminador de dues rodes pautant la seqüència correcta (*caminador -> cama operada -> cama sana*). Realitzar petits desplaçaments supervisats dins de la vivenda fixant metes progressives. Substituir les sabatilles per calçat tancat amb velcro i sola de goma antilliscant."
-      },
-      {
-        "num": "4",
-        "title": "Adaptació de l'entorn:",
-        "text": "Instal·lar una taula o cadira de banyera giratòria homologada, barra de suport asimètrica a la paret de la dutxa i catifa antilliscant interior. Retirar ceres del terra."
-      },
-      {
-        "num": "5",
-        "title": "Dinamització social:",
-        "text": "Facilitar un acompanyament per anar a veure els seus companys de petanca una tarda assolellada (encara que sigui només a mirar i xerrar des d'un banc) per recuperar el sentit de pertinença. Coordinar amb el fill perquè pacti visites presencials quinzenals.\n\n---"
-      }
     ]
   },
   {
@@ -1268,33 +1226,6 @@
       "Mai confrontar ni discutir l'oblit: redirigir amb afecte.",
       "Implicar-la a la cuina en tasques segures (netejar verdures) mentre el SAD vigila el foc.",
       "Fer la llista de la compra plegades abans de sortir."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats psicosocials:",
-        "text": "Seguretat en les AIVD; manteniment de la dignitat com a antiga mestra; descans i descàrrega emocional del marit cuidador."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc imminent d'intoxicació o incendi per la cuina de gas; intoxicació alimentària per aliments caducats; esgotament i claudicació del cuidador (marit)."
-      },
-      {
-        "num": "3",
-        "title": "Gestió d'AIVD sense anul·lar autoestima:",
-        "text": "Fer la llista de la compra conjuntament a casa abans de sortir; anar a comprar amb ella donant-li el rol de supervisora de qualitat (*\"Vostè que en sap tant, triï la millor fruita\"*), mentre el SAD controla les quantitats i el pagament discretament. En la cuina, implicar-la en tasques segures (netejar verdures, amanir) mentre el SAD controla la cocció."
-      },
-      {
-        "num": "4",
-        "title": "Estimulació i comunicació:",
-        "text": "Mai confrontar els seus oblits (*\"Carme, ja m'ho has dit 5 cops\"* només genera angoixa). Utilitzar orientació a la realitat suau mitjançant preguntes obertes sobre el dia actual o la lectura del diari."
-      },
-      {
-        "num": "5",
-        "title": "Suport al marit:",
-        "text": "Tramitar servei de teleassistència amb detector de fum i gas; proposar a la treballadora social el recurs de respir per al cuidador i valoració per a Centre de Dia especialitzat en demències.\n\n---"
-      }
     ]
   },
   {
@@ -1331,33 +1262,6 @@
       "Consignes auditives o visuals per superar el bloqueig (comptar 'un-dos' o línia al terra).",
       "Adaptacions de roba: velcro i tiradors amples.",
       "Explicar a la germana que la pressa bloqueja els ganglis basals."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats psicosocials:",
-        "text": "Respecte a la seva bradipsíquia (lentitud mental) i bradicinèsia (lentitud motriu); prevenció de l'aïllament social per estigma de tremolor; preservació de la intimitat."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc d'ennuegament per disfàgia motora; caigudes per bloqueig de la marxa (*freezing*) en creuar portals; pèrdua ràpida d'autonomia per suplència de la germana."
-      },
-      {
-        "num": "3",
-        "title": "Pautes en vestit i alimentació:",
-        "text": "Substituir camises de botons per roba amb tancaments de velcro o cremalleres amb anella gran; adaptar coberts amb mànec gruixut ergonòmic i plats amb vora elevada antilliscant. Pautar el vestit en els períodes \"ON\" de la medicació (quan el fàrmac antiparkinsonià fa el màxim efecte)."
-      },
-      {
-        "num": "4",
-        "title": "Desbloqueig de la marxa:",
-        "text": "Ensenyar pistes auditives (comptar *\"1, 2, 1, 2\"* o marcar ritme amb cops) i pistes visuals (enganxar cintes de color transversal al terra de les portes per on ha de passar per sobre)."
-      },
-      {
-        "num": "5",
-        "title": "Pautes a la germana:",
-        "text": "Assessorar-la perquè deixi que el seu germà faci les coses al seu ritme, reforçant que la immobilitat i la sobreprotecció acceleren la rigidesa muscular.\n\n---"
-      }
     ]
   },
   {
@@ -1394,33 +1298,6 @@
       "Regla d'or en baixa visió: l'ordre espacial estricte mai es toca.",
       "Pastiller setmanal tancat (SPD) preparat per farmàcia / supervisió.",
       "Recursos d'audiollibres de la biblioteca / ONCE i marques tàctils amb relleu."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats:",
-        "text": "Manteniment de l'autonomia espacial mitjançant compensació sensorial tàctil i auditiva; seguretat vital en la gestió dels seus medicaments."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc d'intoxicació farmacològica letal per confusió de caixes; cops i caigudes contra mobles moguts de lloc."
-      },
-      {
-        "num": "3",
-        "title": "Adaptació de l'entorn:",
-        "text": "Prohibició absoluta de canviar els objectes de lloc (regla d'or en baixa visió: *\"cada cosa sempre al mateix lloc\"*). Col·locar gomets en relleu (velcro autoadhesiu o silicona tàctil) als botons principals del microones, comandament i rentadora. Canviar les bombetes per llum blanca d'alta luminància i evitar reflexos."
-      },
-      {
-        "num": "4",
-        "title": "Gestió de medicació:",
-        "text": "El tècnic SAD **mai administra fàrmacs sense pauta mèdica**. Sol·licitar a la farmàcia comunitària la preparació d'un Sistema Personalitzat de Dosificació (SPD) tipus blíster setmanal segellat i contrastat pel CAP."
-      },
-      {
-        "num": "5",
-        "title": "Recursos significatius:",
-        "text": "Contactar amb els serveis de la Federació ONCE o programes municipals d'audiollibres; sintonitzar-li a la ràdio les seves emissores preferides amb marcadors tàctils als botons.\n\n---"
-      }
     ]
   },
   {
@@ -1457,33 +1334,6 @@
       "Seqüència de vestit per a hemiplègics (primer s'entra el braç afectat, per despullar el sa).",
       "Acceptar el plor sobtat com una conseqüència neurològica, sense retrets.",
       "Taula de tallar adaptada i donar descans de 2 hores a l'esposa."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats:",
-        "text": "Acceptació de la nova imatge corporal i dol per la pèrdua de força física; suport a la cuidadora familiar (esposa) per prevenir el col·lapse."
-      },
-      {
-        "num": "2",
-        "title": "Gestió emocional:",
-        "text": "Comprendre que la labilitat emocional és una seqüela neurològica orgànica de l'ictus, no una debilitat de caràcter. Davant del plor, acompanyar amb serenitat sense demanar-li que pari de plorar; esperar que remeti i redirigir l'atenció amb calma."
-      },
-      {
-        "num": "3",
-        "title": "Tècniques per a persones hemiplègiques:",
-        "text": "En el vestit, començar posant sempre la mànega del costat afectat (braç esquerre) i per despullar començar pel costat sa. En la higiene, utilitzar manyopla de rentat per a la mà sana i raspalls de mànec llarg. Utilitzar taula de tallar adaptada amb ventoses i ganivet tipus balancí per a l'alimentació."
-      },
-      {
-        "num": "4",
-        "title": "Suport a l'esposa:",
-        "text": "Assessorar-la en ergonomia i higiene postural; establir torns perquè l'esposa pugui sortir 1 hora diària de casa mentre el SAD està present per fer tasques personals o respirar."
-      },
-      {
-        "num": "5",
-        "title": "Autoestima:",
-        "text": "Fomentar el rol de conseller familiar: que pugui dirigir o opinar en decisions de la casa on no calgui força física.\n\n---"
-      }
     ]
   },
   {
@@ -1520,33 +1370,6 @@
       "Neteja i revisió de piles de l'audiòfon; col·locar-se davant seu a la seva alçada per facilitar lectura labial.",
       "Subtítols a la televisió i avisador lluminós per al timbre de l'escala.",
       "Ensenyar als fills a fer videotrucades en lloc de trucades només de veu."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats:",
-        "text": "Recuperació de la connexió comunicativa; erradicació de la desconfiança reactiva cap a l'entorn."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Aïllament social absolut; conflictes veïnals per sorolls; risc de no sentir alarmes d'emergència o timbres de porta."
-      },
-      {
-        "num": "3",
-        "title": "Comunicació verbal i no verbal pel SAD:",
-        "text": "Col·locar-se davant seu a la mateixa alçada dels ulls, amb bona il·luminació a la cara del professional perquè pugui llegir els llavis. Parlar clarament vocalitzant sense cridar (els crits distorsionen els tons aguts). Utilitzar gestos i recolzament d'escriptura en una pissarra blanca si cal."
-      },
-      {
-        "num": "4",
-        "title": "Gestió d'audiòfons i tecnologia:",
-        "text": "Revisar l'estat de les piles i la neteja de cerumen dels audiòfons (sovint xiulen perquè estan bruts o mal col·locats al conducte auditiu). Configurar els subtítols a la televisió i instal·lar timbres de llum (senyalitzador lluminós connectat a l'intèrfon i al telèfon)."
-      },
-      {
-        "num": "5",
-        "title": "Mediació:",
-        "text": "Parlar amb el president de l'escala explicant la situació d'adaptació tècnica de Dolors per rebaixar tensions veïnals; ensenyar als fills a utilitzar videotrucades (la imatge facilita la lectura labial) en comptes de trucades de veu ordinàries.\n\n---"
-      }
     ]
   },
   {
@@ -1583,33 +1406,6 @@
       "Paciència i no envair: presentar-se amb to molt educat demanant permís abans d'entrar.",
       "Començar oferint només ajuda externa (portar el pa o el diari) sense tocar res de la casa.",
       "Reconèixer la seva autoritat com a amo de la seva llar."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi:",
-        "text": "La conducta no és un atac personal al treballador, sinó un mecanisme de defensa davant la pèrdua d'independència i la invasió del seu espai íntim (*territorialitat*)."
-      },
-      {
-        "num": "2",
-        "title": "Estratègia d'aproximació:",
-        "text": "Mai entrar a la força ni discutir. Mantenir distància de seguretat; presentar-se amb nom i cognom i to molt respectuós; fer servir el tractament de *\"vostè\"*. Buscar un terreny comú neutre (*\"Senyor Joan, no vinc a manar res a casa seva; només em demanen des de serveis socials si necessita que l'ajudi a baixar una bossa o a portar el pa\"*)."
-      },
-      {
-        "num": "3",
-        "title": "Respecte a la intimitat:",
-        "text": "Preguntar abans de tocar o moure cap objecte (*\"Em permet que deixi el meu abric en aquesta cadira?\"*)."
-      },
-      {
-        "num": "4",
-        "title": "Pla per etapes:",
-        "text": "Primera setmana: només establir relació de confiança i suport en gestions externes (compra de premsa, pa). Segona setmana: abordar la neteja superficial de la cuina i nevera amb el seu acord. Tercera setmana: introduir el suport a la higiene personal."
-      },
-      {
-        "num": "5",
-        "title": "Coordinació:",
-        "text": "Emetre informe de seguiment immediat a la Treballadora Social explicant l'estratègia de vinculació i pactant terminis realistes sense forçar trencaments.\n\n---"
-      }
     ]
   },
   {
@@ -1646,33 +1442,6 @@
       "Mai llençar res d'amagat ni davant seu sense pactar-ho: augmentaria el seu pànic.",
       "Negociar alliberar un passadís de seguretat per motius mèdics.",
       "Classificar en capses transparents i substituir deixalles per caixes endreçades."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats:",
-        "text": "Tractament de la conducta obsessiva sense generar trauma; recuperació de les condicions d'higiene i seguretat vital a la llar."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc extrem d'incendi per càrrega de foc; bloqueig de la sortida en cas d'evacuació mèdica; aparició de plagues de paneroles i rosegadors."
-      },
-      {
-        "num": "3",
-        "title": "Pautes de negociació:",
-        "text": "Mai llençar res en la seva absència ni davant seu sense pactar-ho (això genera pànic i trencament definitiu del vincle). Negociar per criteris de seguretat física, no d'estètica (*\"Pilar, no llençarem res important, però necessitem deixar un camí ample per si cal que entri una cadira de rodes o el metge\"*)."
-      },
-      {
-        "num": "4",
-        "title": "Estratègia per fases:",
-        "text": "Començar per buidar i desinfectar el perímetre de la cuina i la zona del llit. Classificar en tres capses: *\"conservar immediat\"*, *\"revisar més endavant\"* i *\"reciclar coses trencades/buides\"*. Substituir envasos bruts per caixes de plàstic transparents apilables i tancades."
-      },
-      {
-        "num": "5",
-        "title": "Treball amb el fill i Serveis Socials:",
-        "text": "Demanar mediació professional per aturar les discussions agressives del fill; valorar coordinació amb Salut Mental per avaluar possible Trastorn d'Acumulació Compulsiva.\n\n---"
-      }
     ]
   },
   {
@@ -1709,33 +1478,6 @@
       "Retirar immediatament la medicació de l'abast i derivar-la a control professional.",
       "Panell de rutines amb dibuixos o pictogrames clars.",
       "Donar-li un rol actiu on se senti útil (portar el got d'aigua o el tovalló a la mare)."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Necessitats:",
-        "text": "Manteniment de l'estabilitat emocional i seguretat d'en Lluís; atenció clínica i pal·liativa de la mare enllitada; preparació del futur d'en Lluís."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Errada en la dosificació de fàrmacs a la mare; risc d'incendi a la cuina; desnutrició d'en Lluís; xoc emocional traumàtic quan la mare empitjori."
-      },
-      {
-        "num": "3",
-        "title": "Comunicació adaptada:",
-        "text": "Utilitzar frases directes i curtes; recolzament visual mitjançant pictogrames o fotografies reals de cada tasca enganxades a les portes dels armaris."
-      },
-      {
-        "num": "4",
-        "title": "Rutines predictibles:",
-        "text": "Crear un horari diari plastificat amb dibuixos clars: a les 09:00 esmorzar, a les 10:00 passeig, a les 13:00 dinar amb el SAD. Assignar a en Lluís tasques supervisades concretes on se senti útil (*\"Tu ets el responsable de portar el tovalló a la mare\"*)."
-      },
-      {
-        "num": "5",
-        "title": "Protecció i futur:",
-        "text": "Retirar immediatament la medicació de l'abast d'en Lluís; coordinar amb la cosina i la treballadora social la tramitació d'un servei d'àpats a domicili (menjador social o carmanyoles) i la sol·licitud d'un centre ocupacional de dia per a en Lluís.\n\n---"
-      }
     ]
   },
   {
@@ -1772,33 +1514,6 @@
       "Substituir espelmes de foc per llums LED càlids a piles (respectant el símbol de record).",
       "Obrir persianes per deixar entrar llum solar; escolta activa sense frases clixé.",
       "Derivació urgent a suport psicològic i metge del CAP."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Diagnòstic diferencial:",
-        "text": "El dol normal té fluctuacions i acceptació gradual; el dol complicat presenta paràlisi vital, pèrdua massiva de pes, ideació autolítica passiva i absència de cura personal després de mesos."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc d'incendi sever per espelmes enceses prop de teixits; risc de mort per desnutrició severa; risc de suïcidi (*\"vull anar-me'n amb ell\"*)."
-      },
-      {
-        "num": "3",
-        "title": "Escolta activa:",
-        "text": "No utilitzar frases buides com *\"has de ser forta\"* o *\"el temps ho cura tot\"*. Permetre-li expressar el dolor, validar la pèrdua (*\"Va cuidar del seu marit molts anys, devia ser molt dur i ara sent un buit enorme\"*)."
-      },
-      {
-        "num": "4",
-        "title": "Reestructuració ambiental:",
-        "text": "Apagar les espelmes de cera i substituir-les per petites llums LED a piles com a element simbòlic de respecte segur. Obrir les persianes per deixar entrar llum solar (estímul de serotonina). Ajudar-la a preparar brous i aliments tous de fàcil ingesta i alt valor calòric."
-      },
-      {
-        "num": "5",
-        "title": "Derivació urgent:",
-        "text": "Comunicar a la Treballadora Social i demanar cita immediata al CAP per avaluar possible antidepressiu temporal o suport del programa de dol de salut mental. Implicar al fill ensenyant-li a acompanyar sense renyar.\n\n---"
-      }
     ]
   },
   {
@@ -1835,33 +1550,6 @@
       "Avisar immediatament a Infermeria del CAP per a la cura de la ferida.",
       "Retirar tisores perilloses; rentat suau amb assecat minuciós entre els dits.",
       "Pactar canvis d'aliments dolços per fruita fresca saborosa sense prohibicions agressives."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Riscos:",
-        "text": "Risc de gangrena i amputació de l'extremitat inferior per úlcera infectada en peu insensitiu; xoc hiperglucèmic."
-      },
-      {
-        "num": "2",
-        "title": "Límits d'actuació:",
-        "text": "**El tècnic SAD MAI talla durícies amb fulles ni tisores punxegudes**, ni fa cures d'úlceres obertes. El SAD fa rentat amb sabó neutre, assecat minuciós entre els dits amb tovallola suau (sense fregar), hidratació amb crema de urea al taló (mai entre dits) i avisa a Infermeria."
-      },
-      {
-        "num": "3",
-        "title": "Intervenció immediata:",
-        "text": "Notificar immediatament la lesió de la planta del peu al servei d'infermeria del CAP per a cura i tractament podològic especialitzat. Retirar tisores perilloses i adquirir mitjons de cotó sense costures blanques (per detectar sang) i calçat ample."
-      },
-      {
-        "num": "4",
-        "title": "Estratègia d'hàbits:",
-        "text": "Negociar pactes dietètics realistes: no suprimir tots els dolços de cop, sinó pactar substitucions (fruita fresca dolça com mandarines, begudes sense sucre afegit) sense convertir el menjar en una guerra."
-      },
-      {
-        "num": "5",
-        "title": "Treball amb la filla:",
-        "text": "Descarregar la tensió de la filla explicant que la confrontació directa només genera conductes d'amagatall en el pare.\n\n---"
-      }
     ]
   },
   {
@@ -1898,33 +1586,6 @@
       "Mantenir activitat al matí i evitar migdiades llargues; encendre llums abans de la foscor.",
       "Sensors de presència o teleassistència avançada en comptes de panys tancats.",
       "Validar l'emoció sense discutir (parlar de la botiga amb afecte mentre es pren un brou calent)."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi tècnica:",
-        "text": "La síndrome del vespre (*sundowning*) és una exacerbació de la confusió i l'agitació en caure la tarda a causa de la disminució de llum i la fatiga cerebral."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Desaparició al carrer en horari nocturn; caigudes; hipotèrmia; perill de bloqueig intencionat il·legal per part de la família."
-      },
-      {
-        "num": "3",
-        "title": "Pautes del cicle son-vigília:",
-        "text": "Augmentar la il·luminació interior abans que es faci fosc per evitar ombres que provoquin al·lucinacions. Mantenir-la activa al matí amb passejos i exercicis senzills; evitar migdiades de més de 30 minuts. Suprimir begudes excitants (cafè, te) a partir de les 15:00 h."
-      },
-      {
-        "num": "4",
-        "title": "Seguretat física i ètica:",
-        "text": "Tancar una persona amb clau sense poder sortir és una privació de llibertat il·legal i perillosa en cas d'incendi. Solució: instal·lar tancaments de doble maneta fora del seu camp visual, alarmes sonores de pas a la porta o panys de seguretat retardats homologats."
-      },
-      {
-        "num": "5",
-        "title": "Recursos:",
-        "text": "Sol·licitar dispositiu de teleassistència avançada amb detector de mobilitat i sensor d'obertura de porta exterior; sol·licitar plaça urgent de Centre de Dia per estructurar la jornada.\n\n---"
-      }
     ]
   },
   {
@@ -1961,33 +1622,6 @@
       "Prohibició total de fumar prop de l'oxigen; retirar cendrers.",
       "Higiene i vestit assegut en cadira amb reposabraços i respiració amb llavis frunzits.",
       "Fixar el tub d'oxigen per evitar ensopegades."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Riscos crítics:",
-        "text": "**Risc extrem d'explosió o ignició violenta** (l'oxigen en concentració elevada és altament comburent; una burilla pot provocar una deflagració letal); risc de caiguda per ensopegada amb els cables d'oxigen."
-      },
-      {
-        "num": "2",
-        "title": "Tècniques d'estalvi d'energia en ABVD:",
-        "text": "Realitzar la higiene i el vestit assegut en una cadira amb reposabraços; respirar coordinadament expirant l'aire lentament amb els llavis frunzits en fer l'esforç; utilitzar esponges de mànec llarg i calçadors per no haver de flexionar el tronc (la flexió de tronc comprimeix la caixa toràcica i augmenta l'ofec)."
-      },
-      {
-        "num": "3",
-        "title": "Maneig de crisis:",
-        "text": "Col·locar al pacient en posició de \"trípode\" (assegut inclinat endavant amb braços recolzats en una taula) per alliberar la musculatura respiratòria accessòria; transmetre tranquil·litat absoluta amb to de veu pausat i ferm."
-      },
-      {
-        "num": "4",
-        "title": "Seguretat del concentrador:",
-        "text": "Prohibició absoluta de fumar a menys de 3 metres de l'aparell. Retirar cendrers i encenedors; canalitzar el tub d'oxigen pel perímetre alt de les parets o utilitzar concentrador portàtil amb bateria per evitar tubs de 15 metres per terra."
-      },
-      {
-        "num": "5",
-        "title": "Suport a la parella:",
-        "text": "Proporcionar telèfons d'emergència directa i pautes per gestionar els atacs de pànic respiratoris.\n\n---"
-      }
     ]
   },
   {
@@ -2024,33 +1658,6 @@
       "Tractar el tema amb naturalitat absoluta: és una condició física comuna, mai una vergonya.",
       "Proposar absorbents elàstics d'un sol ús com calces convencionals.",
       "Planificar 'la ruta dels lavabos' al carrer per recuperar les passejades."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Impacte psicosocial:",
-        "text": "La pèrdua del control d'esfínters és la causa principal de vergonya, destrucció de l'autoestima i autoexclusió social en persones grans lúcides."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Dermatitis associada a la incontinència (DAI), maceració de la pell i aparició de nafres; lliscament i caigudes pel terra humit; aïllament crònic."
-      },
-      {
-        "num": "3",
-        "title": "Abordatge empàtic:",
-        "text": "Parlar de la incontinència com una condició mèdica freqüent, normalitzant-la (*\"Francesca, a moltes persones els passa per l'edat o la musculatura, té solució i hi ha productes molt discrets que no es noten gens\"*). Mai retreure les olors ni la roba amagada."
-      },
-      {
-        "num": "4",
-        "title": "Pautes materials:",
-        "text": "Demanar recepta mèdica d'absorbents anatòmics tipus \"pants\" elàstics (es posen com calces normals, preservant la dignitat); col·locar protectors de matalàs i fundes impermeables transpirables al sofà."
-      },
-      {
-        "num": "5",
-        "title": "Recuperació de l'oci:",
-        "text": "Planificar sortides al carrer establint la \"ruta dels lavabos coneguts\" (anar a prendre un cafè a un lloc on sàpiga que el lavabo és accessible), recuperant gradualment la relació amb les companyes de parròquia.\n\n---"
-      }
     ]
   },
   {
@@ -2087,33 +1694,6 @@
       "Treballar les transferències amb taula de transferència i bloqueig de frens.",
       "Activar servei de cadira erugada / voluntariat per a sortides puntuals al carrer.",
       "Canvis de postura i coixí viscoelàstic per protegir la pell."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi:",
-        "text": "Enclaustrament forçat per barrera arquitectònica severa (falta d'ascensor). El problema no és la seva capacitat, sinó l'entorn inaccessible."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Atròfia muscular severa per desús; úlceres per pressió als isquis per estar assegut massa hores en la mateixa cadira; deteriorament cognitiu per manca d'estímuls externs."
-      },
-      {
-        "num": "3",
-        "title": "Pautes de transferència:",
-        "text": "Ensenyar la transferència cadira-llit i cadira-vàter utilitzant la taula de transferència, mantenint el monyó protegit de cops i assegurant el bloqueig estricte dels frens de la cadira de rodes."
-      },
-      {
-        "num": "4",
-        "title": "Coordinació institucional:",
-        "text": "Activar amb caràcter urgent a la Treballadora Social per sol·licitar un servei d'acompanyament amb cadira erugada / cadira puja-escales mitjançant Creu Roja o voluntariat social per permetre sortides periòdiques; valorar canvi de domicili o adaptació d'ascensor comunitari amb ajuts públics."
-      },
-      {
-        "num": "5",
-        "title": "Socialització:",
-        "text": "Connectar-lo a programes de voluntariat a domicili, connexió a internet amb tauleta adaptada per a comunicació i activar la trucada setmanal de suport.\n\n---"
-      }
     ]
   },
   {
@@ -2150,33 +1730,6 @@
       "El tècnic SAD mai recepta ni canvia pastilles: retira caducades al punt SIGRE.",
       "Sol·licitar el blíster setmanal tancat (SPD) a la farmàcia.",
       "Tècniques de relaxació i conversa davant les queixes d'angoixa corporal."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Riscos:",
-        "text": "Intoxicació medicamentosa, hipotensió greu per duplicitat de fàrmacs antihipertensius, caigudes nocturnes per excés de sedants, hemorràgies gàstriques."
-      },
-      {
-        "num": "2",
-        "title": "Delimitació del SAD:",
-        "text": "El tècnic SAD **NO prescriu, NO modifica dosis i NO decideix quines pastilles es prenen**. La funció del SAD és la supervisió del compliment del tractament pautat formalment pel metge."
-      },
-      {
-        "num": "3",
-        "title": "Organització domèstica:",
-        "text": "Retirar immediatament de la cuina totes les caixes de medicació caducades o no vigents i lliurar-les al punt SIGRE de la farmàcia. Sol·licitar a la farmàcia del barri el sistema de blíster setmanal tancat (SPD) amb els dies i horaris (matí, migdia, vespre, nit)."
-      },
-      {
-        "num": "4",
-        "title": "Maneig de l'ansietat:",
-        "text": "Davant les queixes somàtiques reiterades, escoltar sense alimentar la hipocondria; aplicar tècniques de distracció (*\"Ara prendrem un te relaxant i mirarem l'àlbum de fotos\"*)."
-      },
-      {
-        "num": "5",
-        "title": "Coordinació:",
-        "text": "Establir comunicació directa amb la infermera gestora de casos del CAP i concertar una reunió amb el fill perquè assumeixi la responsabilitat de recollir puntualment el blíster preparat de la farmàcia.\n\n---"
-      }
     ]
   },
   {
@@ -2213,33 +1766,6 @@
       "Posar-se roba de carrer cada matí com a teràpia de reactivació.",
       "Petits reptes físics: aixecar-se 5 cops de la butaca a cada visita del SAD.",
       "Introduir aliments rics en proteïna i passejos curts amb els fills."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi:",
-        "text": "Síndrome de desadaptació motriu i desesperança apresa (*\"ja no hi ha res a fer\"*). Sarcopènia severa que condueix a la dependència total si no s'intervé."
-      },
-      {
-        "num": "2",
-        "title": "Exploració de la història de vida:",
-        "text": "Descobrir les seves antigues aficions (jardineria, lectura, música, ofici anterior) per dissenyar activitats amb significat personal, no tasques infantils buides."
-      },
-      {
-        "num": "3",
-        "title": "Programa d'activació dins de casa:",
-        "text": "Començar amb petits objectius mesurables: aixecar-se de la butaca 5 vegades seguides a cada torn; caminar pel passadís 3 cops al dia; exercicis suaus de flexió de turmells i genolls assegut a la cadira."
-      },
-      {
-        "num": "4",
-        "title": "Alimentació i autocura:",
-        "text": "Introduir aliments rics en proteïna d'alt valor biològic (ous, peix, lactis enriquits) per frenar la pèrdua muscular. Fixar una rutina diària de dutxa i vestir-se amb roba de carrer a primera hora del matí (treure's el pijama és clau per a la reactivació psicològica)."
-      },
-      {
-        "num": "5",
-        "title": "Treball familiar:",
-        "text": "Educar els fills que la inactivitat no és conseqüència natural de l'edat sinó un procés degeneratiu evitable; implicar-los en passejos curts de cap de setmana.\n\n---"
-      }
     ]
   },
   {
@@ -2276,33 +1802,6 @@
       "Comprendre que és la malaltia qui insulta, no pas la persona: mai discutir.",
       "Redirecció ràpida a un tema agradable o música tranquil·la.",
       "Psicoeducació a la filla per desculpabilitzar-la."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Comprensió del quadre:",
-        "text": "La pèrdua de filtre social i la desinhibició són fruit del dany als lòbuls frontals (centre del control inhibitori). La persona no insulta \"per maldat\", sinó per incapacitat neurològica de frenar l'impuls."
-      },
-      {
-        "num": "2",
-        "title": "Maneig conductual:",
-        "text": "Mai discutir, renyar ni exigir explicacions (*\"Per què m'ha insultat?\"* no serveix de res). Utilitzar tècniques de redirecció immediata (canviar de tema de conversa cap a un estímul agradable, oferir un got d'aigua o posar música que li agradi). Mantenir un to de veu calmat, ferm i neutre."
-      },
-      {
-        "num": "3",
-        "title": "Seguretat del professional:",
-        "text": "Mai arraconar físicament la usuària; no realitzar aproximacions brusques per darrere. Si hi ha intent d'agressió física, fer un pas enrere mantenint contacte visual sense agressivitat i esperar que baixi el pic d'agitació."
-      },
-      {
-        "num": "4",
-        "title": "Suport a la filla:",
-        "text": "Desculpabilitzar la filla; explicar-li el funcionament neurològic de la malaltia frontal per evitar que es prengui els insults com un rebuig personal."
-      },
-      {
-        "num": "5",
-        "title": "Coordinació clínica:",
-        "text": "Informar urgentment el neuròleg o psiquiàtric de referència sobre l'escalada de conductes disruptives per valorar reajust de medicació reguladora de conducta.\n\n---"
-      }
     ]
   },
   {
@@ -2339,33 +1838,6 @@
       "Introduir aigua espessida o gelificada; prohibició absoluta de palletes per beure.",
       "Postura de flexió cervical anterior (cap una mica endavant en empassar).",
       "Avisar al metge del CAP per a test de deglució."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Detecció:",
-        "text": "La tos durant o just després de beure aigua és el signe cardinal de la disfàgia orofaríngia a líquids (incompetència de l'epiglotis). La deshidratació es manifesta amb boca seca, pell poc elàstica i confusió mental vespertina."
-      },
-      {
-        "num": "2",
-        "title": "Risc vital:",
-        "text": "Risc immediat de pneumònia per aspiració química o bacteriana (el líquid passa a la via respiratòria i als pulmons), que és una de les principals causes de mortalitat en gent gran."
-      },
-      {
-        "num": "3",
-        "title": "Modificació de textures:",
-        "text": "Substituir els líquids lliures per aigua espessida amb espessidors comercials (textura nèctar, mel o púding segons indicació sanitària) o oferir aigua gelificada de farmàcia. Prohibir absolutament l'ús de palletes per beure (la palleta envia el líquid a la part posterior de la faringe massa de pressa i afavoreix l'aspiració)."
-      },
-      {
-        "num": "4",
-        "title": "Pautes posturals:",
-        "text": "Menjar sempre assegut a 90 graus amb l'esquena recta; en el moment exacte d'empassar, inclinar el cap lleugerament cap endavant (*mentó al pit*), postura que protegeix la via aèria. Romandre assegut 30 minuts després de l'àpat."
-      },
-      {
-        "num": "5",
-        "title": "Derivació i registre:",
-        "text": "Portar una taula escrita d'ingesta diària de líquids (mínim 1,5 litres d'aigua gelificada/brous espessits) i sol·licitar visita mèdica immediata per a test de deglució (MECV-V).\n\n---"
-      }
     ]
   },
   {
@@ -2402,33 +1874,6 @@
       "Protocol de canvis posturals i aplicació d'àcids grassos hiperoxigenats (sense fregar fort).",
       "Sol·licitud urgent de llit articulat, matalàs d'aire alternant i grua.",
       "Ús de l'entremesa de cotó per moure-la en equip protegint l'esquena."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Valoració de risc:",
-        "text": "L'escala de Braden indica un risc molt alt (immobilitat total, incontinència, fricció, manca de sensibilitat). L'eritema que no blanqueja és ja una Úlcera per Pressió (UPP) en Estadi 1."
-      },
-      {
-        "num": "2",
-        "title": "Protocol de canvis posturals:",
-        "text": "Executar un calendari estricte de canvis de postura cada 2-3 hores durant el dia i cada 4 hores a la nit: decúbit supí (boca amunt), decúbit lateral dret (a 30 graus, no a 90 per no recolzar sobre el trocànter) i decúbit lateral esquerre. Mantenir la pell neta i seca; aplicar àcids grassos hiperoxigenats (AGHO) al sacre i talons amb un massatge circular suau (mai fregar amb força les zones vermelles). Utilitzar taloneres protectores."
-      },
-      {
-        "num": "3",
-        "title": "Productes de suport:",
-        "text": "Tramitació urgent a través de la Treballadora Social i el CAP d'un llit articulat elèctric amb baranes abatibles i un matalàs d'aire amb compressor alternant de pressió."
-      },
-      {
-        "num": "4",
-        "title": "Ergonomia i prevenció per al fill:",
-        "text": "Ensenyar al fill l'ús de la llençol entremesa per mobilitzar la mare al llit sense estirar-li els braços, flexionant els genolls i mantenint l'esquena recta. Proposar la instal·lació d'una grua domiciliària de trasllat."
-      },
-      {
-        "num": "5",
-        "title": "Suport emocional:",
-        "text": "Treballar amb el fill la diferència entre *\"abandonar\"* i *\"tenir cura digna\"*; validar la seva entrega però fer-li entendre que si ell cau malalt per l'hèrnia, la mare quedarà totalment desatesa.\n\n---"
-      }
     ]
   },
   {
@@ -2465,33 +1910,6 @@
       "Targeta de contacte plastificada a totes les jaquetes i polsera identificativa.",
       "Sortides acompanyades seguint un mateix itinerari rígid i segur.",
       "Parar a xerrar amb el forner de confiança per reforçar la seguretat del barri."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi:",
-        "text": "Desorientació topogràfica espacial acompanyada de fòbia reactiva a l'espai exterior arran de l'experiència traumàtica de perdre's."
-      },
-      {
-        "num": "2",
-        "title": "Riscos:",
-        "text": "Risc d'atropellament o pèrdua perllongada; risc d'aïllament i pèrdua total de mobilitat per confinament a casa."
-      },
-      {
-        "num": "3",
-        "title": "Dispositius d'identificació:",
-        "text": "Facilitar una polsera metàl·lica gravada o penjoll amb el seu nom i el telèfon dels fills / teleassistència; sol·licitar el servei de teleassistència mòbil amb geolocalització GPS i perímetre de seguretat (que envia una alerta si surt del seu barri). Posar una targeta plastificada a totes les butxaques de les seves jaquetes amb la informació de contacte."
-      },
-      {
-        "num": "4",
-        "title": "Rehabilitació de sortides:",
-        "text": "No forçar grans distàncies. Començar fent passejos curts acompanyat pel professional del SAD seguint sempre el mateix trajecte rígid i identificant elements visuals clars (*\"la farmàcia de la creu verda\", \"l'arbre gran de la plaça\"*)."
-      },
-      {
-        "num": "5",
-        "title": "Barri cuidador:",
-        "text": "Parlar amb el forner i el quiosquer perquè coneguin la situació i disposin del telèfon del fill per si el veuen desorientat.\n\n---"
-      }
     ]
   },
   {
@@ -2528,28 +1946,6 @@
       "Cartell de protecció amable a la porta ('Davant de qualsevol dubte, consultar al SAD').",
       "Canalitzar la seva necessitat de parlar cap a entitats de voluntariat social com Amics de la Gent Gran.",
       "Coordinació amb Treball Social per a mesures de suport a la capacitat jurídica."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi del risc:",
-        "text": "Abús econòmic per engany telefònic aprofitant-se de la necessitat de vinculació afectiva de la usuària (la vulnerabilitat no és només cognitiva, és primordialment emocional)."
-      },
-      {
-        "num": "2",
-        "title": "Mesures de seguretat a la llar:",
-        "text": "Instal·lar un telèfon amb filtre de trucades per bloquejar números desconeguts o comercials; pactar la consigna de no donar mai dades bancàries ni obrir la porta a revisors no sol·licitats (col·locar un cartell d'avís preventiu darrere la porta: *\"No signar res, avisar abans al SAD\"*)."
-      },
-      {
-        "num": "3",
-        "title": "Derivació jurídica i social:",
-        "text": "Notificar la situació de desprotecció econòmica a la Treballadora Social de referència perquè valori l'aplicació de mesures de suport conforme a la nova legislació civil (antiga incapacitació, ara provisió de suports a la capacitat jurídica)."
-      },
-      {
-        "num": "4",
-        "title": "Gestió d'afecte i xarxa:",
-        "text": "Vincular Montserrat a programes de voluntariat d'acompanyament (trucades regulars d'entitats d'escolta activa com Amics de la Gent Gran o Creu Roja) perquè tingui coberta la seva necessitat de conversa afectiva sense dependre de comercials sense escrúpols.\n\n---"
-      }
     ]
   },
   {
@@ -2586,33 +1982,6 @@
       "Canviar manetes de portes per palanques suaus i coberts amb mànec d'escuma engruixit.",
       "Respectar la seva presa de decisions: mai actuar de manera paternalista.",
       "Connexió amb la Fundació d'ELA per a banc de productes de suport."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Impacte psicosocial:",
-        "text": "Xoc vital davant una malaltia neurodegenerativa ràpida amb conservació cognitiva intacta. La sensació de pèrdua de control pot desencadenar angoixa extrema."
-      },
-      {
-        "num": "2",
-        "title": "Adaptacions a la llar:",
-        "text": "Canviar les manetes rodones de les portes per manetes de palanca; substituir aixetes de rosca per monocomandaments d'obertura fàcil; instal·lar interruptors de pressió ampla o domòtica senzilla controlada per veu (tipus altaveu intel·ligent per encendre llums i obrir persianes)."
-      },
-      {
-        "num": "3",
-        "title": "Productes de suport per a les mans:",
-        "text": "Adaptar coberts amb mànecs d'escuma engruixida; utilitzar gots de plàstic resistent de pes reduït amb doble nansa; col·locar tiradors de cremallera i cordons elàstics al calçat."
-      },
-      {
-        "num": "4",
-        "title": "Preservació de decisions:",
-        "text": "En tot moment Enric ha de ser el director de la seva pròpia vida: el professional SAD pregunta i executa sota les seves directrius exactes, evitant l'actitud paternalista."
-      },
-      {
-        "num": "5",
-        "title": "Suport interdisciplinar:",
-        "text": "Connectar Enric i la seva parella amb la Fundació Catalana d'ELA Miquel Valls per a assessorament tècnic, préstec de productes de suport avançats (comunicadors oculars) i suport psicològic especialitzat per a la parella.\n\n---"
-      }
     ]
   },
   {
@@ -2649,36 +2018,34 @@
       "Retirar l'ús de l'orinal durant el dia per afavorir les transferències actives al vàter.",
       "Passejos curts amb suport per recuperar força muscular diària.",
       "Desculpabilitzar-la: recordar-li que no molesta i que el seu cos s'està recuperant amb èxit."
-    ],
-    "solutions": [
-      {
-        "num": "1",
-        "title": "Anàlisi del quadre:",
-        "text": "Síndrome de desacondicionament físic post-ingrés hospitalari (sarcopènia aguda reversible) agreujat per una actitud de submissió i culpa (*\"només sé que molestar\"*)."
-      },
-      {
-        "num": "2",
-        "title": "Prevenció de dependència crònica:",
-        "text": "Desmuntar immediatament l'ús de l'orinal si no hi ha incontinència orgànica: l'ús de l'orinal per comoditat perpetua la immobilitat i cronifica la pèrdua de força."
-      },
-      {
-        "num": "3",
-        "title": "Pla de recuperació motriu:",
-        "text": "Retirar la por a caure fent aixecaments de la cadira amb suport bipodal; realitzar trasllats al bany acompanyada del braç del professional del SAD, utilitzant passos ferms i curts. Col·locar barres de subjecció al passadís i al vàter per dotar de seguretat el recorregut."
-      },
-      {
-        "num": "4",
-        "title": "Desculpabilització:",
-        "text": "Validar que la debilitat és normal després d'una pneumònia i que no és cap càrrega, sinó un procés temporal de recuperació: *\"Maria Lluïsa, vostè no molesta a ningú; el seu cos ha superat una infecció forta i ara només necessita uns dies de treball per tornar a caminar sola com abans\"*."
-      },
-      {
-        "num": "5",
-        "title": "Coordinació:",
-        "text": "Sol·licitar derivació a fisioteràpia domiciliària del CAP; tranquil·litzar la filla explicant-li que és una fase reversible i ensenyar-li a dosificar l'ajuda per no sobreprotegir la seva mare."
-      }
     ]
   }
 ];
+
+    // ==========================================
+    // CAPA 3: ENCRYPTED SOLUTIONS ENVELOPE (AES-GCM 256)
+    // Les solucions oficials estan xifrades amb clau de 256 bits
+    // ==========================================
+    const ENCRYPTED_SOLUTIONS_ENVELOPE = {
+  "payload": {
+    "iv": "jA4b1gsy5Q8eFKUz",
+    "tag": "WHjQtY9GK/e7H8rQozqy2g==",
+    "ciphertext": "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"
+  },
+  "studentWrap": {
+    "salt": "FjZUlEIR/ehCjnz98485fg==",
+    "iv": "uMs52nmPcf2KhvtD",
+    "tag": "/TK8Iy+pdtSGE7z+5Vukdg==",
+    "wrappedKey": "7bKqNIVpLYQysXg4ArAG5+rEQbhZ7dRRqzQQhNVufOk="
+  },
+  "adminWrap": {
+    "salt": "BCFBbm+88VaUP2KrCDqgxw==",
+    "iv": "uHox+Frx2tfadpsB",
+    "tag": "0dDdhff/K03d4sc5KZCsSQ==",
+    "wrappedKey": "bnM/tWN8fl+SrQt4x1d5IQ7Hm818As1EX3wjRPjHovM="
+  },
+  "iterations": 100000
+};
 
     // Generar navegació
     const navContainer = document.getElementById('nav-container');
@@ -2805,15 +2172,8 @@
                   📋 Aplicar al meu formulari
                 </button>
               </div>
-              <div class="solution-panel-body">
-                ${c.solutions && c.solutions.length > 0 ? c.solutions.map(s => `
-                  <div class="solution-item">
-                    <div class="sol-point-title">
-                      <span>• ${s.title}</span>
-                    </div>
-                    <div class="sol-point-desc">${s.text}</div>
-                  </div>
-                `).join('') : '<p style="color:#718096;font-style:italic;">Resolució disponible al document Solucionari.md</p>'}
+              <div class="solution-panel-body" id="sol-panel-body-${c.id}">
+                <p style="color:#718096;font-style:italic;font-size:0.88rem;">🔒 Solució xifrada (AES-GCM 256). Fes clic a desplegar per carregar en memòria.</p>
               </div>
             </div>
 
@@ -2825,7 +2185,20 @@
       wrapper.appendChild(card);
     });
 
-    // Funcions de toggle
+    // Funcions de toggle i renderitzat segur de solucions desxifrades
+    function sanitizeHTML(str) {
+      if (typeof str !== 'string') return '';
+      const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        "/": '&#x2F;'
+      };
+      return str.replace(/[&<>"'/]/g, m => map[m]);
+    }
+
     function toggleHints(id) {
       const panel = document.getElementById('hints-panel-' + id);
       const arrow = document.getElementById('hints-arrow-' + id);
@@ -2838,9 +2211,28 @@
       }
     }
 
+    function renderSolutionBody(id) {
+      const container = document.getElementById('sol-panel-body-' + id);
+      if (!container) return;
+      const solutions = (window.decryptedSolutions && window.decryptedSolutions[id]) || null;
+      if (solutions && solutions.length > 0) {
+        container.innerHTML = solutions.map(s => `
+          <div class="solution-item">
+            <div class="sol-point-title">
+              <span>• ${sanitizeHTML(s.title)}</span>
+            </div>
+            <div class="sol-point-desc">${sanitizeHTML(s.text)}</div>
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = '<p style="color:#C53030;font-size:0.88rem;font-weight:600;">🔒 Resolució oficial xifrada en repòs. Introdueix el teu PIN d\'accés per desxifrar-la en memòria.</p>';
+      }
+    }
+
     function toggleSolution(id) {
       const panel = document.getElementById('sol-panel-' + id);
       const arrow = document.getElementById('sol-arrow-' + id);
+      renderSolutionBody(id);
       if (panel.classList.contains('active')) {
         panel.classList.remove('active');
         arrow.textContent = '▼';
@@ -2850,19 +2242,22 @@
       }
     }
 
-    // Copiar la solució oficial als textarea per facilitar l'estudi
+    // Copiar la solució oficial desxifrada als textarea
     function copySolutionToInputs(id) {
-      const c = casesData.find(item => item.id === id);
-      if (!c || !c.solutions) return;
+      const solutions = (window.decryptedSolutions && window.decryptedSolutions[id]) || null;
+      if (!solutions) {
+        alert('🔒 Les solucions estan xifrades amb seguretat. Si us plau, valida el teu PIN d\'accés.');
+        return;
+      }
 
-      c.solutions.forEach((s, idx) => {
+      solutions.forEach((s, idx) => {
         const inputId = 'resp-' + id + '-' + (idx + 1);
         const el = document.getElementById(inputId);
         if (el) {
           el.value = s.text;
         }
       });
-      alert('✅ Resolució oficial copiada al teu formulari del Cas ' + id + '!');
+      alert('✅ Resolució oficial desxifrada i aplicada al teu formulari del Cas ' + id + '!');
       saveAllResponses();
     }
 
@@ -2901,6 +2296,155 @@
         localStorage.removeItem('SAD_PRACTICE_RESPONSES_V1');
         document.querySelectorAll('.friendly-textarea').forEach(t => t.value = '');
         alert('Formulari netejat.');
+      }
+    }
+
+    // ==========================================
+    // CAPA 2 & 3: DESXIFRAT CRIPTOGRÀFIC EN MEMÒRIA (AES-GCM 256 + PBKDF2)
+    // ==========================================
+    window.decryptedSolutions = null;
+    window.rawMasterKeyBuffer = null;
+
+    function getEnvelopeConfig() {
+      try {
+        const custom = localStorage.getItem('SAD_CUSTOM_ENVELOPE_V2');
+        if (custom) return JSON.parse(custom);
+      } catch (e) {}
+      return ENCRYPTED_SOLUTIONS_ENVELOPE;
+    }
+
+    async function decryptSolutionsEnvelope(password) {
+      try {
+        const envelope = getEnvelopeConfig();
+        const enc = new TextEncoder();
+        const wraps = [envelope.studentWrap, envelope.adminWrap];
+        let masterKeyBuf = null;
+
+        for (const wrapObj of wraps) {
+          if (!wrapObj) continue;
+          try {
+            const salt = Uint8Array.from(atob(wrapObj.salt), c => c.charCodeAt(0));
+            const iv = Uint8Array.from(atob(wrapObj.iv), c => c.charCodeAt(0));
+            const tag = Uint8Array.from(atob(wrapObj.tag), c => c.charCodeAt(0));
+            const wrappedKey = Uint8Array.from(atob(wrapObj.wrappedKey), c => c.charCodeAt(0));
+
+            const combined = new Uint8Array(wrappedKey.length + tag.length);
+            combined.set(wrappedKey);
+            combined.set(tag, wrappedKey.length);
+
+            const baseKey = await crypto.subtle.importKey(
+              'raw',
+              enc.encode(password),
+              'PBKDF2',
+              false,
+              ['deriveKey']
+            );
+
+            const derivedKey = await crypto.subtle.deriveKey(
+              {
+                name: 'PBKDF2',
+                salt: salt,
+                iterations: envelope.iterations || 100000,
+                hash: 'SHA-256'
+              },
+              baseKey,
+              { name: 'AES-GCM', length: 256 },
+              false,
+              ['decrypt']
+            );
+
+            masterKeyBuf = await crypto.subtle.decrypt(
+              { name: 'AES-GCM', iv: iv, tagLength: 128 },
+              derivedKey,
+              combined
+            );
+            break;
+          } catch (e) {
+            // Intentem amb el següent embolcall
+          }
+        }
+
+        if (!masterKeyBuf) return null;
+
+        window.rawMasterKeyBuffer = masterKeyBuf;
+
+        // Desxifrem el paquet principal de 25 solucions
+        const mainIv = Uint8Array.from(atob(envelope.payload.iv), c => c.charCodeAt(0));
+        const mainTag = Uint8Array.from(atob(envelope.payload.tag), c => c.charCodeAt(0));
+        const mainCipher = Uint8Array.from(atob(envelope.payload.ciphertext), c => c.charCodeAt(0));
+
+        const mainCombined = new Uint8Array(mainCipher.length + mainTag.length);
+        mainCombined.set(mainCipher);
+        mainCombined.set(mainTag, mainCipher.length);
+
+        const rawMasterKey = await crypto.subtle.importKey(
+          'raw',
+          masterKeyBuf,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['decrypt']
+        );
+
+        const decryptedBuf = await crypto.subtle.decrypt(
+          { name: 'AES-GCM', iv: mainIv, tagLength: 128 },
+          rawMasterKey,
+          mainCombined
+        );
+
+        const jsonStr = new TextDecoder().decode(decryptedBuf);
+        return JSON.parse(jsonStr);
+      } catch (err) {
+        console.warn('Avís criptogràfic:', err);
+        return null;
+      }
+    }
+
+    async function rewrapStudentKey(newPin, masterKeyBuf) {
+      try {
+        const enc = new TextEncoder();
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+
+        const baseKey = await crypto.subtle.importKey(
+          'raw',
+          enc.encode(newPin),
+          'PBKDF2',
+          false,
+          ['deriveKey']
+        );
+
+        const derivedKey = await crypto.subtle.deriveKey(
+          {
+            name: 'PBKDF2',
+            salt: salt,
+            iterations: 100000,
+            hash: 'SHA-256'
+          },
+          baseKey,
+          { name: 'AES-GCM', length: 256 },
+          false,
+          ['encrypt']
+        );
+
+        const encrypted = await crypto.subtle.encrypt(
+          { name: 'AES-GCM', iv: iv, tagLength: 128 },
+          derivedKey,
+          masterKeyBuf
+        );
+
+        const encArr = new Uint8Array(encrypted);
+        const tag = encArr.slice(encArr.length - 16);
+        const cipher = encArr.slice(0, encArr.length - 16);
+
+        return {
+          salt: btoa(String.fromCharCode(...salt)),
+          iv: btoa(String.fromCharCode(...iv)),
+          tag: btoa(String.fromCharCode(...tag)),
+          wrappedKey: btoa(String.fromCharCode(...cipher))
+        };
+      } catch (e) {
+        console.error('Error re-embolcallant clau d\'estudiant:', e);
+        return null;
       }
     }
 
@@ -3025,6 +2569,14 @@
       if (isUserAuthenticated()) {
         authOverlay.style.display = 'none';
         mainContainer.style.display = 'block';
+        if (!window.decryptedSolutions) {
+          const cached = sessionStorage.getItem('SAD_DECRYPTED_SOLS');
+          if (cached) {
+            try {
+              window.decryptedSolutions = Object.freeze(JSON.parse(cached));
+            } catch (e) {}
+          }
+        }
         loadSavedResponses();
       } else {
         authOverlay.style.display = 'flex';
@@ -3046,7 +2598,7 @@
       }
     }
 
-    // Login d'alumnes amb PIN
+    // Login d'alumnes amb PIN, Honeypot i Desxifrat AES-GCM
     async function handleStudentLogin(e) {
       e.preventDefault();
       const input = document.getElementById('student-pin-input');
@@ -3054,13 +2606,22 @@
       const remember = document.getElementById('remember-device').checked;
       const pin = input.value.trim();
 
+      // Capa 2: Trampa Honeypot per a bots maliciosos
+      const hp = document.getElementById('sec_hp_website');
+      if (hp && hp.value) {
+        console.warn('Bot detectat via camp parany (honeypot)');
+        recordFailedAttempt(true);
+        showSecError(errEl, "Accés denegat per activitat sospitosa.");
+        return;
+      }
+
       if (!pin) return;
 
-      // Protecció contra atacs de força bruta
+      // Protecció contra atacs de força bruta amb bloqueig exponencial
       const attemptsData = getFailedAttempts();
       if (attemptsData.lockedUntil && Date.now() < attemptsData.lockedUntil) {
         const secLeft = Math.ceil((attemptsData.lockedUntil - Date.now()) / 1000);
-        showSecError(errEl, `Massa intents fallits. Bloquejat temporalment durant ${secLeft} segons.`);
+        showSecError(errEl, `🛡️ Massa intents fallits. Sistema bloquejat durant ${secLeft} segons.`);
         return;
       }
 
@@ -3068,6 +2629,13 @@
       const cfg = getSecurityConfig();
 
       if (hash === cfg.studentHash || hash === cfg.adminHash) {
+        // Desxifrat de seguretat en memòria
+        const decrypted = await decryptSolutionsEnvelope(pin);
+        if (decrypted) {
+          window.decryptedSolutions = Object.freeze(decrypted);
+          sessionStorage.setItem('SAD_DECRYPTED_SOLS', JSON.stringify(decrypted));
+        }
+
         resetFailedAttempts();
         errEl.style.display = 'none';
         const sessionData = JSON.stringify({ auth: true, time: Date.now() });
@@ -3078,12 +2646,12 @@
         input.value = '';
         updateAppDisplay();
       } else {
-        recordFailedAttempt();
+        recordFailedAttempt(false);
         input.value = '';
         input.focus();
         const curr = getFailedAttempts();
         if (curr.lockedUntil) {
-          showSecError(errEl, "Has superat el límit d'intents (5/5). Bloquejat durant 30 segons.");
+          showSecError(errEl, "⚠️ Has superat el límit d'intents. Bloquejat temporalment per seguretat.");
         } else {
           showSecError(errEl, `Codi PIN incorrecte (${curr.count}/5 intents). Consulta la teva coordinació docent.`);
         }
@@ -3098,14 +2666,23 @@
       return { count: 0, lockedUntil: null };
     }
 
-    function recordFailedAttempt() {
+    function recordFailedAttempt(isInstantLockout = false) {
       const data = getFailedAttempts();
       data.count = (data.count || 0) + 1;
-      if (data.count >= 5) {
-        data.lockedUntil = Date.now() + 30000;
+      data.lockoutLevel = data.lockoutLevel || 0;
+
+      if (isInstantLockout || data.count >= 5) {
+        data.lockoutLevel++;
+        // Bloqueig exponencial: 1r = 30s, 2n = 3min, 3r+ = 15min
+        let duration = 30000;
+        if (data.lockoutLevel === 2) duration = 180000;
+        if (data.lockoutLevel >= 3) duration = 900000;
+
+        data.lockedUntil = Date.now() + duration;
         data.count = 0;
       }
       sessionStorage.setItem(FAILED_ATTEMPTS_KEY, JSON.stringify(data));
+      localStorage.setItem(FAILED_ATTEMPTS_KEY, JSON.stringify(data));
     }
 
     function resetFailedAttempts() {
@@ -3180,6 +2757,11 @@
 
       if (hash === cfg.adminHash) {
         isAdminAuthenticated = true;
+        const decrypted = await decryptSolutionsEnvelope(key);
+        if (decrypted) {
+          window.decryptedSolutions = Object.freeze(decrypted);
+          sessionStorage.setItem('SAD_DECRYPTED_SOLS', JSON.stringify(decrypted));
+        }
         input.value = '';
         errEl.style.display = 'none';
         document.getElementById('admin-login-view').style.display = 'none';
@@ -3236,6 +2818,14 @@
 
       if (studentPin) {
         cfg.studentHash = await sha256(studentPin);
+        if (window.rawMasterKeyBuffer) {
+          const newWrap = await rewrapStudentKey(studentPin, window.rawMasterKeyBuffer);
+          if (newWrap) {
+            const envelope = getEnvelopeConfig();
+            envelope.studentWrap = newWrap;
+            localStorage.setItem('SAD_CUSTOM_ENVELOPE_V2', JSON.stringify(envelope));
+          }
+        }
       }
       if (adminPass) {
         cfg.adminHash = await sha256(adminPass);
@@ -3307,6 +2897,23 @@
       a.click();
       document.body.removeChild(a);
     }
+
+    
+    // ==========================================
+    // CAPA 4: ESCUT ANTI-INSPECCIÓ & ANTI-TAMPERING
+    // ==========================================
+    window.addEventListener('contextmenu', (e) => {
+      // Bloqueig de menú contextual sobre solucions oficials i dades sensibles
+      if (e.target.closest('.solution-panel') || e.target.closest('.hints-panel')) {
+        e.preventDefault();
+      }
+    });
+
+    // Segellat de seguretat d'objectes crítics
+    try {
+      Object.freeze(DEFAULT_STUDENT_HASH);
+      Object.freeze(DEFAULT_ADMIN_HASH);
+    } catch(e) {}
 
     // Drecera de teclat ràpida per a docents i administradors: Ctrl + Shift + A
     window.addEventListener('keydown', (e) => {
