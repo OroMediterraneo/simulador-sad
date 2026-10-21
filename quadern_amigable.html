@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quadern de Casos Pràctics · Atenció Sociosanitària Humana (UF0122 & UF0123)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Caveat:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FDFBF7;
+      --card-bg: #FFFFFF;
+      --text-main: #2D3748;
+      --text-muted: #718096;
+      --primary-warm: #E07A5F;
+      --primary-soft: #F4EBE1;
+      --teal-calm: #3D8B7A;
+      --teal-light: #EBF7F4;
+      --amber-warm: #F6BD60;
+      --amber-light: #FFF9ED;
+      --rose-soft: #F28482;
+      --rose-light: #FDEDED;
+      --blue-soft: #84A59D;
+      --blue-light: #EEF5F3;
+      --border-light: #E2E8F0;
+      --shadow-gentle: 0 8px 24px rgba(149, 157, 165, 0.12);
+      --radius-warm: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 30px 15px;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    /* Encapçalament amable */
+    header {
+      background: linear-gradient(135deg, #FFF9F3 0%, #F5EFEB 100%);
+      border: 2px solid #EFE4DC;
+      border-radius: var(--radius-warm);
+      padding: 35px 30px;
+      margin-bottom: 35px;
+      box-shadow: var(--shadow-gentle);
+      text-align: center;
+      position: relative;
+    }
+
+    .badge-sub {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary-warm);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: 2.2rem;
+      color: #332720;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .intro-text {
+      color: #63534B;
+      font-size: 1.05rem;
+      max-width: 750px;
+      margin: 0 auto 20px auto;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-print {
+      background-color: var(--teal-calm);
+      color: white;
+    }
+    .btn-print:hover {
+      background-color: #2F6C5E;
+      transform: translateY(-2px);
+    }
+
+    .btn-save {
+      background-color: var(--primary-warm);
+      color: white;
+    }
+    .btn-save:hover {
+      background-color: #C8654C;
+      transform: translateY(-2px);
+    }
+
+    .btn-clear {
+      background-color: #EDF2F7;
+      color: var(--text-main);
+    }
+    .btn-clear:hover {
+      background-color: #CBD5E0;
+    }
+
+    /* Index de navegació ràpid */
+    .cases-nav {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-gentle);
+    }
+
+    .nav-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--teal-calm);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-pill {
+      background: #F7FAFC;
+      border: 1px solid #E2E8F0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4A5568;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .nav-pill:hover {
+      background: var(--amber-light);
+      border-color: var(--amber-warm);
+      color: #975A16;
+    }
+
+    /* Fitxa de cas individual */
+    .case-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-warm);
+      border: 1px solid #ECE7DE;
+      box-shadow: 0 10px 30px rgba(78, 62, 53, 0.06);
+      margin-bottom: 40px;
+      overflow: hidden;
+      page-break-after: always;
+      position: relative;
+    }
+
+    .case-header {
+      background: linear-gradient(135deg, #FAF6F0 0%, #F5EEE6 100%);
+      padding: 24px 28px;
+      border-bottom: 1px solid #ECE5DC;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .case-identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: white;
+      border: 2px solid #EAE1D6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .case-title {
+      font-family: 'Lora', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2D231E;
+    }
+
+    .case-subtitle {
+      font-size: 0.9rem;
+      color: #7A665A;
+      font-weight: 500;
+    }
+
+    .case-tag {
+      background: #FFF;
+      border: 1px solid #E0D3C5;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--teal-calm);
+    }
+
+    .case-body {
+      padding: 28px;
+    }
+
+    /* La història de vida / situació */
+    .story-box {
+      background: var(--amber-light);
+      border-left: 5px solid var(--amber-warm);
+      border-radius: 0 12px 12px 0;
+      padding: 18px 22px;
+      margin-bottom: 25px;
+    }
+
+    .story-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #9C4221;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .story-content {
+      font-size: 1rem;
+      color: #4A3A31;
+      line-height: 1.65;
+    }
+
+    /* Resum visual en píndoles */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .quick-pill {
+      background: #FAF9F6;
+      border: 1px solid #ECE7E0;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .pill-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #E5DFD7;
+    }
+
+    .pill-meta {
+      flex: 1;
+    }
+
+    .pill-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #8C786A;
+      margin-bottom: 3px;
+    }
+
+    .pill-val {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #382F2A;
+    }
+
+    /* Espais per escriure respostes amb calidesa */
+    .response-section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #2D231E;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px dashed #E2D9CD;
+      padding-bottom: 8px;
+    }
+
+    .response-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .input-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E8E2D8;
+      border-radius: 14px;
+      padding: 16px 18px;
+      transition: all 0.2s ease;
+    }
+
+    .input-card:focus-within {
+      border-color: var(--teal-calm);
+      box-shadow: 0 0 0 3px rgba(61, 139, 122, 0.12);
+    }
+
+    .input-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .input-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #3C3028;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .input-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .friendly-textarea {
+      width: 100%;
+      min-height: 80px;
+      border: none;
+      outline: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem;
+      color: #2D3748;
+      background: #FCFAF7;
+      border-radius: 8px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.5;
+      border: 1px solid #EAE3DA;
+    }
+
+    .friendly-textarea:focus {
+      background: #FFFFFF;
+      border-color: var(--teal-calm);
+    }
+
+    .friendly-textarea::placeholder {
+      color: #A0AEC0;
+      font-style: italic;
+    }
+
+    /* Pista de suport desplegable */
+    details.hint-accordion {
+      margin-top: 18px;
+      background: var(--blue-light);
+      border: 1px solid #D6E4E0;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    details.hint-accordion summary {
+      padding: 12px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #2D554D;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    details.hint-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.hint-accordion[open] summary {
+      border-bottom: 1px solid #D6E4E0;
+      background: #E3ECE9;
+    }
+
+    .hint-body {
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: #344E47;
+      background: #FFFFFF;
+    }
+
+    .hint-body ul {
+      margin-left: 20px;
+      margin-top: 6px;
+    }
+
+    .hint-body li {
+      margin-bottom: 4px;
+    }
+
+    /* Peu de pàgina */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 25px;
+      color: #7A6A5E;
+      font-size: 0.9rem;
+    }
+
+    /* Impressió perfecta en paper / PDF */
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      .toolbar, .cases-nav, header, details.hint-accordion, footer {
+        display: none !important;
+      }
+      .case-card {
+        box-shadow: none;
+        border: 1px solid #CCC;
+        margin-bottom: 0;
+        page-break-after: always;
+      }
+      .friendly-textarea {
+        background: transparent;
+        border: 1px dashed #BBB;
+        min-height: 95px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Encapçalament humà i acollidor -->
+    <header>
+      <span class="badge-sub">Certificat SSCS0108 · UF0122 & UF0123</span>
+      <h1>Quadern de Casos Pràctics d'Atenció Domiciliària</h1>
+      <p class="intro-text">
+        Un espai formatiu, càlid i estructurat per entrenar la nostra mirada professional: aprendre a mirar a la persona més enllà del diagnòstic, cuidar la seva autonomia, protegir el seu entorn i acompanyar amb empatia i respecte al seu ritme.
+      </p>
+
+      <div class="toolbar">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Imprimir fitxes o desar en PDF</button>
+        <button class="btn btn-save" onclick="saveAllResponses()">💾 Desar les meves respostes</button>
+        <button class="btn btn-clear" onclick="clearAllResponses()">🗑️ Netejar el formulari</button>
+      </div>
+    </header>
+
+    <!-- Barra de navegació ràpida per persones -->
+    <div class="cases-nav">
+      <div class="nav-title">🧭 Accés directe als 25 casos:</div>
+      <div class="nav-pills">
+        <a href="#cas-1" class="nav-pill">01. Teresa (83a)</a>
+        <a href="#cas-2" class="nav-pill">02. Manuel (76a)</a>
+        <a href="#cas-3" class="nav-pill">03. Carme (81a)</a>
+        <a href="#cas-4" class="nav-pill">04. Antoni (69a)</a>
+        <a href="#cas-5" class="nav-pill">05. Mercè (88a)</a>
+        <a href="#cas-6" class="nav-pill">06. Ramon (74a)</a>
+        <a href="#cas-7" class="nav-pill">07. Dolors (79a)</a>
+        <a href="#cas-8" class="nav-pill">08. Joan (85a)</a>
+        <a href="#cas-9" class="nav-pill">09. Pilar (82a)</a>
+        <a href="#cas-10" class="nav-pill">10. Lluís (62a)</a>
+        <a href="#cas-11" class="nav-pill">11. Montserrat (77a)</a>
+        <a href="#cas-12" class="nav-pill">12. Esteve (80a)</a>
+        <a href="#cas-13" class="nav-pill">13. Conxita (86a)</a>
+        <a href="#cas-14" class="nav-pill">14. Miquel (72a)</a>
+        <a href="#cas-15" class="nav-pill">15. Francesca (84a)</a>
+        <a href="#cas-16" class="nav-pill">16. Pere (70a)</a>
+        <a href="#cas-17" class="nav-pill">17. Caritat (87a)</a>
+        <a href="#cas-18" class="nav-pill">18. Andreu (75a)</a>
+        <a href="#cas-19" class="nav-pill">19. Glòria (80a)</a>
+        <a href="#cas-20" class="nav-pill">20. Pau (82a)</a>
+        <a href="#cas-21" class="nav-pill">21. Assumpció (90a)</a>
+        <a href="#cas-22" class="nav-pill">22. Salvador (78a)</a>
+        <a href="#cas-23" class="nav-pill">23. Montserrat V. (81a)</a>
+        <a href="#cas-24" class="nav-pill">24. Enric (67a)</a>
+        <a href="#cas-25" class="nav-pill">25. Maria Lluïsa (85a)</a>
+      </div>
+    </div>
+
+    <!-- CONTENIDOR DE FITXES (Injecció dinàmica en Javascript per un codi net i editable) -->
+    <div id="cases-wrapper"></div>
+
+    <footer>
+      <p>Quadern formatiu desenvolupat amb pedagogia centrada en la persona · SSCS0108 Atenció Sociosanitària</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // Dades dels 25 casos pràctics amb mirada humana i càlida
+    const casesData = [
+      {
+        id: 1,
+        name: "Teresa",
+        age: 83,
+        avatar: "👵",
+        theme: "Sobreprotecció, por a caure i reactivació social",
+        quote: "Ja no puc fer res, tot m'ho ha de fer la meva filla...",
+        story: "La Teresa viu sola al seu pis de sempre. Camina amb bastó amb certa inseguretat i ha tingut alguna petita fallada de memòria recent. La seva filla, amb la millor intenció del món, li fa absolutament tot quan arriba a casa, deixant la Teresa asseguda al sofà. Té plaça assignada a un Centre de Dia al barri, però no hi vol anar per por i vergonya. A casa hi ha catifes soltes i poca llum al passadís.",
+        pills: [
+          { icon: "🚶", label: "Mobilitat", val: "Marxa amb bastó (risc de caiguda)" },
+          { icon: "💡", label: "Entorn", val: "Catifes soltes, llum insuficient" },
+          { icon: "👨‍👩‍👧", label: "Xarxa", val: "Filla sobreprotectora ('li fa tot')" },
+          { icon: "🏘️", label: "Comunitat", val: "Té Centre de Dia assignat (no hi va)" }
+        ],
+        hint: [
+          "Recorda el principi d'ajuda mínima: fer les coses amb ella, no pas per ella.",
+          "Com pactar amb la filla que la mare necessita col·laborar per no perdre capacitats?",
+          "Com introduir el Centre de Dia de manera gradual sense forçar?"
+        ]
+      },
+      {
+        id: 2,
+        name: "Manuel",
+        age: 76,
+        avatar: "👴",
+        theme: "Postoperatori de pròtesi de maluc i superació de la por",
+        quote: "Tinc pànic de tornar a caure, millor em quedo assegut aquí tot el dia.",
+        story: "En Manuel és vidu fa vuit mesos. Després d'una fractura de maluc i la cirurgia de pròtesi, li han indicat caminar amb un caminador de dues rodes, però roman a la butaca hores i hores. El parquet de la vivenda està molt encerat, té sabatilles destalonades i la banyera no disposa de cap agafador ni seient adaptat. Abans jugava a la petanca amb els amics cada tarda.",
+        pills: [
+          { icon: "🦽", label: "Mobilitat", val: "Caminador prescrit (síndrome post-caiguda)" },
+          { icon: "🛁", label: "Entorn", val: "Banyera sense agafador, parquet encerat" },
+          { icon: "🖤", label: "Estat anímic", val: "Dol recent de l'esposa i aïllament" },
+          { icon: "🎯", label: "Objectiu", val: "Recuperar seguretat i vincle amb la petanca" }
+        ],
+        hint: [
+          "Seqüència segura de marxa amb caminador (caminador -> cama operada -> cama sana).",
+          "Retirar cera i sabatilles destalonades (calçat tancat amb velcro).",
+          "Acompanyar-lo una tarda a veure els amics de la petanca a mirar el joc."
+        ]
+      },
+      {
+        id: 3,
+        name: "Carme",
+        age: 81,
+        avatar: "👩‍🏫",
+        theme: "Deteriorament cognitiu incipient i descans del cuidador",
+        quote: "No sé per què el meu marit s'enfada tant, jo encara sé portar la meva casa!",
+        story: "La Carme, antiga mestra d'escola, viu amb el seu marit Joan (84 anys, amb dolor articular i cansat). La Carme ha començat a oblidar olles al foc i a la botiga compra cinc vegades el mateix paquet d'arròs. Quan el seu marit li fa notar els oblits, la Carme es frustra moltíssim i s'irrita. El Joan no pot més i se sent angoixat dia i nit.",
+        pills: [
+          { icon: "🧠", label: "Cognició", val: "Oblits freqüents, desorientació en temps" },
+          { icon: "🍳", label: "Risc a la llar", val: "Cuina de gas antiga, olles oblidades" },
+          { icon: "🤝", label: "Cuidador", val: "Marit sobrecarregat i desbordat" },
+          { icon: "❤️", label: "Clau d'empatia", val: "Mantenir el seu rol d'antiga mestra" }
+        ],
+        hint: [
+          "Mai confrontar ni discutir l'oblit: redirigir amb afecte.",
+          "Implicar-la a la cuina en tasques segures (netejar verdures) mentre el SAD vigila el foc.",
+          "Fer la llista de la compra plegades abans de sortir."
+        ]
+      },
+      {
+        id: 4,
+        name: "Antoni",
+        age: 69,
+        avatar: "🎨",
+        theme: "Parkinson, bradicinèsia i respecte del propi ritme",
+        quote: "Em costa molt arrencar a caminar, i quan em fiquen pressa encara em bloquejo més.",
+        story: "L'Antoni té Parkinson des de fa 5 anys. Pateix tremolor a la mà dreta i una gran lentitud motora. Quan arriba al marc de les portes o passadissos estrets, els seus peus es queden literalment enganxats a terra (bloqueig). La seva germana el vesteix i li dóna el menjar a la boca a correcuita per estalviar temps, fet que fa sentir a l'Antoni profundament humiliat.",
+        pills: [
+          { icon: "⏱️", label: "Ritme", val: "Bradicinèsia (lentitud) i bloqueig de peus" },
+          { icon: "👕", label: "Vestit", val: "Dificultat amb botons i cremalleres" },
+          { icon: "👥", label: "Relació familiar", val: "Germana que supleix per anar ràpid" },
+          { icon: "✨", label: "Clau", val: "Aprofitar fases 'ON' del fàrmac i pistes rítmiques" }
+        ],
+        hint: [
+          "Consignes auditives o visuals per superar el bloqueig (comptar 'un-dos' o línia al terra).",
+          "Adaptacions de roba: velcro i tiradors amples.",
+          "Explicar a la germana que la pressa bloqueja els ganglis basals."
+        ]
+      },
+      {
+        id: 5,
+        name: "Mercè",
+        age: 88,
+        avatar: "📚",
+        theme: "Baixa visió severa (DMAE) i seguretat de l'espai",
+        quote: "Si em canvien un sol got de lloc a la cuina, em quedo completament perduda.",
+        story: "La Mercè conserva una memòria i una lucidesa extraordinàries, però la degeneració macular només li permet distingir llums i volums borrosos. Una veïna de bona fe li endreça la cuina cada dos per tres canviant els pots de lloc. A la tauleta de nit té totes les capses de pastilles barrejades, amb greu risc d'equivocar-se. Troba molt a faltar poder llegir.",
+        pills: [
+          { icon: "👁️", label: "Sensorial", val: "Visió molt reduïda (ombres perifèriques)" },
+          { icon: "💊", label: "Risc vital", val: "Capses de fàrmacs barrejades i idèntiques" },
+          { icon: "📦", label: "Ordre", val: "Desubicació quan li mouen objectes" },
+          { icon: "📖", label: "Il·lusió", val: "Gran passió per les novel·les i la lectura" }
+        ],
+        hint: [
+          "Regla d'or en baixa visió: l'ordre espacial estricte mai es toca.",
+          "Pastiller setmanal tancat (SPD) preparat per farmàcia / supervisió.",
+          "Recursos d'audiollibres de la biblioteca / ONCE i marques tàctils amb relleu."
+        ]
+      },
+      {
+        id: 6,
+        name: "Ramon",
+        age: 74,
+        avatar: "🧱",
+        theme: "Ictus, hemiplegia i dol per la pèrdua de força",
+        quote: "Jo abans podia amb tot a l'obra i ara sóc una nosa per a la meva dona.",
+        story: "En Ramon, extreballador de la construcció, va patir un ictus fa sis mesos. Té el costat esquerre paralitzat (marxa de segador i braç immòbil). Sovint es posa a plorar de cop sense motiu aparent (labilitat emocional) o té atacs de ràbia. La seva dona Maria té la salut molt afeblida i està esgotada de fer-li tots els trasllats.",
+        pills: [
+          { icon: "♿", label: "Físic", val: "Hemiplegia esquerra, transferències difícils" },
+          { icon: "😢", label: "Emocional", val: "Labilitat emocional i ràbia reactiva" },
+          { icon: "🩹", label: "Cuidadora", val: "Esposa al límit de la claudicació física" },
+          { icon: "🍽️", label: "Alimentació", val: "Dificultat per tallar aliments" }
+        ],
+        hint: [
+          "Seqüència de vestit per a hemiplègics (primer s'entra el braç afectat, per despullar el sa).",
+          "Acceptar el plor sobtat com una conseqüència neurològica, sense retrets.",
+          "Taula de tallar adaptada i donar descans de 2 hores a l'esposa."
+        ]
+      },
+      {
+        id: 7,
+        name: "Dolors",
+        age: 79,
+        avatar: "📻",
+        theme: "Pèrdua auditiva, audiòfons desatesos i deliri reactiu",
+        quote: "La gent murmura i parla malament de mi d'amagat, ho sé de sobres!",
+        story: "La Dolors viu sola. Té una pèrdua auditiva severa però guarda els audiòfons al calaix perquè li fan xiulets molestos. Té la tele a un volum ensordidor que molesta els veïns. Com que no sent les converses, s'ha tornat molt desconfiada i pensa que la família parla d'ella en veu baixa quan la visiten.",
+        pills: [
+          { icon: "👂", label: "Sensorial", val: "Presbiacúsia severa, audiòfons al calaix" },
+          { icon: "📺", label: "Veïnat", val: "Queixes pel volum excessiu de la televisió" },
+          { icon: "🛑", label: "Relació", val: "Aïllament i sentiments paranoides" },
+          { icon: "🗣️", label: "Comunicació", val: "Dificultat per atendre el telèfon" }
+        ],
+        hint: [
+          "Neteja i revisió de piles de l'audiòfon; col·locar-se davant seu a la seva alçada per facilitar lectura labial.",
+          "Subtítols a la televisió i avisador lluminós per al timbre de l'escala.",
+          "Ensenyar als fills a fer videotrucades en lloc de trucades només de veu."
+        ]
+      },
+      {
+        id: 8,
+        name: "Joan",
+        age: 85,
+        avatar: "🚪",
+        theme: "Rebuig frontal al SAD i defensa de la intimitat",
+        quote: "Jo no he demanat que vingui ningú a manar a casa meva, marxin!",
+        story: "En Joan és un home molt digne, vidu i culte. Té artrosi que li dificulta caminar i la nevera té aliments en mal estat perquè li costa anar a comprar. Els serveis socials li han assignat el SAD, però quan el professional truca al timbre, ell no obre o diu a través de la porta que no vol desconeguts a casa seva.",
+        pills: [
+          { icon: "🛡️", label: "Actitud", val: "Rebuig inicial per por a perdre el control" },
+          { icon: "🥗", label: "Higiene/Nutrició", val: "Nevera descuidada i roba bruta" },
+          { icon: "🤝", label: "Vincle", val: "Cal guanyar-se la seva confiança des del respecte" },
+          { icon: "📑", label: "Coordinació", val: "Pla compartit amb Treball Social" }
+        ],
+        hint: [
+          "Paciència i no envair: presentar-se amb to molt educat demanant permís abans d'entrar.",
+          "Començar oferint només ajuda externa (portar el pa o el diari) sense tocar res de la casa.",
+          "Reconèixer la seva autoritat com a amo de la seva llar."
+        ]
+      },
+      {
+        id: 9,
+        name: "Pilar",
+        age: 82,
+        avatar: "📦",
+        theme: "Acumulació d'objectes i perill d'insalubritat",
+        quote: "No toqueu cap d'aquestes capses, tot això té valor i ho necessitaré algun dia!",
+        story: "La Pilar acumula diaris de fa vint anys, envasos de plàstic buits i bosses per tot el menjador i el passadís. Només queda un caminet estret de 30 centímetres per passar. El fill s'ha barallat amb ella perquè volia llençar-ho tot a la força en un contenidor, i ara la Pilar està a la defensiva i angoixada per si li prenen les seves coses.",
+        pills: [
+          { icon: "🔥", label: "Risc crític", val: "Incendi, bloqueig d'evacuació i caigudes" },
+          { icon: "📦", label: "Conducta", val: "Trastorn d'acumulació / por al buit" },
+          { icon: "⚡", label: "Conflicte", val: "Tensió amb el fill per intents de buidatge forçós" },
+          { icon: "🧹", label: "Higiene", val: "Dificultat extrema per netejar el terra" }
+        ],
+        hint: [
+          "Mai llençar res d'amagat ni davant seu sense pactar-ho: augmentaria el seu pànic.",
+          "Negociar alliberar un passadís de seguretat per motius mèdics.",
+          "Classificar en capses transparents i substituir deixalles per caixes endreçades."
+        ]
+      },
+      {
+        id: 10,
+        name: "Lluís",
+        age: 62,
+        avatar: "🧩",
+        theme: "Discapacitat intel·lectual i mare d'edat avançada al llit",
+        quote: "La mare fa dies que no s'aixeca i no sé què he de fer amb les pastilles...",
+        story: "En Lluís té una discapacitat intel·lectual moderada. És carinyós i té bona mobilitat, però tota la vida la seva mare (ara de 91 anys i enllitada) ha estat qui li deia el que havia de fer en cada moment. En Lluís està molt angoixat de veure la mare sense moure's i té perill de confondre's amb la medicació o de cremar-se a la cuina.",
+        pills: [
+          { icon: "🧠", label: "Autonomia", val: "Requereix instruccions simples i concretes" },
+          { icon: "🛏️", label: "Família", val: "Mare enllitada amb gran dependència" },
+          { icon: "📋", label: "Rutina", val: "Pèrdua dels seus horaris i referents habituals" },
+          { icon: "⚠️", label: "Seguretat", val: "Medicació de la mare a l'abast" }
+        ],
+        hint: [
+          "Retirar immediatament la medicació de l'abast i derivar-la a control professional.",
+          "Panell de rutines amb dibuixos o pictogrames clars.",
+          "Donar-li un rol actiu on se senti útil (portar el got d'aigua o el tovalló a la mare)."
+        ]
+      },
+      {
+        id: 11,
+        name: "Montserrat",
+        age: 77,
+        avatar: "🕯️",
+        theme: "Dol complicat, astènia i pèrdua de sentit vital",
+        quote: "Sense el meu marit la meva vida ja no té cap valor; tant de bo me'n vagi amb ell.",
+        story: "La Montserrat va cuidar del seu espòs malalt durant sis anys fins que va morir fa quatre mesos. Des d'aleshores, no obre les persianes de casa, menja molt poc (ha perdut 6 kg) i té l'habitació plena d'espelmes enceses davant de fotografies sense vigilància. S'ha distanciat de totes les seves amigues de la colla.",
+        pills: [
+          { icon: "💔", label: "Ànim", val: "Dol congelat / depressió reactiva greu" },
+          { icon: "🕯️", label: "Risc incendi", val: "Espelmes de cera enceses prop de cortines" },
+          { icon: "🥣", label: "Nutrició", val: "Pèrdua alarmant de pes i gana" },
+          { icon: "☀️", label: "Entorn", val: "Casa a les fosques tot el dia" }
+        ],
+        hint: [
+          "Substituir espelmes de foc per llums LED càlids a piles (respectant el símbol de record).",
+          "Obrir persianes per deixar entrar llum solar; escolta activa sense frases clixé.",
+          "Derivació urgent a suport psicològic i metge del CAP."
+        ]
+      },
+      {
+        id: 12,
+        name: "Esteve",
+        age: 80,
+        avatar: "🩺",
+        theme: "Diabetis mal controlada i negligència amb el peu",
+        quote: "De quelcom s'ha de morir un, no em traureu el dolç que és el meu únic plaer!",
+        story: "L'Esteve té diabetis tipus 2 de llarga evolució i neuropatia (no sent bé el dolor als peus). Té el costum de tallar-se les durícies amb tisores esmolades al bany i caminar descalç. A la planta del peu té una vermellor inflada que no es cura. S'amaga pastissos i refrescos ensucrats al calaix.",
+        pills: [
+          { icon: "🦶", label: "Peu diabètic", val: "Pèrdua de sensibilitat i lesió ulcerosa incipient" },
+          { icon: "✂️", label: "Pràctica perillosa", val: "Ús de tisores per tallar durícies" },
+          { icon: "🍰", label: "Dieta", val: "Consum d'aliments rics en sucre a d'amagat" },
+          { icon: "🧑‍⚕️", label: "Límit SAD", val: "Mai fer cures quirúrgiques ni tallar durícies" }
+        ],
+        hint: [
+          "Avisar immediatament a Infermeria del CAP per a la cura de la ferida.",
+          "Retirar tisores perilloses; rentat suau amb assecat minuciós entre els dits.",
+          "Pactar canvis d'aliments dolços per fruita fresca saborosa sense prohibicions agressives."
+        ]
+      },
+      {
+        id: 13,
+        name: "Conxita",
+        age: 86,
+        avatar: "🌙",
+        theme: "Desorientació nocturna (Sundowning) i deambulació",
+        quote: "He de marxar de pressa que tinc la botiga oberta i m'estan esperant!",
+        story: "La Conxita té demència en fase moderada. De dia està tranquil·la, però quan comença a enfosquir (a partir de les 18 h) s'angoixa moltíssim. Es lleva a les tres de la matinada vestida d'abric i intenta agafar l'ascensor de l'escala. El fill, molt espantat, es planteja passar la clau per fora i deixar-la tancada.",
+        pills: [
+          { icon: "🌆", label: "Sundowning", val: "Agitació i confusió en caure la tarda" },
+          { icon: "🚪", label: "Deambulació", val: "Sortides nocturnes desorientada al replà" },
+          { icon: "⚖️", label: "Ètica i llei", val: "Tancar amb clau és il·legal i perillós" },
+          { icon: "💡", label: "Llum", val: "Augmentar il·luminació abans del capvespre" }
+        ],
+        hint: [
+          "Mantenir activitat al matí i evitar migdiades llargues; encendre llums abans de la foscor.",
+          "Sensors de presència o teleassistència avançada en comptes de panys tancats.",
+          "Validar l'emoció sense discutir (parlar de la botiga amb afecte mentre es pren un brou calent)."
+        ]
+      },
+      {
+        id: 14,
+        name: "Miquel",
+        age: 72,
+        avatar: "🫁",
+        theme: "MPOC, oxigenoteràpia i seguretat vital davant el tabac",
+        quote: "Aquesta màquina d'oxigen m'ofega més de l'angoixa que em fa portar-la.",
+        story: "En Miquel pateix una malaltia pulmonar obstructiva crònica greu. Està connectat a un concentrador d'oxigen domiciliari amb un tub llarg que va per terra per tota la casa. Malgrat el perill, fuma d'amagat quan la seva dona surt a comprar. La seva dona té atacs de pànic per la por que es cali foc.",
+        pills: [
+          { icon: "💥", label: "Risc extrem", val: "Explosió/foc per oxigen + cigarret encès" },
+          { icon: "➰", label: "Entorn", val: "Tub llarg per terra que provoca ensopegades" },
+          { icon: "😮‍💨", label: "Dispnea", val: "Ofec intens en fer qualsevol esforç mínim" },
+          { icon: "🛋️", label: "Adaptació", val: "Tècniques d'estalvi d'energia per al vestit i bany" }
+        ],
+        hint: [
+          "Prohibició total de fumar prop de l'oxigen; retirar cendrers.",
+          "Higiene i vestit assegut en cadira amb reposabraços i respiració amb llavis frunzits.",
+          "Fixar el tub d'oxigen per evitar ensopegades."
+        ]
+      },
+      {
+        id: 15,
+        name: "Francesca",
+        age: 84,
+        avatar: "🌸",
+        theme: "Incontinència urinària oculta, estigma i dignitat",
+        quote: "A mi no em passa res, només sóc una mica despistada...",
+        story: "La Francesca és una senyora que sempre ha estat molt presumida i elegant. Fa uns mesos pateix pèrdues d'orina importants, però per vergonya no compra compreses adequades. Amaga la roba bruta al fons dels calaixos i el pis comença a fer olor. Ha deixat d'anar a veure les seves amigues per terror que se li noti la taca a la roba.",
+        pills: [
+          { icon: "💧", label: "Salut", val: "Incontinència no tractada i pell macerada" },
+          { icon: "😔", label: "Autoestima", val: "Sentiment profund d'humiliació i vergonya" },
+          { icon: "🔒", label: "Aïllament", val: "Renúncia a les sortides i a les amistats" },
+          { icon: "🩲", label: "Solució tècnica", val: "Productes absorbents discrets tipus 'pants'" }
+        ],
+        hint: [
+          "Tractar el tema amb naturalitat absoluta: és una condició física comuna, mai una vergonya.",
+          "Proposar absorbents elàstics d'un sol ús com calces convencionals.",
+          "Planificar 'la ruta dels lavabos' al carrer per recuperar les passejades."
+        ]
+      },
+      {
+        id: 16,
+        name: "Pere",
+        age: 70,
+        avatar: "🦽",
+        theme: "Amputació de cama, cadira de rodes i pis sense ascensor",
+        quote: "Fa deu mesos que no trepitjo el carrer; visc tancat en una gàbia.",
+        story: "En Pere va patir una amputació per sobre del genoll a la cama dreta. Té bona força als braços i sap utilitzar la cadira de rodes, però viu en un primer pis amb 16 graons i sense ascensor. Les portes interiors són molt estretes. Un antic company de feina li puja el menjar un cop per setmana, però en Pere se sent completament desconnectat del món.",
+        pills: [
+          { icon: "🧱", label: "Barrera", val: "Escales sense ascensor (enclaustrament)" },
+          { icon: "💪", label: "Potencial", val: "Bona força al tren superior per a transferències" },
+          { icon: "🩹", label: "Pell", val: "Risc d'úlceres als isquis per estar sempre assegut" },
+          { icon: "🤝", label: "Xarxa", val: "Molt poca relació social externa" }
+        ],
+        hint: [
+          "Treballar les transferències amb taula de transferència i bloqueig de frens.",
+          "Activar servei de cadira erugada / voluntariat per a sortides puntuals al carrer.",
+          "Canvis de postura i coixí viscoelàstic per protegir la pell."
+        ]
+      },
+      {
+        id: 17,
+        name: "Caritat",
+        age: 87,
+        avatar: "💊",
+        theme: "Polimedicació descontrolada i angoixa per la salut",
+        quote: "Quan em marejo em prenc una pastilla de més, perquè em faci efecte abans.",
+        story: "La Caritat té una col·lecció de 14 capses de fàrmacs a la taula de la cuina. Algunes estan caducades, altres són la mateixa substància però amb marques comercials diferents. Té una por constant de posar-se malalta i va cada dos per tres al servei d'urgències de l'ambulatori. El seu fill li compra les medicines però no té temps d'organitzar-les.",
+        pills: [
+          { icon: "⚠️", label: "Risc químic", val: "Sobredosi i duplicitat de fàrmacs perillosa" },
+          { icon: "😰", label: "Estat anímic", val: "Hipocondria i angoixa davant qualsevol símptoma" },
+          { icon: "📦", label: "Caos", val: "Fàrmacs caducats barrejats amb els nous" },
+          { icon: "🏥", label: "CAP", val: "Necessitat d'unificar pautes amb infermeria" }
+        ],
+        hint: [
+          "El tècnic SAD mai recepta ni canvia pastilles: retira caducades al punt SIGRE.",
+          "Sol·licitar el blíster setmanal tancat (SPD) a la farmàcia.",
+          "Tècniques de relaxació i conversa davant les queixes d'angoixa corporal."
+        ]
+      },
+      {
+        id: 18,
+        name: "Andreu",
+        age: 75,
+        avatar: "🛋️",
+        theme: "Sedentarisme extrem i pèrdua de massa muscular",
+        quote: "Ja estic jubilat i no faig cap falta enlloc; millor no molestar a ningú.",
+        story: "L'Andreu passa 14 hores diàries assegut a la mateixa butaca amb la televisió posada. Ha perdut tanta massa muscular (sarcopènia) que ara li costa fins i tot aixecar-se per anar a la cuina. Menja bàsicament pa amb formatge i llaunes. Els seus fills pensen que 'és normal que descansi perquè ja és gran'.",
+        pills: [
+          { icon: "📉", label: "Físic", val: "Pèrdua muscular greu per inactivitat (sarcopènia)" },
+          { icon: "🥪", label: "Nutrició", val: "Manca de proteïna i nutrients frescos" },
+          { icon: "📺", label: "Hàbits", val: "Roba de dormir tot el dia i persianes tancades" },
+          { icon: "🌱", label: "Motivació", val: "Rescatar les seves antigues aficions i ofici" }
+        ],
+        hint: [
+          "Posar-se roba de carrer cada matí com a teràpia de reactivació.",
+          "Petits reptes físics: aixecar-se 5 cops de la butaca a cada visita del SAD.",
+          "Introduir aliments rics en proteïna i passejos curts amb els fills."
+        ]
+      },
+      {
+        id: 19,
+        name: "Glòria",
+        age: 80,
+        avatar: "⚡",
+        theme: "Demència Frontotemporal i alteració del filtre social",
+        quote: "No em toqueu! Ets una inútil i no fas res de bo!",
+        story: "La Glòria té una demència frontal. Manté bona memòria i força física, però el seu cervell ha perdut el fre inhibitori: crida insults sobtats a la filla i al professional, agafa del braç amb força i fa comentaris feridors. La seva filla Anna no para de plorar perquè no reconeix la seva mare educada d'abans.",
+        pills: [
+          { icon: "🧠", label: "Neurologia", val: "Dany als lòbuls frontals (pèrdua de filtre)" },
+          { icon: "🗣️", label: "Conducta", val: "Desinhibició verbal i agafades sobtades" },
+          { icon: "💔", label: "Cuidadora", val: "Filla devastada pel canvi de personalitat" },
+          { icon: "🛡️", label: "Maneig", val: "No confrontar, distreure i to de veu pausat" }
+        ],
+        hint: [
+          "Comprendre que és la malaltia qui insulta, no pas la persona: mai discutir.",
+          "Redirecció ràpida a un tema agradable o música tranquil·la.",
+          "Psicoeducació a la filla per desculpabilitzar-la."
+        ]
+      },
+      {
+        id: 20,
+        name: "Pau",
+        age: 82,
+        avatar: "🥣",
+        theme: "Tos durant els àpats (Disfàgia) i deshidratació",
+        quote: "Quan bec aigua m'ofego una mica, prefereixo no beure per no anar tant al lavabo.",
+        story: "En Pau és un home prim que viu sol. Durant el dinar, cada vegada que fa un glop d'aigua del got fa cops de tos secs. Les ampolles d'aigua de casa estan gairebé intactes. Té la pell molt seca i al capvespre té episodis de confusió que milloren l'endemà quan es desperta.",
+        pills: [
+          { icon: "🫁", label: "Risc vital", val: "Pneumònia per aspiració en tossir amb l'aigua" },
+          { icon: "🚰", label: "Deshidratació", val: "Ingesta de líquids alarmantment baixa" },
+          { icon: "🥣", label: "Alimentació", val: "Menja poc per mandra de mastegar" },
+          { icon: "📐", label: "Postura", val: "Necessitat de seure a 90° amb mentó al pit" }
+        ],
+        hint: [
+          "Introduir aigua espessida o gelificada; prohibició absoluta de palletes per beure.",
+          "Postura de flexió cervical anterior (cap una mica endavant en empassar).",
+          "Avisar al metge del CAP per a test de deglució."
+        ]
+      },
+      {
+        id: 21,
+        name: "Assumpció",
+        age: 90,
+        avatar: "🛏️",
+        theme: "Dependència total al llit, pell delicada i esquena del fill",
+        quote: "...",
+        story: "L'Assumpció té Alzheimer avançat i roman al llit permanentment. No parla, però expressa dolor quan la mouen de manera sobtada. Té una zona vermella al sacre que no es blanqueja quan s'apreta. El seu fill Jaume (65 anys) la mou estirant-li dels braços i té una hèrnia discal que li impedeix aguantar-se dret.",
+        pills: [
+          { icon: "⚠️", label: "Úlceres (UPP)", val: "Eritema sacre estadi 1 per pressió contínua" },
+          { icon: "🛏️", label: "Material", val: "Llit baix convencional sense matalàs d'aire" },
+          { icon: "💥", label: "Cuidador", val: "Fill amb lesió d'esquena greu en mobilitzar" },
+          { icon: "🔄", label: "Postura", val: "Canvis posturals obligatoris cada 2-3 hores" }
+        ],
+        hint: [
+          "Protocol de canvis posturals i aplicació d'àcids grassos hiperoxigenats (sense fregar fort).",
+          "Sol·licitud urgent de llit articulat, matalàs d'aire alternant i grua.",
+          "Ús de l'entremesa de cotó per moure-la en equip protegint l'esquena."
+        ]
+      },
+      {
+        id: 22,
+        name: "Salvador",
+        age: 78,
+        avatar: "🧭",
+        theme: "Desorientació a l'exterior i angoixa de sortir sol",
+        quote: "L'altre dia em va portar la policia a casa; ara tinc por de posar un peu al carrer.",
+        story: "En Salvador es mou àgilment, però fa dues setmanes es va despistar tornant del mercat i no sabia on era el seu carrer durant hores. Des d'aquell dia està tancat amb pany i forrellat a casa per terror a tornar-se a perdre. No porta mòbil ni cap paper amb el telèfon dels seus familiars a les butxaques.",
+        pills: [
+          { icon: "🗺️", label: "Orientació", val: "Pèrdua de referències topogràfiques al barri" },
+          { icon: "😨", label: "Emoció", val: "Trauma recent per haver estat perdut" },
+          { icon: "🏷️", label: "Identificació", val: "No porta cap targeta de contacte a sobre" },
+          { icon: "🥖", label: "Comerç amic", val: "Botiguers del barri que el coneixen bé" }
+        ],
+        hint: [
+          "Targeta de contacte plastificada a totes les jaquetes i polsera identificativa.",
+          "Sortides acompanyades seguint un mateix itinerari rígid i segur.",
+          "Parar a xerrar amb el forner de confiança per reforçar la seguretat del barri."
+        ]
+      },
+      {
+        id: 23,
+        name: "Montserrat V.",
+        age: 81,
+        avatar: "☎️",
+        theme: "Solitud severa, necessitat d'afecte i perill d'engany",
+        quote: "Almenys aquests nois que em truquen per vendre'm coses em parlen amb molt carinyo.",
+        story: "La Montserrat no té relació amb la seva família des de fa molts anys i viu sola. Ha gastat milers d'euros comprant enciclopèdies inútils i matalassos màgics a comercials telefònics agressius només perquè li donen una estona de conversa dolça. Obre la porta a qualsevol que li digui una paraula amable.",
+        pills: [
+          { icon: "💸", label: "Vulnerabilitat", val: "Risc d'estafa econòmica i enganys a domicili" },
+          { icon: "❤️", label: "Causa arrel", val: "Solitud no desitjada i necessitat de comunicació" },
+          { icon: "🛑", label: "Prevenció", val: "Filtre de trucades i avís de no signar res a la porta" },
+          { icon: "👥", label: "Solució humana", val: "Vincle amb voluntariat d'acompanyament telefònic" }
+        ],
+        hint: [
+          "Cartell de protecció amable a la porta ('Davant de qualsevol dubte, consultar al SAD').",
+          "Canalitzar la seva necessitat de parlar cap a entitats de voluntariat social com Amics de la Gent Gran.",
+          "Coordinació amb Treball Social per a mesures de suport a la capacitat jurídica."
+        ]
+      },
+      {
+        id: 24,
+        name: "Enric",
+        age: 67,
+        avatar: "⚙️",
+        theme: "ELA incipient, pèrdua de força a les mans i dignitat",
+        quote: "El meu cap està tan clar com sempre, però les meves mans comencen a fallar-me.",
+        story: "L'Enric és enginyer jubilat fa poc. Té un diagnòstic recent d'Esclerosi Lateral Amiotròfica (ELA). Comença a notar que no pot agafar els coberts, cordar-se la camisa ni girar les manetes rodones de les portes. Vol decidir absolutament tot sobre la seva vida i s'angoixa si algú el tracta com si fos un infant.",
+        pills: [
+          { icon: "🧠", label: "Cognició", val: "Lucidesa total i gran capacitat analítica" },
+          { icon: "🖐️", label: "Físic", val: "Pèrdua progressiva de força a les mans" },
+          { icon: "🚪", label: "Adaptació", val: "Manetes rodones dures, interruptors petits" },
+          { icon: "🤝", label: "Rol SAD", val: "Preguntar sempre abans d'ajudar; ell dirigeix" }
+        ],
+        hint: [
+          "Canviar manetes de portes per palanques suaus i coberts amb mànec d'escuma engruixit.",
+          "Respectar la seva presa de decisions: mai actuar de manera paternalista.",
+          "Connexió amb la Fundació d'ELA per a banc de productes de suport."
+        ]
+      },
+      {
+        id: 25,
+        name: "Maria Lluïsa",
+        age: 85,
+        avatar: "🚶‍♀️",
+        theme: "Debilitat després d'hospitalització i por de fer nosa",
+        quote: "Perdoneu que us doni tanta feina, jo només sé que molestar...",
+        story: "La Maria Lluïsa vivia de forma independent fins que va patir una pneumònia que la va deixar 10 dies al llit de l'hospital. Ara és a casa, però té les cames tan febles que té por d'anar al lavabo sola i demana contínuament l'orinal per no aixecar-se. La seva filla està espantada pensant que la seva mare ja no tornarà a caminar mai més.",
+        pills: [
+          { icon: "🏥", label: "Origen", val: "Debilitat per llit d'hospital (reversible amb exercici)" },
+          { icon: "🚽", label: "Hàbit perillós", val: "Demanar l'orinal per comoditat i por" },
+          { icon: "🥺", label: "Culpa", val: "Sentiment de ser una càrrega per a la família" },
+          { icon: "📈", label: "Objectiu", val: "Recuperar la marxa acompanyada de mica en mica" }
+        ],
+        hint: [
+          "Retirar l'ús de l'orinal durant el dia per afavorir les transferències actives al vàter.",
+          "Passejos curts amb suport per recuperar força muscular diària.",
+          "Desculpabilitzar-la: recordar-li que no molesta i que el seu cos s'està recuperant amb èxit."
+        ]
+      }
+    ];
+
+    // Renderitzador dinàmic de les fitxes
+    const container = document.getElementById('cases-wrapper');
+
+    casesData.forEach(c => {
+      const card = document.createElement('article');
+      card.className = 'case-card';
+      card.id = `cas-${c.id}`;
+
+      card.innerHTML = `
+        <div class="case-header">
+          <div class="case-identity">
+            <div class="avatar">${c.avatar}</div>
+            <div>
+              <div class="case-title">${c.id < 10 ? '0' + c.id : c.id}. ${c.name} (${c.age} anys)</div>
+              <div class="case-subtitle">${c.theme}</div>
+            </div>
+          </div>
+          <span class="case-tag">Fitxa de Treball SAD</span>
+        </div>
+
+        <div class="case-body">
+          <div class="story-box">
+            <div class="story-title">💬 La seva veu i la seva història</div>
+            <p class="story-content"><em>"${c.quote}"</em></p>
+            <p class="story-content" style="margin-top: 8px;">${c.story}</p>
+          </div>
+
+          <div class="quick-grid">
+            ${c.pills.map(p => `
+              <div class="quick-pill">
+                <span class="pill-icon">${p.icon}</span>
+                <div class="pill-meta">
+                  <div class="pill-label">${p.label}</div>
+                  <div class="pill-val">${p.val}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="response-section-title">
+            ✍️ Espai de Resolució Tècnica (El que ens pertoca fer)
+          </div>
+
+          <div class="response-grid">
+            <div class="input-card">
+              <div class="input-header">
+                <label class="input-label" for="resp-${c.id}-1">💛 1. Necessitats Psicosocials i Emocionals</label>
+                <span class="input-hint">Com se sent? Què necessita per estar tranquil/a?</span>
+              </div>
+              <textarea class="friendly-textarea" id="resp-${c.id}-1" placeholder="Escriu aquí les necessitats d'orientació, comunicació, autoestima..."></textarea>
+            </div>
+
+            <div class="input-card">
+              <div class="input-header">
+                <label class="input-label" for="resp-${c.id}-2">🛡️ 2. Mapa de Riscos a Detectar</label>
+                <span class="input-hint">Caigudes, llar, medicació, aïllament o sobreprotecció</span>
+              </div>
+              <textarea class="friendly-textarea" id="resp-${c.id}-2" placeholder="Quins perills hem de controlar a la seva llar o a la seva rutina?"></textarea>
+            </div>
+
+            <div class="input-card">
+              <div class="input-header">
+                <label class="input-label" for="resp-${c.id}-3">🤝 3. Com Acompanyem la seva Autonomia (ABVD/AIVD)</label>
+                <span class="input-hint">Ajuda mínima, instruccions curtes, respectar el ritme</span>
+              </div>
+              <textarea class="friendly-textarea" id="resp-${c.id}-3" placeholder="Què farà la persona per ella mateixa i quina ajuda li donarem nosaltres?"></textarea>
+            </div>
+
+            <div class="input-card">
+              <div class="input-header">
+                <label class="input-label" for="resp-${c.id}-4">🏡 4. Canvis a la Llar i Pistes Visuals/Sensorials</label>
+                <span class="input-hint">Catifes, llum, ordre, calendari, adaptacions</span>
+              </div>
+              <textarea class="friendly-textarea" id="resp-${c.id}-4" placeholder="Quins canvis senzills farem al pis per millorar la seguretat?"></textarea>
+            </div>
+
+            <div class="input-card">
+              <div class="input-header">
+                <label class="input-label" for="resp-${c.id}-5">☕ 5. Família, Comunitat i Activitat Significativa</label>
+                <span class="input-hint">Pautes familiars, Centre de Dia, xarxa de barri</span>
+              </div>
+              <textarea class="friendly-textarea" id="resp-${c.id}-5" placeholder="Com implicarem la família i com connectarem la persona amb el seu entorn?"></textarea>
+            </div>
+          </div>
+
+          <details class="hint-accordion">
+            <summary>
+              <span>💡 Pistes professionals i orientacions per a aquest cas</span>
+              <span style="font-size:0.8rem;">Desplegar ▼</span>
+            </summary>
+            <div class="hint-body">
+              <ul>
+                ${c.hint.map(h => `<li>${h}</li>`).join('')}
+              </ul>
+            </div>
+          </details>
+
+        </div>
+      `;
+
+      container.appendChild(card);
+    });
+
+    // Guardat i recuperació automàtica en LocalStorage
+    const STORAGE_KEY = 'SAD_PRACTICE_RESPONSES_V1';
+
+    function saveAllResponses() {
+      const textareas = document.querySelectorAll('.friendly-textarea');
+      const data = {};
+      textareas.forEach(t => {
+        if (t.value.trim() !== '') {
+          data[t.id] = t.value;
+        }
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      alert('✅ Les teves respostes s\'han desat correctament al navegador!');
+    }
+
+    function loadSavedResponses() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const data = JSON.parse(raw);
+        Object.keys(data).forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = data[id];
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function clearAllResponses() {
+      if (confirm('Segur que vols esborrar totes les respostes escrites?')) {
+        localStorage.removeItem(STORAGE_KEY);
+        document.querySelectorAll('.friendly-textarea').forEach(t => t.value = '');
+        alert('Formulari netejat.');
+      }
+    }
+
+    // Carregar al començar
+    window.addEventListener('DOMContentLoaded', loadSavedResponses);
+  </script>
+</body>
+</html>
