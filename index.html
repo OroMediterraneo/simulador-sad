@@ -917,8 +917,404 @@
       .toolbar, .cases-nav, header, .support-zone, footer, .security-backdrop { display: none !important; }
       .case-card { box-shadow: none; border: 1px solid #CCC; margin-bottom: 0; page-break-after: always; }
       .friendly-textarea { background: transparent; border: 1px dashed #BBB; min-height: 90px; }
+      .lightbox-modal, .create-case-modal, .btn-case-action, .acp-toggle-btn { display: none !important; }
+      .acp-record-body { display: block !important; }
     }
-  </style>
+  
+    /* ==========================================
+       NOVES MILLORES: IMATGES, HISTORIAL ACP I CREADOR DE CASOS
+       ========================================== */
+    .btn-create-case {
+      background-color: var(--teal-calm) !important;
+      color: white !important;
+      font-weight: 600 !important;
+      border: 1px solid #235349 !important;
+      transition: all 0.2s ease;
+    }
+    .btn-create-case:hover {
+      background-color: #235349 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(45, 106, 93, 0.25);
+    }
+
+    .case-photo-thumb-wrap {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid #EAE1D6;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      cursor: pointer;
+      background: #F4EFEB;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .case-photo-thumb-wrap:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(45, 106, 93, 0.2);
+    }
+    .case-photo-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .avatar-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      border: 1px solid #EAE1D6;
+    }
+
+    .case-photo-caption {
+      font-size: 0.78rem;
+      color: var(--teal-calm);
+      font-weight: 500;
+      margin-top: 3px;
+      font-style: italic;
+    }
+
+    .case-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge-custom-case {
+      display: inline-block;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .btn-case-action {
+      background: white;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      padding: 4px 9px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-case-action.btn-edit {
+      color: #2563EB;
+      border-color: #BFDBFE;
+    }
+    .btn-case-action.btn-edit:hover {
+      background: #EFF6FF;
+    }
+    .btn-case-action.btn-delete {
+      color: #DC2626;
+      border-color: #FECACA;
+    }
+    .btn-case-action.btn-delete:hover {
+      background: #FEF2F2;
+    }
+
+    /* EXPEDIENT BIOGRÀFIC ACP */
+    .acp-record-box {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      background: #FCFAF6;
+      border: 1px solid #E7DDD2;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .acp-record-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #F7F1E8;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+    }
+    .acp-record-header:hover {
+      background: #EFE6D9;
+    }
+    .acp-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #3C2E26;
+    }
+    .badge-acp {
+      background: var(--teal-calm);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .acp-toggle-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--teal-calm);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .acp-record-body {
+      padding: 14px 16px;
+      border-top: 1px solid #E7DDD2;
+      background: white;
+    }
+    .acp-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .acp-card {
+      background: #FAF7F2;
+      border: 1px solid #ECE3D7;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .acp-card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #5B483B;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .acp-card-text {
+      font-size: 0.83rem;
+      color: #4A5568;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .acp-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.83rem;
+      color: #4A5568;
+      line-height: 1.45;
+    }
+    .acp-list li {
+      margin-bottom: 4px;
+    }
+    .acp-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* MODAL LLIGHTBOX D'IMATGES */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: fadeIn 0.2s ease;
+    }
+    .lightbox-content {
+      background: white;
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .lightbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid #E5E7EB;
+      background: #F9FAFB;
+    }
+    .lightbox-title {
+      font-weight: 700;
+      color: #1F2937;
+      font-size: 1rem;
+    }
+    .lightbox-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: #6B7280;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .lightbox-close:hover {
+      color: #111827;
+    }
+    .lightbox-img {
+      width: 100%;
+      max-height: 65vh;
+      object-fit: cover;
+      display: block;
+    }
+    .lightbox-footer {
+      padding: 12px 18px;
+      font-size: 0.85rem;
+      color: #4B5563;
+      background: #F9FAFB;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    /* MODAL CREADOR DE CASOS */
+    .create-case-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99998;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+      animation: fadeIn 0.2s ease;
+    }
+    .create-case-card {
+      background: white;
+      border-radius: 16px;
+      max-width: 820px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      overflow: hidden;
+    }
+    .create-case-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      background: #F7F3EE;
+      border-bottom: 1px solid #E8DFD5;
+    }
+    .create-case-header h2 {
+      margin: 0;
+      font-family: 'Lora', serif;
+      font-size: 1.35rem;
+      color: #2D231E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .create-case-body {
+      padding: 20px 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .create-case-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 22px;
+      background: #F7F3EE;
+      border-top: 1px solid #E8DFD5;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .form-group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .form-control-block {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #4A5568;
+    }
+    .form-input, .form-textarea, .form-select {
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      color: #1E293B;
+      font-family: inherit;
+      transition: border-color 0.15s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--teal-calm);
+      box-shadow: 0 0 0 3px rgba(45, 106, 93, 0.15);
+    }
+    .image-gallery-selector {
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px;
+      background: #F8FAFC;
+    }
+    .gallery-preview-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .gallery-thumb-opt {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+      opacity: 0.75;
+      transition: all 0.15s;
+    }
+    .gallery-thumb-opt:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .gallery-thumb-opt.selected {
+      border-color: var(--teal-calm);
+      opacity: 1;
+      box-shadow: 0 0 0 2px rgba(45, 106, 93, 0.4);
+    }
+    .form-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #2D3748;
+      border-bottom: 2px solid #E2E8F0;
+      padding-bottom: 4px;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+</style>
 </head>
 <body>
 
@@ -1100,12 +1496,13 @@
         <button class="btn btn-save" onclick="saveAllResponses()">💾 Desar les meves respostes</button>
         <button class="btn btn-clear" onclick="clearAllResponses()">🗑️ Netejar formulari</button>
         <button class="btn btn-lock" onclick="lockSession()" title="Tancar la sessió i bloquejar la pantalla">🔒 Tancar Sessió</button>
+        <button class="btn btn-create-case" onclick="openCreateCaseModal()" title="Crear un nou cas clínic ràpid">➕ Crear Nou Cas</button>
         
       </div>
     </header>
 
     <div class="cases-nav">
-      <div class="nav-title">🧭 Accés directe als 25 casos:</div>
+      <div class="nav-title">🧭 Accés directe als casos (<span id="total-cases-count">25</span>):</div>
       <div class="nav-pills" id="nav-container"></div>
     </div>
 
@@ -1153,7 +1550,27 @@
       "Recorda el principi d'ajuda mínima: fer les coses amb ella, no pas per ella.",
       "Com pactar amb la filla que la mare necessita col·laborar per no perdre capacitats?",
       "Com introduir el Centre de Dia de manera gradual sense forçar?"
-    ]
+    ],
+    "image": "img/servicio-paseo.png",
+    "imageCaption": "Acompanyament actiu en la marxa amb bastó i reactivació comunitària",
+    "biography": {
+      "history": "Modista retirada de barri obrer. Va cosir a casa tota la vida i necessita sentir que encara és útil i que la seva llar està sota el seu control. Fa 4 anys que va enviduar.",
+      "likes": [
+        "Cafè amb llet tebi amb una galeta Maria a mig matí",
+        "Escoltar la ràdio (ràdio-novel·les i cançons tradicionals)",
+        "Seure a prop de la finestra a la tarda per mirar el carrer"
+      ],
+      "dislikes": [
+        "Les presses o que li agafin les coses de les mans sense demanar permís",
+        "Que parlin d'ella en tercera persona quan la seva filla és present",
+        "Sentir-se obligada a fer activitats en grup si hi ha molta gent"
+      ],
+      "priorGuidelines": [
+        "PAI Treball Social: Introduir el Centre de Dia de manera molt gradual (començar amb 1 hora acompanyada).",
+        "Pactar amb la filla que la mare continuï parant taula i plegant tovalloles per mantenir la seva vàlua.",
+        "Retirar catifes soltes i instal·lar llum guia de presència al passadís."
+      ]
+    }
   },
   {
     "id": 2,
@@ -1189,7 +1606,27 @@
       "Seqüència segura de marxa amb caminador (caminador -> cama operada -> cama sana).",
       "Retirar cera i sabatilles destalonades (calçat tancat amb velcro).",
       "Acompanyar-lo una tarda a veure els amics de la petanca a mirar el joc."
-    ]
+    ],
+    "image": "img/andador-carbono.png",
+    "imageCaption": "Caminador amb suport segur per a la reeducació de la marxa post-quirúrgica",
+    "biography": {
+      "history": "Mecànic torner jubilat. Home actiu i sociable que gaudia jugant a la petanca amb els companys fins a la caiguda i fractura de maluc. Vidu recent fa 8 mesos.",
+      "likes": [
+        "Parlar de futbol i mecànica clàssica",
+        "Llegir el diari esportiu a primera hora del matí",
+        "Portar calçat ferm i ben subjectat als peus"
+      ],
+      "dislikes": [
+        "El terra encerat i brillant (li provoca pànic immediat de relliscar)",
+        "Que el vulguin aixecar amb presses sense donar-li temps a recolzar-se",
+        "L'accés a la banyera actual sense barra de suport"
+      ],
+      "priorGuidelines": [
+        "PAI Fisioteràpia: Reeducació de la marxa amb caminador de dues rodes; no flexionar maluc > 90°.",
+        "Transferències sempre des de cadira amb recolzabraços alts i terra antilliscant.",
+        "Substitució de sabatilles destalonades per calçat amb tancament de velcro ferm."
+      ]
+    }
   },
   {
     "id": 3,
@@ -1225,7 +1662,27 @@
       "Mai confrontar ni discutir l'oblit: redirigir amb afecte.",
       "Implicar-la a la cuina en tasques segures (netejar verdures) mentre el SAD vigila el foc.",
       "Fer la llista de la compra plegades abans de sortir."
-    ]
+    ],
+    "image": "img/central_1.webp",
+    "imageCaption": "Acompanyament a la cuina i manteniment d'activitats instrumentals supervisades",
+    "biography": {
+      "history": "Mestra d'escola d'educació primària durant 40 anys. Dona pedagoga, ordenada i afectuosa. Viu amb el seu marit Joan (83a), que comença a mostrar signes greus de fatiga del cuidador.",
+      "likes": [
+        "Música clàssica suau de fons mentre fa feines de casa",
+        "Tenir flors o plantes naturals a la taula del menjador",
+        "Cantar cançons tradicionals infantils mentre plega tovallons"
+      ],
+      "dislikes": [
+        "Els retrets o contradiccions directes quan oblida alguna cosa ('t'ho acabo de dir!')",
+        "Els sorolls forts d'electrodomèstics sobtats",
+        "Que li prohibeixin entrar a la cuina sense donar-li una alternativa útil"
+      ],
+      "priorGuidelines": [
+        "PAI Psicogeriatria: Validació emocional constant; no confrontar els seus oblits.",
+        "Seguretat: Tancar la clau de pas del gas en absència de supervisió o valorar substitució per inducció.",
+        "Etiquetar calaixos de la cuina amb pictogrames i oferir temps de respir al marit."
+      ]
+    }
   },
   {
     "id": 4,
@@ -1261,7 +1718,27 @@
       "Consignes auditives o visuals per superar el bloqueig (comptar 'un-dos' o línia al terra).",
       "Adaptacions de roba: velcro i tiradors amples.",
       "Explicar a la germana que la pressa bloqueja els ganglis basals."
-    ]
+    ],
+    "image": "img/servicio-fisio.png",
+    "imageCaption": "Tècniques de fisioteràpia i estímuls rítmics per desbloquejar la marxa",
+    "biography": {
+      "history": "Delineant i aquarel·lista aficionat. Diagnosticat de Parkinson fa 7 anys. Persona meticulosa que pateix en veure que les seves mans i les seves cames no responen a la seva voluntat.",
+      "likes": [
+        "La pintura, els llibres d'art i la música de jazz tranquil·la",
+        "Gots de base ampla i coberts de mànec engruixit per menjar autònomament",
+        "Converses reposades sobre la història de la ciutat"
+      ],
+      "dislikes": [
+        "Que l'estirin del braç o l'empenyin durant un episodi de bloqueig (freezing)",
+        "La pressa per acabar el plat o per sortir al carrer",
+        "La manca de recolzament ferm als peus mentre menja"
+      ],
+      "priorGuidelines": [
+        "PAI Neurologia: Aplicar estímuls visuals (línies de colors al terra) o auditius (comptar rítmicament) per trencar el bloqueig.",
+        "Planificar les activitats d'higiene i mobilitat 45 minuts després de la presa de L-Dopa (període 'ON').",
+        "Respectar escrupolosament el temps de masticació i deglució."
+      ]
+    }
   },
   {
     "id": 5,
@@ -1297,7 +1774,27 @@
       "Regla d'or en baixa visió: l'ordre espacial estricte mai es toca.",
       "Pastiller setmanal tancat (SPD) preparat per farmàcia / supervisió.",
       "Recursos d'audiollibres de la biblioteca / ONCE i marques tàctils amb relleu."
-    ]
+    ],
+    "image": "img/central_2.webp",
+    "imageCaption": "Adaptació ambiental per a baixa visió: contrast cromàtic i il·luminació directa",
+    "biography": {
+      "history": "Bibliotecària municipal jubilada. Dona d'un bagatge cultural ric i caràcter independent. La pèrdua de visió central per DMAE li genera una gran angoixa de perdre la seva llibertat.",
+      "likes": [
+        "Els audiollibres i programes culturals de la ràdio",
+        "L'ordre absolut: cada objecte ha d'estar exactament al seu lloc fix",
+        "Infusions tèbies de camamilla natural amb mel a mitja tarda"
+      ],
+      "dislikes": [
+        "Que es mogui qualsevol estri de la cuina o del bany sense avisar-la prèviament",
+        "Habitacions poc il·luminades o amb ombres que enganyin la percepció de profunditat",
+        "Pastillers amb lletra petita o capses de medicaments sense contrast"
+      ],
+      "priorGuidelines": [
+        "PAI ONCE / SAD: Il·luminació LED focalitzada a punts de treball i contrast de color a les vores dels graons.",
+        "Etiquetatge tàctil i en relleu dels envasos de medicació diària.",
+        "Mantenir sempre les portes o bé completament obertes o bé tancades (mai a mig obrir)."
+      ]
+    }
   },
   {
     "id": 6,
@@ -1333,7 +1830,27 @@
       "Seqüència de vestit per a hemiplègics (primer s'entra el braç afectat, per despullar el sa).",
       "Acceptar el plor sobtat com una conseqüència neurològica, sense retrets.",
       "Taula de tallar adaptada i donar descans de 2 hores a l'esposa."
-    ]
+    ],
+    "image": "img/lateral_1.webp",
+    "imageCaption": "Acompanyament psicosocial i rehabilitació de seqüeles d'Ictus amb suport humà",
+    "biography": {
+      "history": "Fuster artesà. Tota la seva vida va viure del treball manual de gran precisió. Després de l'Ictus té hemiplegia dreta i pateix labilitat emocional involuntària (plor reflexiu sobtat).",
+      "likes": [
+        "Tocar textures de fusta polida i l'olor de serradures netes",
+        "Que li llegeixin notícies locals amb to pausat i serè",
+        "Prendre el sol assegut al balcó al migdia"
+      ],
+      "dislikes": [
+        "Que li diguin 'no ploris, que no és res' (el plor és involuntari pel dany cerebral)",
+        "Que facin les coses pel seu costat dret sense intentar estimular-lo",
+        "La roba amb botons petits o cremalleres difícils de cordar"
+      ],
+      "priorGuidelines": [
+        "PAI Teràpia Ocupacional: Seqüència de vestir: primer el costat afectat (dret); en despullar-se, primer el sa.",
+        "Col·locar coixí o cabestrell de repòs sota el braç parètic per prevenir subluxació d'espatlla.",
+        "Validar la labilitat emocional: oferir contacte suau i esperar en silenci que remeti sense angoixar-lo."
+      ]
+    }
   },
   {
     "id": 7,
@@ -1369,7 +1886,27 @@
       "Neteja i revisió de piles de l'audiòfon; col·locar-se davant seu a la seva alçada per facilitar lectura labial.",
       "Subtítols a la televisió i avisador lluminós per al timbre de l'escala.",
       "Ensenyar als fills a fer videotrucades en lloc de trucades només de veu."
-    ]
+    ],
+    "image": "img/servicio-compania.png",
+    "imageCaption": "Comunicació propera, clara i frontal per trencar l'aïllament sensorial",
+    "biography": {
+      "history": "Venedora de mercat municipal durant 35 anys. Sempre va gaudir del contacte amb la gent. La pèrdua d'audició severa la va aïllar i li va generar suspicàcia vers els comentaris veïnals.",
+      "likes": [
+        "Mirar revistes il·lustrades i fotografies antigues de família",
+        "Cuidar les plantes del balcó i regar-les a primera hora del matí",
+        "La comunicació frontal, mirant als ulls i amb somriure sincer"
+      ],
+      "dislikes": [
+        "Que li parlin des de l'esquena o des d'una altra habitació",
+        "Els crits aguts (distorsionen i fan mal amb la presbiacúsia)",
+        "Els audiòfons bruts o amb piles esgotades que xiulen"
+      ],
+      "priorGuidelines": [
+        "PAI Audiologia: Revisió, neteja de cerumen i canvi de piles dels audiòfons cada dilluns.",
+        "Parlar sempre de cara, a la mateixa alçada, vocalitzant sense cridar i amb to greu.",
+        "Recolzar les paraules amb gestos naturals i notes escrites en llibreta de lletra gran."
+      ]
+    }
   },
   {
     "id": 8,
@@ -1405,7 +1942,27 @@
       "Paciència i no envair: presentar-se amb to molt educat demanant permís abans d'entrar.",
       "Començar oferint només ajuda externa (portar el pa o el diari) sense tocar res de la casa.",
       "Reconèixer la seva autoritat com a amo de la seva llar."
-    ]
+    ],
+    "image": "img/lateral_2.webp",
+    "imageCaption": "Respecte escrupolós de la intimitat i pacte progressiu d'intervenció",
+    "biography": {
+      "history": "Arxiver municipal jubilat, solter i acostumat a la solitud absoluta al seu pis. Té por que el servei domiciliari sigui una intromissió que li arrabassi el control de casa seva.",
+      "likes": [
+        "Escoltar òpera clàssica en vinil amb el volum moderat",
+        "Prendre una tassa de te negre amb un polsim de canyella a les 17h",
+        "Que se'l tracti de vostè amb educació exquisida"
+      ],
+      "dislikes": [
+        "La confiança excessiva, el tuteig no demanat ('avi', 'carinyo')",
+        "Que entrin a la seva habitació o moguin papers del seu escriptori sense permís",
+        "Que li imposin canvis d'hàbits sobtats des del primer dia"
+      ],
+      "priorGuidelines": [
+        "PAI Treball Social: Entrada molt progressiva; els primers dies dedicar només 30 minuts a conèixer-se.",
+        "Demanar permís explícit abans d'obrir qualsevol calaix o armari de la llar.",
+        "Pactar cada acció com una col·laboració consensuada i no com una ordre."
+      ]
+    }
   },
   {
     "id": 9,
@@ -1441,7 +1998,27 @@
       "Mai llençar res d'amagat ni davant seu sense pactar-ho: augmentaria el seu pànic.",
       "Negociar alliberar un passadís de seguretat per motius mèdics.",
       "Classificar en capses transparents i substituir deixalles per caixes endreçades."
-    ]
+    ],
+    "image": "img/central_3.webp",
+    "imageCaption": "Intervenció ambiental pactada per garantir seguretat i passadissos lliures",
+    "biography": {
+      "history": "Filla de família nombrosa en època de postguerra. Va viure una forta escassetat material que la va marcar; acumula diaris, bosses i capses per por a 'necessitar-ho algun dia'.",
+      "likes": [
+        "Els records d'infantesa i explicar anècdotes del barri antic",
+        "Els caramels d'eucaliptus i les converses afables",
+        "Revisar papers antics amb tranquil·litat"
+      ],
+      "dislikes": [
+        "Les amenaces de buidar el pis o portar un contenidor d'escombraries",
+        "Que toquin o moguin bosses sense demanar-li la seva autorització",
+        "Els retrets familiars sobre la neteja de la casa"
+      ],
+      "priorGuidelines": [
+        "PAI Salut Mental/SAD: Negociació pactada de passadissos de trànsit lliures de mínim 1 metre.",
+        "Retirar primer allò amb risc greu d'incendi (papers a prop de fogons o radiadors) amb el seu consentiment.",
+        "Treball coordinat amb Serveis Socials i evitar intervencions traumàtiques no pactades."
+      ]
+    }
   },
   {
     "id": 10,
@@ -1477,7 +2054,27 @@
       "Retirar immediatament la medicació de l'abast i derivar-la a control professional.",
       "Panell de rutines amb dibuixos o pictogrames clars.",
       "Donar-li un rol actiu on se senti útil (portar el got d'aigua o el tovalló a la mare)."
-    ]
+    ],
+    "image": "img/lateral_3.webp",
+    "imageCaption": "Suport psicosocial, estructuració del dia i agenda visual amb pictogrames",
+    "biography": {
+      "history": "Va assistir a un centre ocupacional adaptat durant molts anys. Ha viscut sempre sota la protecció de la seva mare, que ara té 89 anys i està enllitada en fase terminal.",
+      "likes": [
+        "Mirar partits de futbol per televisió i col·leccionar cromos",
+        "Pintar amb retoladors de colors vius en quaderns de dibuix",
+        "Mantenir una rutina rígida i previsible: saber què toca fer a cada hora"
+      ],
+      "dislikes": [
+        "Els canvis imprevistos d'horari o de professional sense explicació prèvia",
+        "Els crits, retrets o ordres complexes amb més de dues instruccions seguides",
+        "Veure plorar o sofrir a la seva mare"
+      ],
+      "priorGuidelines": [
+        "PAI Atenció a la Discapacitat: Utilitzar agenda visual amb pictogrames per a les activitats diàries.",
+        "Donar una sola instrucció a la vegada amb to càlid i reforç positiu immediat.",
+        "Coordinació estreta amb el servei de tutela i Serveis Socials per planificar el futur respir."
+      ]
+    }
   },
   {
     "id": 11,
@@ -1513,7 +2110,27 @@
       "Substituir espelmes de foc per llums LED càlids a piles (respectant el símbol de record).",
       "Obrir persianes per deixar entrar llum solar; escolta activa sense frases clixé.",
       "Derivació urgent a suport psicològic i metge del CAP."
-    ]
+    ],
+    "image": "img/lateral_4.webp",
+    "imageCaption": "Acompanyament en el dol, confort emocional i seguretat preventiva a la llar",
+    "biography": {
+      "history": "Va ser la cuidadora única i abnegada del seu marit amb demència durant una dècada. Després de la seva defunció, la casa ha quedat en un silenci dolorós i omple les habitacions d'espelmes enceses.",
+      "likes": [
+        "Mirar àlbums de viatges passats i recordar com era el seu espòs de jove",
+        "Les sopes calentes casolanes i el brou de verdures a foc lent",
+        "Sentir que algú l'escolta sense jutjar les seves llàgrimes"
+      ],
+      "dislikes": [
+        "Les frases buides ('ara has de viure', 'el temps ho cura tot')",
+        "El silenci absolut quan arriba el vespre",
+        "Sortir al carrer si sap que no té cap objectiu concret on anar"
+      ],
+      "priorGuidelines": [
+        "PAI Dol i Salut Comunitària: Escolta activa i validació del procés de dol sense presses.",
+        "Seguretat: Substituir les espelmes de cera amb flama per espelmes LED amb llum càlida sense perill d'incendi.",
+        "Vincular-la progressivament al grup d'acompanyament al dol del Centre d'Atenció Primària."
+      ]
+    }
   },
   {
     "id": 12,
@@ -1549,7 +2166,27 @@
       "Avisar immediatament a Infermeria del CAP per a la cura de la ferida.",
       "Retirar tisores perilloses; rentat suau amb assecat minuciós entre els dits.",
       "Pactar canvis d'aliments dolços per fruita fresca saborosa sense prohibicions agressives."
-    ]
+    ],
+    "image": "img/central_4.webp",
+    "imageCaption": "Cura preventiva del peu diabètic, hàbits d'alimentació i benestar corporal",
+    "biography": {
+      "history": "Cuiner de fonda tradicional jubilat. Gran aficionat a la gastronomia catalana i als dolços. La diabetis mal controlada ha minvat la seva sensibilitat als peus (neuropatia perifèrica).",
+      "likes": [
+        "Explicar receptes tradicionals i trucs de cuina als professionals",
+        "El cafè sol ben carregat sense sucre però amb aroma intens",
+        "Fer petites passejades al sol de migdia"
+      ],
+      "dislikes": [
+        "Que el tractin com un nen petit amagant-li el menjar",
+        "L'aigua massa calenta a la dutxa o les cremes fredes als peus",
+        "Calçat rígid o estret que li provoqui rascades"
+      ],
+      "priorGuidelines": [
+        "PAI Infermeria: Inspecció ocular diària dels dos peus (esquerdes interdigitals, butllofes, callositats).",
+        "Assecat minuciós entre els dits amb tovallola de cotó sense fregar; hidratació amb crema d'urea evitant els espais interdigitals.",
+        "Pactar menús apetitosos adaptats per a diabetis sense imposicions dràstiques."
+      ]
+    }
   },
   {
     "id": 13,
@@ -1585,7 +2222,27 @@
       "Mantenir activitat al matí i evitar migdiades llargues; encendre llums abans de la foscor.",
       "Sensors de presència o teleassistència avançada en comptes de panys tancats.",
       "Validar l'emoció sense discutir (parlar de la botiga amb afecte mentre es pren un brou calent)."
-    ]
+    ],
+    "image": "img/lateral_5.webp",
+    "imageCaption": "Maneig del Sundowning: llum càlida anticipada i activitat significativa vespertina",
+    "biography": {
+      "history": "Administrativa de correus jubilada. Té deteriorament cognitiu tipus Alzheimer moderat. Al matí és tranquil·la, però cap al tard s'angoixa pensant que ha d'anar a buscar els seus fills petits.",
+      "likes": [
+        "Plegar tovallons, draps de cuina i roba neta amb les mans",
+        "Les cançons de bressol tradicionals i la música relaxant instrumental",
+        "Una tassa de llet tèbia amb mel abans d'anar a dormir"
+      ],
+      "dislikes": [
+        "La foscor crepuscular sobtada i les ombres al menjador",
+        "Que li contradiguin la seva realitat ('però Conxita, si els teus fills tenen 50 anys!')",
+        "Els moviments ràpids o crits a última hora de la tarda"
+      ],
+      "priorGuidelines": [
+        "PAI Psicogeriatria: Tancar persianes i encendre llums càlides a les 17:30h per evitar el contrast de la posta de sol.",
+        "Canalitzar la inquietud motora amb una tasca domèstica senzilla i repetitiva que li aporti calma.",
+        "Garantir pany de seguretat interior o sensor de presència per evitar sortides desorientades al replà."
+      ]
+    }
   },
   {
     "id": 14,
@@ -1621,7 +2278,27 @@
       "Prohibició total de fumar prop de l'oxigen; retirar cendrers.",
       "Higiene i vestit assegut en cadira amb reposabraços i respiració amb llavis frunzits.",
       "Fixar el tub d'oxigen per evitar ensopegades."
-    ]
+    ],
+    "image": "img/lateral_6.webp",
+    "imageCaption": "Seguretat amb oxigenoteràpia domiciliària i maneig de la fatiga respiratòria",
+    "biography": {
+      "history": "Pintor industrial i obrer de la construcció. Fumador de llarga evolució amb MPOC severa que requereix concentrador d'oxigen domiciliari 16 hores diàries.",
+      "likes": [
+        "Mirar partits de pilota a mà i debats esportius a la televisió",
+        "Seure a la seva butaca orellera amb coixins que l'ajuden a respirar millor",
+        "Prendre xarrups de líquids freds per alleujar la sequedat de boca"
+      ],
+      "dislikes": [
+        "La sensació d'ofec quan ha de caminar de pressa o pujar graons",
+        "Que li treguin les coses de les mans sense avisar",
+        "Els canvis bruscos de temperatura a les habitacions"
+      ],
+      "priorGuidelines": [
+        "PAI Risc Vital: Prohibició absoluta d'encenedors, llumins o fonts de foc a menys de 3 metres de l'oxigen.",
+        "Ensenyar respiració amb llavis frunzits durant les transferències i la marxa.",
+        "Higiene corporal assegut en tamboret amb respatller a la dutxa i aigua a temperatura suau."
+      ]
+    }
   },
   {
     "id": 15,
@@ -1657,7 +2334,27 @@
       "Tractar el tema amb naturalitat absoluta: és una condició física comuna, mai una vergonya.",
       "Proposar absorbents elàstics d'un sol ús com calces convencionals.",
       "Planificar 'la ruta dels lavabos' al carrer per recuperar les passejades."
-    ]
+    ],
+    "image": "img/lateral_7.webp",
+    "imageCaption": "Dignitat, intimitat i maneig discret de la incontinència urinària",
+    "biography": {
+      "history": "Modista d'alta costura, dona extremadament polida i presumida. Des que pateix pèrdues d'orina d'urgència, sent una vergonya immensa i utilitza draps per amagar-ho, evitant sortir al carrer.",
+      "likes": [
+        "Portar roba neta, ben combinada i amb perfum fresc d'espígol",
+        "Mantenir el bany amb aromes florals i tovalloles impecables",
+        "Converses educades i respectuoses sobre costura i moda clàssica"
+      ],
+      "dislikes": [
+        "La paraula 'bolquer' (sent que la degrada i la infantilitza)",
+        "Que algú entri al bany sense trucar abans a la porta",
+        "La sensació d'humitat a la pell"
+      ],
+      "priorGuidelines": [
+        "PAI SAD: Denominar sempre els absorbents com a 'roba interior adaptada o protectors discrets'.",
+        "Establir un horari de miccions programades cada 2 hores per evitar urgències.",
+        "Higiene íntima amb sabó de pH neutre, assecat per contacte i crema barrera per prevenir dermatitis associada (DAI)."
+      ]
+    }
   },
   {
     "id": 16,
@@ -1693,7 +2390,27 @@
       "Treballar les transferències amb taula de transferència i bloqueig de frens.",
       "Activar servei de cadira erugada / voluntariat per a sortides puntuals al carrer.",
       "Canvis de postura i coixí viscoelàstic per protegir la pell."
-    ]
+    ],
+    "image": "img/lateral_8.webp",
+    "imageCaption": "Autonomia en cadira de rodes, transferències segures i connexió social",
+    "biography": {
+      "history": "Conductor d'autobusos urbans durant 38 anys. Home sociable i enèrgic. Arran d'una arteriopatia diabètica li van amputar la cama dreta. Viu en un 2n pis sense ascensor i fa 7 mesos que no trepitja el carrer.",
+      "likes": [
+        "Escoltar retransmissions esportives per la ràdio",
+        "Jugar a cartes (el tute, la brisca) o al dòmino amb amics",
+        "Mantenir la ment àgil fent sudokus i mots encreuats"
+      ],
+      "dislikes": [
+        "Que empenyin la seva cadira de rodes sense demanar permís o sense dir cap a on van",
+        "La sensació de claustrofòbia d'estar tancat mesos a casa",
+        "Que li facin preguntes indiscretes sobre l'amputació"
+      ],
+      "priorGuidelines": [
+        "PAI Teràpia Ocupacional/Treball Social: Gestió d'oruga salvaescales o suport comunitari per a baixades periòdiques al carrer.",
+        "Entrenament en transferències llit-cadira amb taula lliscant afavorint la seva força de braços.",
+        "Cura i vigilància de la pell del monyó: rentat diari i inspecció de punts de pressió."
+      ]
+    }
   },
   {
     "id": 17,
@@ -1729,7 +2446,27 @@
       "El tècnic SAD mai recepta ni canvia pastilles: retira caducades al punt SIGRE.",
       "Sol·licitar el blíster setmanal tancat (SPD) a la farmàcia.",
       "Tècniques de relaxació i conversa davant les queixes d'angoixa corporal."
-    ]
+    ],
+    "image": "img/central_5.webp",
+    "imageCaption": "Gestió i conciliació farmacològica segura: pastiller SPD i ordre a la llar",
+    "biography": {
+      "history": "Mestressa de casa i mare de 4 fills. Al llarg dels anys ha anat acumulant receptes de diferents especialistes sense coordinació, guardant desenes de capses caducades o repetides a la cuina.",
+      "likes": [
+        "Tenir una llibreta on anota l'hora exacta de cada medicament",
+        "L'aigua mineral natural tèbia per empassar les càpsules",
+        "Que el professional li expliqui amb paraules senzilles per a què serveix cada pastilla"
+      ],
+      "dislikes": [
+        "Els prospectes amb lletra minúscula que no pot llegir",
+        "Que li canviïn la marca o el color de la capsa sense previ avís",
+        "La sensació de caos o de no recordar si ja s'ha pres la dosi"
+      ],
+      "priorGuidelines": [
+        "PAI Farmàcia Comunitària / CAP: Implantar el Sistema Personalitzat de Dosificació (SPD setmanal segellat).",
+        "Retirar totes les capses antigues o caducades del domicili amb el seu acord explícit.",
+        "Registrar cada presa al full d'administració visible penjat a la nevera."
+      ]
+    }
   },
   {
     "id": 18,
@@ -1765,7 +2502,27 @@
       "Posar-se roba de carrer cada matí com a teràpia de reactivació.",
       "Petits reptes físics: aixecar-se 5 cops de la butaca a cada visita del SAD.",
       "Introduir aliments rics en proteïna i passejos curts amb els fills."
-    ]
+    ],
+    "image": "img/avd_basica.png",
+    "imageCaption": "Reactivació de les activitats bàsiques diàries: vestir-se i trencar el sedentarisme",
+    "biography": {
+      "history": "Comptable jubilat. Des de la pandèmia va adquirir l'hàbit de no treure's el pijama i passar 14 hores al sofà mirant la pantalla. Ha patit una atròfia per desús greu que amenaça la seva autonomia.",
+      "likes": [
+        "Les novel·les jueves d'intriga i misteri",
+        "Els jerseis de punt suau i càlid de colors verds o terrosos",
+        "Prendre una bona sopa calenta al migdia"
+      ],
+      "dislikes": [
+        "Els exercicis físics que semblin una classe de gimnàstica imposada",
+        "Els retrets d''has d'espavilar-te'",
+        "La roba incòmoda o amb cinturons massa estrets"
+      ],
+      "priorGuidelines": [
+        "PAI Fisioteràpia: Rutina funcional integrada (aixecar-se i asseure's 5 cops de la butaca abans de cada àpat).",
+        "Obligatorietat amable de canviar el pijama per roba de carrer còmoda cada matí després de rentar-se.",
+        "Acompanyament a un passeig diari fins a la botiga de premsa de la cantonada."
+      ]
+    }
   },
   {
     "id": 19,
@@ -1801,7 +2558,27 @@
       "Comprendre que és la malaltia qui insulta, no pas la persona: mai discutir.",
       "Redirecció ràpida a un tema agradable o música tranquil·la.",
       "Psicoeducació a la filla per desculpabilitzar-la."
-    ]
+    ],
+    "image": "img/lateral_9.webp",
+    "imageCaption": "Validació emocional, contenció ambiental i suport a la cuidadora familiar",
+    "biography": {
+      "history": "Secretària d'alta direcció, dona coneguda pel seu tracte exquisit i diplomàtic. La demència frontotemporal li produeix desinhibició sobtada del llenguatge i insults sobtats que enfonsen a la seva filla.",
+      "likes": [
+        "Les olors agradables d'espígol i gessamí a les habitacions",
+        "Les postres dolces de poma al forn amb canyella",
+        "Passejar en silenci per parcs tranquils sense aglomeracions"
+      ],
+      "dislikes": [
+        "Els espais concorreguts, crits o discussions familiars",
+        "Que li portin la contrària de manera frontal durant un episodi de desinhibició",
+        "Que intentin fer-la reflexionar amb lògica quan està alterada"
+      ],
+      "priorGuidelines": [
+        "PAI Neurologia/Psicologia: Comprendre que els insults són un símptoma de la lesió frontal, mai un atac personal.",
+        "Utilitzar la distracció sensorial (canvi d'espai, música suau o oferir una infusió dolça) per desactivar l'angoixa.",
+        "Proporcionar espai de suport psicològic i respir a la filla per evitar la claudicació familiar."
+      ]
+    }
   },
   {
     "id": 20,
@@ -1837,7 +2614,27 @@
       "Introduir aigua espessida o gelificada; prohibició absoluta de palletes per beure.",
       "Postura de flexió cervical anterior (cap una mica endavant en empassar).",
       "Avisar al metge del CAP per a test de deglució."
-    ]
+    ],
+    "image": "img/avd_instrumental.png",
+    "imageCaption": "Alimentació adaptada, texturització amb espessidor i postura segura",
+    "biography": {
+      "history": "Fuster de ribera i aficionat a la pesca. Home tranquil i observador. Arran d'un petit ictus pateix disfàgia a líquids; té por d'ofegar-se amb l'aigua i ha reduït la ingesta, causant deshidratació.",
+      "likes": [
+        "El peix blanc bullit suau amb patata aixafada amb oli d'oliva",
+        "Les gelatines fresques de llimona i taronja",
+        "Escoltar el so del mar o música marinera de fons durant els àpats"
+      ],
+      "dislikes": [
+        "Els aliments de doble textura (sopa de fideus, llet amb galetes flotant)",
+        "Les presses per acabar el dinar",
+        "Els gots massa fondos que l'obliguen a tirar el cap cap enrere"
+      ],
+      "priorGuidelines": [
+        "PAI Logopèdia: Adaptació de tots els líquids amb espessidor a textura nèctar o mel segons pauta mèdica.",
+        "Garantir postura assegut a 90° amb el cap lleugerament inclinat cap endavant (barbeta al pit) en empassar.",
+        "Mantenir-lo incorporat com a mínim 30 minuts després de finalitzar l'àpat per evitar broncoaspiració."
+      ]
+    }
   },
   {
     "id": 21,
@@ -1873,7 +2670,27 @@
       "Protocol de canvis posturals i aplicació d'àcids grassos hiperoxigenats (sense fregar fort).",
       "Sol·licitud urgent de llit articulat, matalàs d'aire alternant i grua.",
       "Ús de l'entremesa de cotó per moure-la en equip protegint l'esquena."
-    ]
+    ],
+    "image": "img/avd_ampliada.png",
+    "imageCaption": "Cura de la persona enllitada, rellotge de canvis posturals i protecció del cuidador",
+    "biography": {
+      "history": "Pagesa i mare de família nombrosa, dedicada tota la vida a tenir cura dels altres. Ara pateix dependència total al llit post-fractura múltiple. El seu fill de 65 anys la cuida sol amb gran dolor d'esquena.",
+      "likes": [
+        "Les carícies suaus amb crema d'ametlles dolces a les mans i braços",
+        "Que li parlin a cau d'orella amb to pausat i melodíós",
+        "Escoltar la missa del diumenge per la ràdio"
+      ],
+      "dislikes": [
+        "Els moviments bruscos o estirades sobtades dels llençols",
+        "Sentir que els llençols tenen arrugues o molles que li fan mal a l'esquena",
+        "El fred a les habitacions durant la higiene"
+      ],
+      "priorGuidelines": [
+        "PAI Infermeria/SAD: Protocol estricte de canvis posturals cada 2-3 hores seguint el rellotge postural.",
+        "Ús obligatori de matalàs d'aire alternant i àcids grassos hiperoxigenats (AGHO) als punts de pressió.",
+        "Ensenyar ergonomia i higiene postural al fill cuidador i sol·licitar grua domiciliària de transferència."
+      ]
+    }
   },
   {
     "id": 22,
@@ -1909,7 +2726,27 @@
       "Targeta de contacte plastificada a totes les jaquetes i polsera identificativa.",
       "Sortides acompanyades seguint un mateix itinerari rígid i segur.",
       "Parar a xerrar amb el forner de confiança per reforçar la seguretat del barri."
-    ]
+    ],
+    "image": "img/lateral_10.webp",
+    "imageCaption": "Acompanyament progressiu al carrer, orientació i dispositiu de geolocalització",
+    "biography": {
+      "history": "Carter del barri durant tres dècades. Coneixia tothom i cada racó dels carrers. Fa un mes es va desorientar per primera vegada a pocs metres de casa i des d'aquell ensurt no s'atreveix a sortir al carrer.",
+      "likes": [
+        "Mirar mapes antics i fotografies històriques del barri",
+        "Xerrar d'anècdotes i veïns coneguts",
+        "Prendre un cafè descafeïnat amb un pessic de canyella"
+      ],
+      "dislikes": [
+        "Que el vulguin forçar a sortir al carrer sense acompanyament ferm",
+        "La foscor o els dies molt ennuvolats que li fan perdre les referències visuals",
+        "Sentir-se desorientat davant d'altres veïns"
+      ],
+      "priorGuidelines": [
+        "PAI Psicologia/SAD: Sortides de dessensibilització sistemàtica (Setmana 1: arribar fins a la porteria; Setmana 2: seure al banc davant de casa).",
+        "Equipar-lo amb un rellotge o clauer amb localitzador GPS discret i targeta identificativa a la butxaca.",
+        "Mantenir sempre les mateixes rutes i punts de referència visuals clars."
+      ]
+    }
   },
   {
     "id": 23,
@@ -1945,7 +2782,27 @@
       "Cartell de protecció amable a la porta ('Davant de qualsevol dubte, consultar al SAD').",
       "Canalitzar la seva necessitat de parlar cap a entitats de voluntariat social com Amics de la Gent Gran.",
       "Coordinació amb Treball Social per a mesures de suport a la capacitat jurídica."
-    ]
+    ],
+    "image": "img/lateral_11.webp",
+    "imageCaption": "Xarxa de suport veïnal, protecció contra l'engany i estimulació social",
+    "biography": {
+      "history": "Vídua sense fills ni família directa propera. Viu sola i els seus dies transcorren en un silenci feixuc. Per parlar amb algú, obre la porta a qualsevol comercial i ja ha caigut en diverses estafes econòmiques.",
+      "likes": [
+        "La xerrada reposada amb una tassa de camamilla a mitja tarda",
+        "Cosir petits botons i fer ganxet asseguda a la butaca",
+        "Les visites breus de veïnes conegudes de l'escala"
+      ],
+      "dislikes": [
+        "El silenci absolut durant jornades senceres",
+        "Les trucades telefòniques agressives amb presses per contractar serveis",
+        "Que la tractin amb condescendència per haver caigut en estafes"
+      ],
+      "priorGuidelines": [
+        "PAI Treball Social / Mossos d'Esquadra: Cartell de seguretat visible darrere de la porta ('No obrir a desconeguts sense avisar abans al SAD').",
+        "Instal·lació de filtre o bloqueig de números comercials sospitosos al telèfon fix.",
+        "Vincular-la a projectes de voluntariat d'acompanyament comunitari (ex. Amics de la Gent Gran) i al casal de barri."
+      ]
+    }
   },
   {
     "id": 24,
@@ -1981,7 +2838,27 @@
       "Canviar manetes de portes per palanques suaus i coberts amb mànec d'escuma engruixit.",
       "Respectar la seva presa de decisions: mai actuar de manera paternalista.",
       "Connexió amb la Fundació d'ELA per a banc de productes de suport."
-    ]
+    ],
+    "image": "img/lateral_12.webp",
+    "imageCaption": "Autonomia de decisió, adaptacions ergonòmiques i dignitat en malalties neurodegeneratives",
+    "biography": {
+      "history": "Enginyer mecànic i professor de formació professional. Diagnosticat recentment d'ELA. Manté intacta la capacitat cognitiva i vol continuar decidint lliurement cadascun dels passos de la seva atenció.",
+      "likes": [
+        "La tecnologia, els lectors electrònics de llibres i els debats científics",
+        "Prendre una petita copa de bon vi negre amb el sopar",
+        "Que se'l consulti i informi amb rigor de totes les decisions mèdiques"
+      ],
+      "dislikes": [
+        "El paternalisme, la sobreprotecció i que prenguin decisions per ell",
+        "Que parlin d'ell com si fos un malalt en fase terminal abans d'hora",
+        "La manca de productes de suport adaptats a les seves mans"
+      ],
+      "priorGuidelines": [
+        "PAI Unitat Funcional d'ELA: Respecte absolut al dret d'autonomia i redacció del Document de Voluntats Anticipades (DVA).",
+        "Incorporació precoç d'estris de cuina adaptats i teclats o ratolins ergonòmics per pal·liar la pèrdua de força a les mans.",
+        "Coordinació amb teràpia ocupacional i suport psicològic especialitzat."
+      ]
+    }
   },
   {
     "id": 25,
@@ -2017,7 +2894,27 @@
       "Retirar l'ús de l'orinal durant el dia per afavorir les transferències actives al vàter.",
       "Passejos curts amb suport per recuperar força muscular diària.",
       "Desculpabilitzar-la: recordar-li que no molesta i que el seu cos s'està recuperant amb èxit."
-    ]
+    ],
+    "image": "img/hero-cuidadora.png",
+    "imageCaption": "Recuperació funcional post-hospitalària, desculpabilització i confiança motora",
+    "biography": {
+      "history": "Auxiliar d'infermeria jubilada. Va dedicar 40 anys a cuidar malalts a les plantes d'hospitalització. Després d'un ingrés per pneumònia sent vergonya de demanar ajuda per no voler 'molestar ningú'.",
+      "likes": [
+        "Recordar la seva etapa a l'hospital i parlar de la vocació de cures",
+        "Les flors naturals a la taula i el te amb llimona fresca",
+        "Sentir-se respectada per la seva experiència professional"
+      ],
+      "dislikes": [
+        "Sentir-se una càrrega per a les seves cuidadores",
+        "Els orinals de plàstic a l'habitació durant les hores de dia",
+        "Haver de cridar per demanar auxili per anar al lavabo"
+      ],
+      "priorGuidelines": [
+        "PAI SAD: Desculpabilització sistemàtica ('Vostè va tenir cura de tothom molts anys; ara ens toca a nosaltres cuidar-la amb orgull').",
+        "Retirar l'orinal durant el dia per afavorir transferències actives i caminades curtes al bany amb caminador de 4 rodes.",
+        "Pla d'exercicis suaus per guanyar força a quàdriceps i recuperar la marxa amb seguretat."
+      ]
+    }
   }
 ];
 
@@ -2046,145 +2943,522 @@
   "iterations": 100000
 };
 
-    // Generar navegació
-    const navContainer = document.getElementById('nav-container');
-    casesData.forEach(c => {
-      const a = document.createElement('a');
-      a.className = 'nav-pill';
-      a.href = '#cas-' + c.id;
-      a.textContent = (c.id < 10 ? '0' + c.id : c.id) + '. ' + c.name + ' (' + c.age + 'a)';
-      navContainer.appendChild(a);
-    });
+    
+    // ==========================================
+    // GESTIÓ INTEGRADA DE CASOS (BASE + PERSONALITZATS ACP)
+    // ==========================================
+    const GALLERY_IMAGES = [
+      { src: 'img/servicio-paseo.png', label: 'Passeig i marxa' },
+      { src: 'img/andador-carbono.png', label: 'Caminador segur' },
+      { src: 'img/central_1.webp', label: 'Cuina i alimentació' },
+      { src: 'img/servicio-fisio.png', label: 'Fisioteràpia' },
+      { src: 'img/central_2.webp', label: 'Baixa visió / il·luminació' },
+      { src: 'img/lateral_1.webp', label: 'Ictus / rehabilitació' },
+      { src: 'img/servicio-compania.png', label: 'Companyia i oïda' },
+      { src: 'img/lateral_2.webp', label: 'Intimitat i respecte' },
+      { src: 'img/central_3.webp', label: 'Seguretat a la llar' },
+      { src: 'img/lateral_3.webp', label: 'Suport psicosocial' },
+      { src: 'img/lateral_4.webp', label: 'Acompanyament al dol' },
+      { src: 'img/central_4.webp', label: 'Cura del peu diabètic' },
+      { src: 'img/lateral_5.webp', label: 'Sundowning / vespre' },
+      { src: 'img/lateral_6.webp', label: 'Oxigenoteràpia' },
+      { src: 'img/lateral_7.webp', label: 'Dignitat íntima' },
+      { src: 'img/lateral_8.webp', label: 'Cadira de rodes' },
+      { src: 'img/central_5.webp', label: 'Pastiller i medicació' },
+      { src: 'img/avd_basica.png', label: 'Vestir i activació' },
+      { src: 'img/lateral_9.webp', label: 'Demència frontal' },
+      { src: 'img/avd_instrumental.png', label: 'Disfàgia i alimentació' },
+      { src: 'img/avd_ampliada.png', label: 'Cura enllitada' },
+      { src: 'img/lateral_10.webp', label: 'Orientació exterior' },
+      { src: 'img/lateral_11.webp', label: 'Xarxa veïnal' },
+      { src: 'img/lateral_12.webp', label: 'Autonomia i ELA' },
+      { src: 'img/hero-cuidadora.png', label: 'Cures integrals' }
+    ];
 
-    // Renderitzar fitxes
-    const wrapper = document.getElementById('cases-wrapper');
+    function getCustomCases() {
+      try {
+        const raw = localStorage.getItem('SAD_CUSTOM_CASES');
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error('Error llegint SAD_CUSTOM_CASES:', e);
+        return [];
+      }
+    }
 
-    casesData.forEach(c => {
-      const card = document.createElement('article');
-      card.className = 'case-card';
-      card.id = 'cas-' + c.id;
+    function saveCustomCases(list) {
+      localStorage.setItem('SAD_CUSTOM_CASES', JSON.stringify(list));
+    }
 
-      card.innerHTML = `
-        <div class="case-header">
-          <div class="case-identity">
-            <div class="avatar">${c.avatar}</div>
-            <div>
-              <div class="case-title">${c.id < 10 ? '0' + c.id : c.id}. ${c.name} (${c.age} anys)</div>
-              <div class="case-subtitle">${c.theme}</div>
+    function getAllCases() {
+      const custom = getCustomCases();
+      return [...casesData, ...custom];
+    }
+
+    // Lightbox d'imatges
+    function openImageModal(src, name) {
+      const modal = document.getElementById('imageLightboxModal');
+      const img = document.getElementById('lightboxImg');
+      const title = document.getElementById('lightboxTitle');
+      if (!modal || !img) return;
+      img.src = src;
+      if (title) title.textContent = name ? 'Fotografia del Cas: ' + name : 'Fotografia del Cas';
+      modal.style.display = 'flex';
+    }
+
+    function closeImageModal() {
+      const modal = document.getElementById('imageLightboxModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    // Toggle Expedient ACP
+    function toggleACP(id) {
+      const body = document.getElementById('acp-body-' + id);
+      const arrow = document.getElementById('acp-arrow-' + id);
+      if (!body) return;
+      if (body.style.display === 'none' || !body.style.display) {
+        body.style.display = 'block';
+        if (arrow) arrow.textContent = '▲ Ocultar Expedient';
+      } else {
+        body.style.display = 'none';
+        if (arrow) arrow.textContent = '▼ Veure Expedient';
+      }
+    }
+
+    // Renderitzador principal de tots els casos
+    function renderAllCases() {
+      const allCases = getAllCases();
+      const navContainer = document.getElementById('nav-container');
+      const wrapper = document.getElementById('cases-wrapper');
+      const totalCountSpan = document.getElementById('total-cases-count');
+
+      if (totalCountSpan) totalCountSpan.textContent = allCases.length;
+      if (navContainer) navContainer.innerHTML = '';
+      if (wrapper) wrapper.innerHTML = '';
+
+      allCases.forEach(c => {
+        // Píndola de navegació
+        if (navContainer) {
+          const a = document.createElement('a');
+          a.className = 'nav-pill' + (c.isCustom ? ' custom-pill' : '');
+          a.href = '#cas-' + c.id;
+          a.textContent = (c.id < 10 ? '0' + c.id : c.id) + '. ' + c.name + ' (' + c.age + 'a)' + (c.isCustom ? ' ✨' : '');
+          navContainer.appendChild(a);
+        }
+
+        // Targeta del cas
+        const card = document.createElement('article');
+        card.className = 'case-card';
+        card.id = 'cas-' + c.id;
+
+        const imgSrc = c.image || 'img/hero-cuidadora.png';
+        const imgCaption = c.imageCaption ? `<div class="case-photo-caption">📷 ${sanitizeHTML(c.imageCaption)}</div>` : '';
+        const bio = c.biography || { history: '', likes: [], dislikes: [], priorGuidelines: [] };
+
+        card.innerHTML = `
+          <div class="case-header">
+            <div class="case-identity">
+              <div class="case-photo-thumb-wrap" onclick="openImageModal('${imgSrc}', '${sanitizeHTML(c.name)}')" title="Fes clic per ampliar la imatge">
+                <img src="${imgSrc}" alt="${sanitizeHTML(c.name)}" class="case-photo-thumb" onerror="this.src='img/hero-cuidadora.png'">
+                <div class="avatar-badge" title="${sanitizeHTML(c.name)}">${c.avatar || '👤'}</div>
+              </div>
+              <div>
+                <div class="case-title">
+                  ${c.id < 10 ? '0' + c.id : c.id}. ${sanitizeHTML(c.name)} (${c.age} anys)
+                  ${c.isCustom ? '<span class="badge-custom-case">✨ Cas Personalitzat</span>' : ''}
+                </div>
+                <div class="case-subtitle">${sanitizeHTML(c.theme)}</div>
+                ${imgCaption}
+              </div>
+            </div>
+            <div class="case-header-actions">
+              <span class="case-tag">Fitxa d'Intervenció SAD</span>
+              ${c.isCustom ? `
+                <button type="button" class="btn-case-action btn-edit" onclick="editCustomCase(${c.id})" title="Editar aquest cas">✏️ Editar</button>
+                <button type="button" class="btn-case-action btn-delete" onclick="deleteCustomCase(${c.id})" title="Eliminar aquest cas">🗑️ Eliminar</button>
+              ` : ''}
             </div>
           </div>
-          <span class="case-tag">Fitxa d'Intervenció SAD</span>
-        </div>
 
-        <div class="case-body">
-          <div class="story-box">
-            <div class="story-title">💬 La seva veu i la seva història</div>
-            <p class="story-content"><em>"${c.quote}"</em></p>
-            <p class="story-content" style="margin-top: 8px;">${c.story}</p>
-          </div>
+          <div class="case-body">
+            <div class="story-box">
+              <div class="story-title">💬 La seva veu i la seva història</div>
+              <p class="story-content"><em>"${sanitizeHTML(c.quote)}"</em></p>
+              <p class="story-content" style="margin-top: 8px;">${sanitizeHTML(c.story)}</p>
+            </div>
 
-          <div class="quick-grid">
-            ${c.pills.map(p => `
-              <div class="quick-pill">
-                <span class="pill-icon">${p.icon}</span>
-                <div class="pill-meta">
-                  <div class="pill-label">${p.label}</div>
-                  <div class="pill-val">${p.val}</div>
+            <!-- EXPEDIENT BIOGRÀFIC ACP -->
+            <div class="acp-record-box">
+              <div class="acp-record-header" onclick="toggleACP(${c.id})">
+                <div class="acp-title">
+                  <span>📖 Expedient de Vida & Pautes Prèvies (ACP)</span>
+                  <span class="badge-acp">Atenció Centrada en la Persona</span>
+                </div>
+                <span class="acp-toggle-btn" id="acp-arrow-${c.id}">▼ Veure Expedient</span>
+              </div>
+              <div class="acp-record-body" id="acp-body-${c.id}" style="display: none;">
+                <div class="acp-grid">
+                  <div class="acp-card">
+                    <div class="acp-card-title">🌿 Trajectòria Vital & Qui és</div>
+                    <p class="acp-card-text">${sanitizeHTML(bio.history || 'Sense dades biogràfiques.')}</p>
+                  </div>
+                  <div class="acp-card">
+                    <div class="acp-card-title">☕ Gustos, Preferències i Rutines</div>
+                    <ul class="acp-list">
+                      ${(bio.likes && bio.likes.length > 0) ? bio.likes.map(l => `<li>${sanitizeHTML(l)}</li>`).join('') : '<li>Sense preferències registrades.</li>'}
+                    </ul>
+                  </div>
+                  <div class="acp-card">
+                    <div class="acp-card-title">⚠️ Què li genera angoixa o rebuig</div>
+                    <ul class="acp-list">
+                      ${(bio.dislikes && bio.dislikes.length > 0) ? bio.dislikes.map(d => `<li>${sanitizeHTML(d)}</li>`).join('') : '<li>Sense aversions destacades.</li>'}
+                    </ul>
+                  </div>
+                  <div class="acp-card">
+                    <div class="acp-card-title">📋 Pautes Prèvies de l'Equip (PAI)</div>
+                    <ul class="acp-list">
+                      ${(bio.priorGuidelines && bio.priorGuidelines.length > 0) ? bio.priorGuidelines.map(g => `<li>${sanitizeHTML(g)}</li>`).join('') : "<li>Seguir pautes generals d'Atenció Centrada en la Persona.</li>"}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            `).join('')}
-          </div>
-
-          <div class="response-section-title">
-            ✍️ Espai de Resolució de l'Alumne (El que ens pertoca fer)
-          </div>
-
-          <div class="response-grid">
-            <div class="input-card">
-              <div class="input-header">
-                <label class="input-label" for="resp-${c.id}-1">💛 1. Necessitats Psicosocials i Emocionals</label>
-                <span class="input-hint">Com se sent? Què necessita per estar tranquil/a?</span>
-              </div>
-              <textarea class="friendly-textarea" id="resp-${c.id}-1" placeholder="Escriu aquí les necessitats d'orientació, comunicació, autoestima..."></textarea>
             </div>
 
-            <div class="input-card">
-              <div class="input-header">
-                <label class="input-label" for="resp-${c.id}-2">🛡️ 2. Mapa de Riscos a Detectar</label>
-                <span class="input-hint">Caigudes, llar, medicació, aïllament o sobreprotecció</span>
-              </div>
-              <textarea class="friendly-textarea" id="resp-${c.id}-2" placeholder="Quins perills hem de controlar a la seva llar o a la seva rutina?"></textarea>
-            </div>
-
-            <div class="input-card">
-              <div class="input-header">
-                <label class="input-label" for="resp-${c.id}-3">🤝 3. Com Acompanyem la seva Autonomia (ABVD/AIVD)</label>
-                <span class="input-hint">Ajuda mínima, instruccions curtes, respectar el ritme</span>
-              </div>
-              <textarea class="friendly-textarea" id="resp-${c.id}-3" placeholder="Què farà la persona per ella mateixa i quina ajuda li donarem nosaltres?"></textarea>
-            </div>
-
-            <div class="input-card">
-              <div class="input-header">
-                <label class="input-label" for="resp-${c.id}-4">🏡 4. Canvis a la Llar i Pistes Visuals/Sensorials</label>
-                <span class="input-hint">Catifes, llum, ordre, calendari, adaptacions</span>
-              </div>
-              <textarea class="friendly-textarea" id="resp-${c.id}-4" placeholder="Quins canvis senzills farem al pis per millorar la seguretat?"></textarea>
-            </div>
-
-            <div class="input-card">
-              <div class="input-header">
-                <label class="input-label" for="resp-${c.id}-5">☕ 5. Família, Comunitat i Activitat Significativa</label>
-                <span class="input-hint">Pautes familiars, Centre de Dia, xarxa de barri</span>
-              </div>
-              <textarea class="friendly-textarea" id="resp-${c.id}-5" placeholder="Com implicarem la família i com connectarem la persona amb el seu entorn?"></textarea>
-            </div>
-          </div>
-
-          <!-- ZONA DE SUPORT PEDAGÒGIC: 2 BOTONS I 2 PANELLS -->
-          <div class="support-zone">
-            <div class="support-header">🎓 Zona d'Aprenentatge i Autoavaluació</div>
-            <div class="support-btn-group">
-              <button type="button" class="btn-hints-toggle" onclick="toggleHints(${c.id})">
-                💡 Pistes d'orientació <span id="hints-arrow-${c.id}">▼</span>
-              </button>
-              <button type="button" class="btn-solution-toggle" onclick="toggleSolution(${c.id})">
-                🎯 Resolució oficial del cas <span id="sol-arrow-${c.id}">▼</span>
-              </button>
-            </div>
-
-            <!-- PANELL DE PISTES -->
-            <div class="hints-panel" id="hints-panel-${c.id}">
-              <div class="hints-panel-title">💡 Pistes per reflexionar abans de respondre:</div>
-              <ul class="hints-list">
-                ${c.hint.map(h => `<li>${h}</li>`).join('')}
-              </ul>
-            </div>
-
-            <!-- PANELL DE RESOLUCIÓ OFICIAL -->
-            <div class="solution-panel" id="sol-panel-${c.id}">
-              <div class="solution-panel-header">
-                <div class="solution-header-title">
-                  <span>🎯 Resolució Tècnica Model · Cas ${c.id}: ${c.name}</span>
+            <div class="quick-grid">
+              ${(c.pills || []).map(p => `
+                <div class="quick-pill">
+                  <span class="pill-icon">${p.icon}</span>
+                  <div class="pill-meta">
+                    <div class="pill-label">${sanitizeHTML(p.label)}</div>
+                    <div class="pill-val">${sanitizeHTML(p.val)}</div>
+                  </div>
                 </div>
-                <button type="button" class="btn-copy-solution" onclick="copySolutionToInputs(${c.id})">
-                  📋 Aplicar al meu formulari
+              `).join('')}
+            </div>
+
+            <div class="response-section-title">
+              ✍️ Espai de Resolució de l'Alumne (El que ens pertoca fer)
+            </div>
+
+            <div class="response-grid">
+              <div class="input-card">
+                <div class="input-header">
+                  <label class="input-label" for="resp-${c.id}-1">💛 1. Necessitats Psicosocials i Emocionals</label>
+                  <span class="input-hint">Com se sent? Què necessita per estar tranquil/a?</span>
+                </div>
+                <textarea class="friendly-textarea" id="resp-${c.id}-1" placeholder="Escriu aquí les necessitats d'orientació, comunicació, autoestima..."></textarea>
+              </div>
+
+              <div class="input-card">
+                <div class="input-header">
+                  <label class="input-label" for="resp-${c.id}-2">🛡️ 2. Mapa de Riscos a Detectar</label>
+                  <span class="input-hint">Caigudes, llar, medicació, aïllament o sobreprotecció</span>
+                </div>
+                <textarea class="friendly-textarea" id="resp-${c.id}-2" placeholder="Quins perills hem de controlar a la seva llar o a la seva rutina?"></textarea>
+              </div>
+
+              <div class="input-card">
+                <div class="input-header">
+                  <label class="input-label" for="resp-${c.id}-3">🤝 3. Com Acompanyem la seva Autonomia (ABVD/AIVD)</label>
+                  <span class="input-hint">Ajuda mínima, instruccions curtes, respectar el ritme</span>
+                </div>
+                <textarea class="friendly-textarea" id="resp-${c.id}-3" placeholder="Què farà la persona per ella mateixa i quina ajuda li donarem nosaltres?"></textarea>
+              </div>
+
+              <div class="input-card">
+                <div class="input-header">
+                  <label class="input-label" for="resp-${c.id}-4">🏡 4. Canvis a la Llar i Pistes Visuals/Sensorials</label>
+                  <span class="input-hint">Catifes, llum, ordre, calendari, adaptacions</span>
+                </div>
+                <textarea class="friendly-textarea" id="resp-${c.id}-4" placeholder="Quins canvis senzills farem al pis per millorar la seguretat?"></textarea>
+              </div>
+
+              <div class="input-card">
+                <div class="input-header">
+                  <label class="input-label" for="resp-${c.id}-5">☕ 5. Família, Comunitat i Activitat Significativa</label>
+                  <span class="input-hint">Pautes familiars, Centre de Dia, xarxa de barri</span>
+                </div>
+                <textarea class="friendly-textarea" id="resp-${c.id}-5" placeholder="Com implicarem la família i com connectarem la persona amb el seu entorn?"></textarea>
+              </div>
+            </div>
+
+            <!-- ZONA DE SUPORT PEDAGÒGIC -->
+            <div class="support-zone">
+              <div class="support-header">🎓 Zona d'Aprenentatge i Autoavaluació</div>
+              <div class="support-btn-group">
+                <button type="button" class="btn-hints-toggle" onclick="toggleHints(${c.id})">
+                  💡 Pistes d'orientació <span id="hints-arrow-${c.id}">▼</span>
+                </button>
+                <button type="button" class="btn-solution-toggle" onclick="toggleSolution(${c.id})">
+                  🎯 Resolució oficial del cas <span id="sol-arrow-${c.id}">▼</span>
                 </button>
               </div>
-              <div class="solution-panel-body" id="sol-panel-body-${c.id}">
-                <p style="color:#718096;font-style:italic;font-size:0.88rem;">🔒 Solució xifrada (AES-GCM 256). Fes clic a desplegar per carregar en memòria.</p>
+
+              <!-- PANELL DE PISTES -->
+              <div class="hints-panel" id="hints-panel-${c.id}">
+                <div class="hints-panel-title">💡 Pistes per reflexionar abans de respondre:</div>
+                <ul class="hints-list">
+                  ${(c.hint || []).map(h => `<li>${sanitizeHTML(h)}</li>`).join('')}
+                </ul>
               </div>
+
+              <!-- PANELL DE RESOLUCIÓ OFICIAL -->
+              <div class="solution-panel" id="sol-panel-${c.id}">
+                <div class="solution-panel-header">
+                  <div class="solution-header-title">
+                    <span>🎯 Resolució Tècnica Model · Cas ${c.id}: ${sanitizeHTML(c.name)}</span>
+                  </div>
+                  <button type="button" class="btn-copy-solution" onclick="copySolutionToInputs(${c.id})">
+                    📋 Aplicar al meu formulari
+                  </button>
+                </div>
+                <div class="solution-panel-body" id="sol-panel-body-${c.id}">
+                  <p style="color:#718096;font-style:italic;font-size:0.88rem;">🔒 Solució xifrada (AES-GCM 256). Fes clic a desplegar per carregar en memòria.</p>
+                </div>
+              </div>
+
             </div>
 
           </div>
+        `;
 
-        </div>
-      `;
+        if (wrapper) wrapper.appendChild(card);
+      });
 
-      wrapper.appendChild(card);
+      // Restaurar respostes guardades a textareas
+      loadSavedResponses();
+      bindAutoSave();
+    }
+
+    // Render inicial
+    renderAllCases();
+
+    // Modal Creador de Casos
+    function openCreateCaseModal(editId = null) {
+      const modal = document.getElementById('createCaseModal');
+      const form = document.getElementById('customCaseForm');
+      const title = document.getElementById('createCaseModalTitle');
+      const editInput = document.getElementById('edit-case-id');
+      const galleryRow = document.getElementById('galleryThumbs');
+      if (!modal) return;
+
+      // Render gallery selector
+      if (galleryRow && galleryRow.children.length === 0) {
+        galleryRow.innerHTML = GALLERY_IMAGES.map(img => `
+          <img src="${img.src}" alt="${img.label}" title="${img.label}" class="gallery-thumb-opt" onclick="selectGalleryImg('${img.src}', '${img.label}')">
+        `).join('');
+      }
+
+      form.reset();
+      editInput.value = '';
+
+      if (editId) {
+        title.textContent = '✏️ Editar Cas Pràctic #' + editId;
+        editInput.value = editId;
+        const all = getAllCases();
+        const target = all.find(c => c.id == editId);
+        if (target) {
+          document.getElementById('case-name').value = target.name || '';
+          document.getElementById('case-age').value = target.age || '';
+          document.getElementById('case-avatar').value = target.avatar || '👵';
+          document.getElementById('case-theme').value = target.theme || '';
+          document.getElementById('case-quote').value = target.quote || '';
+          document.getElementById('case-story').value = target.story || '';
+          document.getElementById('case-image-url').value = target.image || '';
+          document.getElementById('case-image-caption').value = target.imageCaption || '';
+          
+          if (target.biography) {
+            document.getElementById('acp-history').value = target.biography.history || '';
+            document.getElementById('acp-likes').value = (target.biography.likes || []).join('\n');
+            document.getElementById('acp-dislikes').value = (target.biography.dislikes || []).join('\n');
+            document.getElementById('acp-guidelines').value = (target.biography.priorGuidelines || []).join('\n');
+          }
+          if (target.hint) {
+            document.getElementById('case-hints').value = target.hint.join('\n');
+          }
+          if (target.customSolutions) {
+            document.getElementById('sol-1').value = target.customSolutions[0]?.text || '';
+            document.getElementById('sol-2').value = target.customSolutions[1]?.text || '';
+            document.getElementById('sol-3').value = target.customSolutions[2]?.text || '';
+            document.getElementById('sol-4').value = target.customSolutions[3]?.text || '';
+            document.getElementById('sol-5').value = target.customSolutions[4]?.text || '';
+          }
+        }
+      } else {
+        title.textContent = '➕ Crear Nou Cas Pràctic';
+        // Assign default first image
+        selectGalleryImg('img/servicio-paseo.png', 'Acompanyament i marxa');
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeCreateCaseModal() {
+      const modal = document.getElementById('createCaseModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function selectGalleryImg(src, label) {
+      const input = document.getElementById('case-image-url');
+      const caption = document.getElementById('case-image-caption');
+      if (input) input.value = src;
+      if (caption && !caption.value) caption.value = label;
+      
+      const thumbs = document.querySelectorAll('.gallery-thumb-opt');
+      thumbs.forEach(t => {
+        if (t.getAttribute('src') === src) {
+          t.classList.add('selected');
+        } else {
+          t.classList.remove('selected');
+        }
+      });
+    }
+
+    function handleSaveCustomCase(e) {
+      e.preventDefault();
+      const editId = document.getElementById('edit-case-id').value;
+      const customList = getCustomCases();
+      const allCases = getAllCases();
+
+      const name = document.getElementById('case-name').value.trim();
+      const age = parseInt(document.getElementById('case-age').value) || 75;
+      const avatar = document.getElementById('case-avatar').value;
+      const theme = document.getElementById('case-theme').value.trim();
+      const quote = document.getElementById('case-quote').value.trim();
+      const story = document.getElementById('case-story').value.trim();
+      const image = document.getElementById('case-image-url').value.trim() || 'img/hero-cuidadora.png';
+      const imageCaption = document.getElementById('case-image-caption').value.trim();
+
+      const bioHistory = document.getElementById('acp-history').value.trim();
+      const bioLikes = document.getElementById('acp-likes').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const bioDislikes = document.getElementById('acp-dislikes').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const bioGuidelines = document.getElementById('acp-guidelines').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const hints = document.getElementById('case-hints').value.split('\n').map(s => s.trim()).filter(Boolean);
+
+      // Custom solutions
+      const customSols = [
+        { title: '1. Necessitats Psicosocials i Emocionals', text: document.getElementById('sol-1').value.trim() },
+        { title: '2. Mapa de Riscos a Detectar', text: document.getElementById('sol-2').value.trim() },
+        { title: '3. Acompanyament de l\'Autonomia', text: document.getElementById('sol-3').value.trim() },
+        { title: '4. Canvis a la Llar i Pistes Sensorials', text: document.getElementById('sol-4').value.trim() },
+        { title: '5. Família, Comunitat i Activitat Significativa', text: document.getElementById('sol-5').value.trim() }
+      ].filter(s => s.text !== '');
+
+      let targetId;
+      if (editId) {
+        targetId = parseInt(editId);
+        const idx = customList.findIndex(c => c.id === targetId);
+        const caseObj = {
+          id: targetId,
+          name, age, avatar, theme, quote, story, image, imageCaption,
+          isCustom: true,
+          biography: { history: bioHistory, likes: bioLikes, dislikes: bioDislikes, priorGuidelines: bioGuidelines },
+          pills: [
+            { icon: '🚶', label: 'Autonomia', val: 'Acompanyament ACP' },
+            { icon: '🛡️', label: 'Seguretat', val: 'Prevenció activa' },
+            { icon: '🏡', label: 'Llar', val: 'Espai adaptat' },
+            { icon: '💛', label: 'Benestar', val: 'Atenció personalitzada' }
+          ],
+          hint: hints.length ? hints : ['Aplica el principi d\'ajuda mínima.', 'Respecta el ritme propi de la persona.'],
+          customSolutions: customSols
+        };
+
+        if (idx !== -1) {
+          customList[idx] = caseObj;
+        } else {
+          customList.push(caseObj);
+        }
+      } else {
+        // Nou cas: cercar maxId
+        const maxId = allCases.reduce((max, c) => Math.max(max, c.id || 0), 0);
+        targetId = maxId + 1;
+        const newCase = {
+          id: targetId,
+          name, age, avatar, theme, quote, story, image, imageCaption,
+          isCustom: true,
+          biography: { history: bioHistory, likes: bioLikes, dislikes: bioDislikes, priorGuidelines: bioGuidelines },
+          pills: [
+            { icon: '🚶', label: 'Autonomia', val: 'Acompanyament ACP' },
+            { icon: '🛡️', label: 'Seguretat', val: 'Prevenció activa' },
+            { icon: '🏡', label: 'Llar', val: 'Espai adaptat' },
+            { icon: '💛', label: 'Benestar', val: 'Atenció personalitzada' }
+          ],
+          hint: hints.length ? hints : ['Aplica el principi d\'ajuda mínima.', 'Respecta el ritme propi de la persona.'],
+          customSolutions: customSols
+        };
+        customList.push(newCase);
+      }
+
+      saveCustomCases(customList);
+      closeCreateCaseModal();
+      renderAllCases();
+
+      // Guardar customSolutions a window.decryptedSolutions
+      if (customSols.length > 0) {
+        if (!window.decryptedSolutions) window.decryptedSolutions = {};
+        window.decryptedSolutions[targetId] = customSols;
+      }
+
+      alert('✅ Cas pràctic ' + (editId ? 'actualitzat' : 'creat') + ' correctament!');
+      const el = document.getElementById('cas-' + targetId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function editCustomCase(id) {
+      openCreateCaseModal(id);
+    }
+
+    function deleteCustomCase(id) {
+      if (!confirm('Segur que vols eliminar aquest cas personalitzat #' + id + '?')) return;
+      let list = getCustomCases();
+      list = list.filter(c => c.id !== id);
+      saveCustomCases(list);
+      renderAllCases();
+      alert('🗑️ Cas #' + id + ' eliminat.');
+    }
+
+    function exportCustomCasesJSON() {
+      const list = getCustomCases();
+      if (!list.length) {
+        alert('No hi ha casos personalitzats per exportar. Crea\'n un primer!');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Casos_Personalitzats_SAD_' + new Date().toISOString().slice(0, 10) + '.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importCustomCasesJSON(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (!Array.isArray(imported)) throw new Error('El format ha de ser una llista de casos JSON.');
+          const current = getCustomCases();
+          const combined = [...current, ...imported.map(c => ({ ...c, isCustom: true }))];
+          saveCustomCases(combined);
+          renderAllCases();
+          alert('✅ S\'han importat ' + imported.length + ' casos personalitzats amb èxit!');
+        } catch (err) {
+          alert('❌ Error important el fitxer JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Tecla ESC per tancar modals
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeImageModal();
+        closeCreateCaseModal();
+      }
     });
 
-    // Funcions de toggle i renderitzat segur de solucions desxifrades
     function sanitizeHTML(str) {
       if (typeof str !== 'string') return '';
       const map = {
@@ -2210,10 +3484,22 @@
       }
     }
 
+    
+    function getCaseSolutions(id) {
+      if (window.decryptedSolutions && window.decryptedSolutions[id]) {
+        return window.decryptedSolutions[id];
+      }
+      const custom = getCustomCases().find(c => c.id == id);
+      if (custom && custom.customSolutions && custom.customSolutions.length) {
+        return custom.customSolutions;
+      }
+      return null;
+    }
+
     function renderSolutionBody(id) {
       const container = document.getElementById('sol-panel-body-' + id);
       if (!container) return;
-      const solutions = (window.decryptedSolutions && window.decryptedSolutions[id]) || null;
+      const solutions = getCaseSolutions(id);
       if (solutions && solutions.length > 0) {
         container.innerHTML = solutions.map(s => `
           <div class="solution-item">
@@ -2243,7 +3529,7 @@
 
     // Copiar la solució oficial desxifrada als textarea
     function copySolutionToInputs(id) {
-      const solutions = (window.decryptedSolutions && window.decryptedSolutions[id]) || null;
+      const solutions = getCaseSolutions(id);
       if (!solutions) {
         alert('🔒 Les solucions estan xifrades amb seguretat. Si us plau, valida el teu PIN d\'accés.');
         return;
@@ -2273,6 +3559,27 @@
       });
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       alert('✅ Respostes guardades correctament al teu navegador/mòbil!');
+    }
+
+    
+    function bindAutoSave() {
+      document.querySelectorAll('.friendly-textarea').forEach(t => {
+        t.removeEventListener('input', onTextareaInput);
+        t.addEventListener('input', onTextareaInput);
+      });
+    }
+
+    let saveTimeout = null;
+    function onTextareaInput() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const textareas = document.querySelectorAll('.friendly-textarea');
+        const data = {};
+        textareas.forEach(t => {
+          if (t.value.trim() !== '') data[t.id] = t.value;
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }, 400);
     }
 
     function loadSavedResponses() {
@@ -2576,6 +3883,7 @@
             } catch (e) {}
           }
         }
+        renderAllCases();
         loadSavedResponses();
       } else {
         authOverlay.style.display = 'flex';
@@ -2960,5 +4268,158 @@
       }
     });
   </script>
+
+  <!-- LIGHTBOX MODAL D'AMPLIACIÓ D'IMATGES -->
+  <div class="lightbox-modal" id="imageLightboxModal" onclick="if(event.target === this) closeImageModal()">
+    <div class="lightbox-content">
+      <div class="lightbox-header">
+        <span class="lightbox-title" id="lightboxTitle">Fotografia del Cas</span>
+        <button type="button" class="lightbox-close" onclick="closeImageModal()">&times;</button>
+      </div>
+      <img src="" alt="Ampliación" class="lightbox-img" id="lightboxImg">
+      <div class="lightbox-footer" id="lightboxFooter">
+        🌿 Fotografia contextual d'acompanyament sociosanitari (SAD · ACP).
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CREADOR / EDITOR RÀPID DE CASOS -->
+  <div class="create-case-modal" id="createCaseModal" onclick="if(event.target === this) closeCreateCaseModal()">
+    <div class="create-case-card">
+      <div class="create-case-header">
+        <h2 id="createCaseModalTitle">➕ Crear Nou Cas Pràctic</h2>
+        <button type="button" class="lightbox-close" onclick="closeCreateCaseModal()">&times;</button>
+      </div>
+      <form id="customCaseForm" onsubmit="handleSaveCustomCase(event)">
+        <div class="create-case-body">
+          <input type="hidden" id="edit-case-id" value="">
+
+          <!-- DADES GENERALS -->
+          <div class="form-section-title">👤 Dades Generals del Cas</div>
+          <div class="form-group-grid">
+            <div class="form-control-block">
+              <label class="form-label" for="case-name">Nom de la persona *</label>
+              <input type="text" id="case-name" class="form-input" required placeholder="Ex: Eulàlia">
+            </div>
+            <div class="form-control-block">
+              <label class="form-label" for="case-age">Edat *</label>
+              <input type="number" id="case-age" class="form-input" required min="18" max="115" placeholder="Ex: 84">
+            </div>
+            <div class="form-control-block">
+              <label class="form-label" for="case-avatar">Icona / Avatar Emoji</label>
+              <select id="case-avatar" class="form-select">
+                <option value="👵">👵 Àvia / Dona gran</option>
+                <option value="👴">👴 Avi / Home gran</option>
+                <option value="👩‍🦳">👩‍🦳 Dona cabells blancs</option>
+                <option value="👨‍🦳">👨‍🦳 Home cabells blancs</option>
+                <option value="🧑‍🦽">🧑‍🦽 Cadira de rodes</option>
+                <option value="🧑‍🦯">🧑‍🦯 Bastó / Guia</option>
+                <option value="🩺">🩺 Seguiment clínic</option>
+                <option value="🌸">🌸 Cura íntima</option>
+                <option value="🛋️">🛋️ Llar i confort</option>
+                <option value="☕">☕ Acompanyament</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-control-block">
+            <label class="form-label" for="case-theme">Tema o Repte principal *</label>
+            <input type="text" id="case-theme" class="form-input" required placeholder="Ex: Recuperació post-fractura, solitud i adaptació del bany">
+          </div>
+
+          <div class="form-control-block">
+            <label class="form-label" for="case-quote">La seva veu (Frase o cita significativa) *</label>
+            <input type="text" id="case-quote" class="form-input" required placeholder="Ex: M'agradaria poder tornar a regar les meves plantes del balcó...">
+          </div>
+
+          <div class="form-control-block">
+            <label class="form-label" for="case-story">Història i Context al domicili *</label>
+            <textarea id="case-story" class="form-textarea" rows="3" required placeholder="Descriu la realitat de la llar, la família, els perills o necessitats..."></textarea>
+          </div>
+
+          <!-- SELECCIÓ D'IMATGE -->
+          <div class="form-section-title">📷 Imatge Contextual del Cas</div>
+          <div class="image-gallery-selector">
+            <div style="font-size: 0.8rem; color: #64748B; margin-bottom: 8px;">Fes clic a una imatge de la galeria o indica una ruta/URL pròpia:</div>
+            <div class="gallery-preview-row" id="galleryThumbs">
+              <!-- Emplenat dinàmicament per JS -->
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px; align-items: center;">
+              <input type="text" id="case-image-url" class="form-input" style="flex: 1;" placeholder="Ruta a la imatge (ex: img/servicio-paseo.png o https://...)">
+              <input type="text" id="case-image-caption" class="form-input" style="flex: 1;" placeholder="Peu de foto (ex: Marxa amb suport al carrer)">
+            </div>
+          </div>
+
+          <!-- HISTÒRIA DE VIDA I ACP -->
+          <div class="form-section-title">📖 Expedient de Vida ACP (Atenció Centrada en la Persona)</div>
+          <div class="form-control-block">
+            <label class="form-label" for="acp-history">Trajectòria Vital & Qui és</label>
+            <textarea id="acp-history" class="form-textarea" rows="2" placeholder="Ofici passat, trajectòria de vida, valors, què significa la seva llar..."></textarea>
+          </div>
+
+          <div class="form-group-grid">
+            <div class="form-control-block">
+              <label class="form-label" for="acp-likes">Gustos i Rutines que donen confort (1 per línia)</label>
+              <textarea id="acp-likes" class="form-textarea" rows="3" placeholder="Cafè amb llet tebi&#10;Música clàssica&#10;Seure a la finestra"></textarea>
+            </div>
+            <div class="form-control-block">
+              <label class="form-label" for="acp-dislikes">Què li genera angoixa / Què evitar (1 per línia)</label>
+              <textarea id="acp-dislikes" class="form-textarea" rows="3" placeholder="Les presses&#10;Que li moguin els objectes&#10;Tuteig no permès"></textarea>
+            </div>
+          </div>
+
+          <div class="form-control-block">
+            <label class="form-label" for="acp-guidelines">Pautes prèvies de l'equip interdisciplinar PAI (1 per línia)</label>
+            <textarea id="acp-guidelines" class="form-textarea" rows="2" placeholder="PAI Treball Social: Entrada progressiva de 30 minuts&#10;Fisioteràpia: Caminador de dues rodes"></textarea>
+          </div>
+
+          <!-- PISTES D'ORIENTACIÓ -->
+          <div class="form-section-title">💡 Pistes Pedagògiques d'Orientació (Opcional)</div>
+          <div class="form-control-block">
+            <label class="form-label" for="case-hints">Pistes per reflexionar (1 per línia)</label>
+            <textarea id="case-hints" class="form-textarea" rows="2" placeholder="Recorda el principi d'ajuda mínima: fer amb ella, no pas per ella.&#10;Com pactar amb la família?"></textarea>
+          </div>
+
+          <!-- RESOLUCIÓ MODEL OPCIONAL -->
+          <div class="form-section-title">🎯 Resolució Model Oficial (Opcional)</div>
+          <div style="font-size:0.8rem;color:#64748B;">Si ets docent o vols incorporar un solucionari model per a aquest cas:</div>
+          <div class="form-control-block">
+            <label class="form-label" for="sol-1">1. Necessitats Psicosocials</label>
+            <input type="text" id="sol-1" class="form-input" placeholder="Solució model bloc 1">
+          </div>
+          <div class="form-control-block">
+            <label class="form-label" for="sol-2">2. Mapa de Riscos</label>
+            <input type="text" id="sol-2" class="form-input" placeholder="Solució model bloc 2">
+          </div>
+          <div class="form-control-block">
+            <label class="form-label" for="sol-3">3. Acompanyament Autonomia</label>
+            <input type="text" id="sol-3" class="form-input" placeholder="Solució model bloc 3">
+          </div>
+          <div class="form-control-block">
+            <label class="form-label" for="sol-4">4. Canvis a la Llar</label>
+            <input type="text" id="sol-4" class="form-input" placeholder="Solució model bloc 4">
+          </div>
+          <div class="form-control-block">
+            <label class="form-label" for="sol-5">5. Família i Xarxa Social</label>
+            <input type="text" id="sol-5" class="form-input" placeholder="Solució model bloc 5">
+          </div>
+
+        </div>
+        <div class="create-case-footer">
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="sec-btn-outline" onclick="exportCustomCasesJSON()" style="font-size: 0.8rem;">📤 Exportar Casos (JSON)</button>
+            <label class="sec-btn-outline" style="font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; margin: 0;">
+              📥 Importar Casos (JSON)
+              <input type="file" accept=".json" onchange="importCustomCasesJSON(event)" style="display: none;">
+            </label>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="sec-btn-outline" onclick="closeCreateCaseModal()">Cancel·lar</button>
+            <button type="submit" class="sec-btn-primary" style="background-color: var(--teal-calm);">💾 Desar Cas</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>

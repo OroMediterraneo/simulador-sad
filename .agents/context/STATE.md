@@ -5,7 +5,7 @@
 - **Summary:** Plataforma interactiva d'entrenament clínic i psicosocial per a professionals i estudiants del Certificat de Professionalitat SSCS0108 (Atenció Sociosanitària a Persones al Domicili).
 - **Core Methodology:** Atenció Centrada en la Persona (ACP), principi d'ajuda mínima, respecte al ritme individual, seguretat a la llar i dinamització social comunitària.
 - **Primary Deliverables:**
-  - `index.html` / `quadern_amigable.html`: Aplicació web interactiva amb els 25 casos pràctics complets, disseny càlid en color, caixes d'escriptura amb auto-guardat en `localStorage`, botó d'impressió/PDF, pistes reflexives desplegables, resolució tècnica model amb xifrat militar AES-GCM 256, protecció anti-hacker en 4 capes, accés d'administrador d'incògnit (Stealth Admin Gateway) i interruptor d'estat ON/OFF.
+  - `index.html` / `quadern_amigable.html`: Aplicació web interactiva amb els 25 casos pràctics complets enriquits amb imatges contextuals, expedient biogràfic ACP complet, creador ràpid de nous casos amb persistència a `localStorage`, caixes d'escriptura amb auto-guardat en temps real, botó d'impressió/PDF, pistes reflexives desplegables, resolució tècnica model amb xifrat militar AES-GCM 256, protecció anti-hacker en 4 capes, accés d'administrador d'incògnit (Stealth Admin Gateway) i interruptor d'estat ON/OFF.
   - `status.json`: Fitxer remot d'estat (kill-switch global) que controla si l'aplicació està encesa (`active: true`) o apagada (`active: false`) a nivell mundial a GitHub Pages.
   - `apagar.bat` / `encendre.bat`: Llançadors ràpids d'un sol clic per a Windows que commuten l'estat d'encesa/apagada i ofereixen sincronització immediata amb GitHub.
   - `Solucionari_25_Casos_Practics_UF0122_UF0123.md`: Document oficial de resolució dels 25 casos amb pautes i derivacions interdisciplinars.
@@ -17,10 +17,26 @@
 - **GitHub Pages Live URL (24/7 Web & Mobile):** `https://oromediterraneo.github.io/simulador-sad/`
 
 ## 3. Architecture & Functional Components
+- **Imatges Contextuals & Lightbox:**
+  - Cadascun dels 25 casos disposa d'una imatge representativa vinculada al seu repte específic (marxa, caminador, cuina, fisioteràpia, baixa visió, ictus, soledat, dol, oxigenoteràpia, disfàgia, mobilitat al llit, etc.).
+  - Miniatura interactiva a la capçalera de la fitxa amb insígnia d'avatar i visor Lightbox a pantalla completa al fer clic.
+- **Expedient Biogràfic & Historial de Vida (ACP):**
+  - Desplegable accessible a cada cas amb 4 targetes d'Atenció Centrada en la Persona:
+    1. *Trajectòria Vital & Qui és:* ofici, records i bagatge de vida.
+    2. *Gustos, Preferències i Rutines:* com pren el cafè, música, aficions.
+    3. *Què li genera angoixa o rebuig:* detonants a evitar (presses, tuteig no permès, canvis d'objectes).
+    4. *Pautes Prèvies de l'Equip (PAI):* indicacions de Treball Social, Fisioteràpia, Infermeria o Psicologia.
+- **Creador Ràpid de Casos (Opció "Crear"):**
+  - Botó `➕ Crear Nou Cas` a la barra d'eines.
+  - Formulari modal intuïtiu amb selector visual de miniatures de la galeria gràfica del projecte (`img/`).
+  - Camps estructurats per a dades generals, cita, context, expedient ACP, píndoles ràpides, pistes i solucionari model.
+  - Persistència a `localStorage` (`SAD_CUSTOM_CASES`) amb combinació transparent amb els 25 casos base.
+  - Accions d'edició (`✏️ Editar`) i eliminació (`🗑️ Eliminar`) a la fitxa dels casos personalitzats.
+  - Eina d'exportació (`📤 Exportar Casos JSON`) i importació (`📥 Importar Casos JSON`).
 - **Pedagogical Support System:**
   - **Nivell 1 (Pistes):** Botó `💡 Pistes d'orientació` que activa pistes reflexives sense fer espòiler.
   - **Nivell 2 (Resolució Oficial):** Botó `🎯 Resolució oficial del cas` que desxifra dinàmicament en memòria la solució completa segmentada en els 5 blocs clau (Necessitats, Riscos, Autonomia, Llar, Xarxa Social) amb l'opció `📋 Aplicar al meu formulari`.
-- **Client-Side Persistence:** Desat transparent en `localStorage` (clau `SAD_PRACTICE_RESPONSES_V2`) perquè les respostes dels usuaris romanguin desades a qualsevol dispositiu mòbil o escriptori.
+- **Client-Side Persistence:** Desat transparent en `localStorage` (clau `SAD_PRACTICE_RESPONSES_V2`) amb auto-guardat automàtic per cada pulsació de tecla (debounce de 400ms).
 
 ## 4. Anti-Hacker Multi-Layer Security Architecture & Stealth Admin Gateway
 - **Capa 1: Escut Perimetral (CSP & Framebusting):**
@@ -55,4 +71,7 @@
 - [x] Implementació de la capa de seguretat criptogràfica SHA-256 (Gatekeeper per PIN, Panell Admin, drecera `Ctrl+Shift+A` i scripts `apagar.bat` / `encendre.bat`).
 - [x] Implementació del blindatge Anti-Hacker en 4 capes (CSP, Framebusting, Honeypot, Bloqueig Exponencial, Xifrat AES-GCM 256 en repòs i Anti-Inspecció).
 - [x] Ocultació total de l'accés d'administrador (Stealth Admin Gateway: sense botons públics, entrada unificada per PIN/Clau, 3 tocs al candau, drecera i URL secreta).
+- [x] **Integració d'imatges contextuals a cadascun dels 25 casos pràctics amb visor Lightbox ampliat.**
+- [x] **Implementació de l'Expedient Biogràfic & Historial de Vida ACP a cadascun dels 25 casos (Trajectòria, Gustos, Aversions, PAI).**
+- [x] **Desenvolupament del Creador Ràpid de Casos (Opció "Crear" amb selector visual d'imatges, edició, eliminació, auto-guardat i exportació JSON).**
 - [x] Sincronització de memòria d'enginyeria a `STATE.md`.
