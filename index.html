@@ -928,14 +928,14 @@
   <div id="shutdown-overlay" class="security-backdrop" style="display: none;">
     <div class="security-card">
       <div class="security-badge badge-power-off">🔴 SISTEMA APAGAT</div>
-      <div style="font-size: 3.6rem; margin-bottom: 10px;">🔒</div>
+      <div style="font-size: 3.6rem; margin-bottom: 10px; cursor: pointer; user-select: none;" onclick="handleSecretAdminTap()" title="Simulador SAD">🔒</div>
       <h2 class="security-title">Simulador SAD Desactivat</h2>
       <p class="security-desc" id="shutdown-message-text">
         El Simulador SAD es troba actualment desactivat per manteniment o fora d'horari lectiu. Contacta amb la coordinació docent per a més informació.
       </p>
       <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
         <button class="sec-btn-outline" onclick="checkSystemStatus(true)">🔄 Comprovar si ja s'ha encès</button>
-        <button class="sec-btn-outline" style="border-color: #CBD5E1; color: #64748B;" onclick="openAdminModal()">⚙️ Desbloqueig / Encesa d'Administrador</button>
+        
       </div>
     </div>
   </div>
@@ -946,7 +946,7 @@
   <div id="auth-overlay" class="security-backdrop" style="display: none;">
     <div class="security-card">
       <div class="security-badge badge-auth-lock">🛡️ ACCÉS RESTRINGIT · SSCS0108</div>
-      <div style="font-size: 3.2rem; margin-bottom: 10px;">🔐</div>
+      <div style="font-size: 3.2rem; margin-bottom: 10px; cursor: pointer; user-select: none;" onclick="handleSecretAdminTap()" title="Simulador SAD">🔐</div>
       <h2 class="security-title">Simulador SAD</h2>
       <p class="security-desc">Introdueix el PIN d'accés autoritzat per obrir el quadern clínic de 25 casos pràctics i resolucions.</p>
       
@@ -975,9 +975,8 @@
         </button>
       </form>
 
-      <div class="sec-footer-links">
+      <div class="sec-footer-links" style="justify-content: center;">
         <span>Simulador SAD · V2.0 Segura</span>
-        <a class="sec-link" onclick="openAdminModal()">Accés Admin ⚙️</a>
       </div>
     </div>
   </div>
@@ -1090,7 +1089,7 @@
   <div class="container" id="main-container" style="display: none;">
 
     <header>
-      <span class="badge-sub">Certificat SSCS0108 · UF0122 & UF0123</span>
+      <span class="badge-sub" onclick="handleSecretAdminTap()" style="cursor: pointer; user-select: none;" title="SSCS0108">Certificat SSCS0108 · UF0122 & UF0123</span>
       <h1>Quadern de Casos Pràctics d'Atenció Domiciliària</h1>
       <p class="intro-text">
         Entrenament clínic i psicosocial basat en l'Atenció Centrada en la Persona (ACP): acompanyar l'autonomia, respectar el ritme de cadascú i protegir la seguretat a la llar amb criteri professional.
@@ -1101,7 +1100,7 @@
         <button class="btn btn-save" onclick="saveAllResponses()">💾 Desar les meves respostes</button>
         <button class="btn btn-clear" onclick="clearAllResponses()">🗑️ Netejar formulari</button>
         <button class="btn btn-lock" onclick="lockSession()" title="Tancar la sessió i bloquejar la pantalla">🔒 Tancar Sessió</button>
-        <button class="btn btn-admin" onclick="openAdminModal()" title="Panell d'administrador i interruptor mestre">⚙️ Admin</button>
+        
       </div>
     </header>
 
@@ -2628,8 +2627,23 @@
       const hash = await sha256(pin);
       const cfg = getSecurityConfig();
 
-      if (hash === cfg.studentHash || hash === cfg.adminHash) {
-        // Desxifrat de seguretat en memòria
+      // ENTRADA UNIFICADA: Si s'introdueix la Clau Mestra d'Administrador a la mateixa casella
+      if (hash === cfg.adminHash) {
+        resetFailedAttempts();
+        errEl.style.display = 'none';
+        isAdminAuthenticated = true;
+        const decrypted = await decryptSolutionsEnvelope(pin);
+        if (decrypted) {
+          window.decryptedSolutions = Object.freeze(decrypted);
+          sessionStorage.setItem('SAD_DECRYPTED_SOLS', JSON.stringify(decrypted));
+        }
+        input.value = '';
+        openAdminModal();
+        return;
+      }
+
+      // ACCÉS REGULAR D'ALUMNAT AMB EL PIN DEL CURS
+      if (hash === cfg.studentHash) {
         const decrypted = await decryptSolutionsEnvelope(pin);
         if (decrypted) {
           window.decryptedSolutions = Object.freeze(decrypted);
@@ -2716,6 +2730,20 @@
     }
 
     // PANELL D'ADMINISTRACIÓ MESTRE
+    
+    // GEST SECRET: 3 tocs consecutius al logotip/candau obren el panell en secret
+    let secretTapCount = 0;
+    let secretTapTimer = null;
+    function handleSecretAdminTap() {
+      secretTapCount++;
+      clearTimeout(secretTapTimer);
+      secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 1400);
+      if (secretTapCount >= 3) {
+        secretTapCount = 0;
+        openAdminModal();
+      }
+    }
+
     function openAdminModal() {
       const modal = document.getElementById('admin-modal');
       const loginView = document.getElementById('admin-login-view');
@@ -2925,6 +2953,11 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       checkSystemStatus();
+      // Obertura via paràmetre secret URL: ?admin=1 o ?gestio=1
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('admin') || urlParams.has('gestio')) {
+        setTimeout(openAdminModal, 350);
+      }
     });
   </script>
 </body>
